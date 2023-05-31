@@ -23,12 +23,14 @@ public class UserController {
     }
 
     @RequestMapping(value = ENDPOINT, method = RequestMethod.POST)
-    public User createFamilyMember(User user, Principal principal){
+    public User createFamilyMember(@RequestBody User user, Principal principal) {
+        System.out.println(user.getPassword());
         int familyId = familyDao.getFamilyIdByUsername(principal.getName());
         int newUserId = userDao.create(
-                user.getUsername(), user.getPassword(), "Parent",
+                user.getUsername(), user.getPassword(), "child",
                 user.getFirstName(), user.getLastName(), familyId
         );
         return userDao.getUserById(newUserId);
     }
+
 }
