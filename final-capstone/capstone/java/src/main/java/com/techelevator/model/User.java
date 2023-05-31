@@ -9,19 +9,25 @@ import java.util.Set;
 public class User {
 
    private int id;
+   private int familyId;
    private String username;
    @JsonIgnore
    private String password;
    @JsonIgnore
    private boolean activated;
+   private String firstName;
+   private String lastName;
    private Set<Authority> authorities = new HashSet<>();
 
    public User() { }
 
-   public User(int id, String username, String password, String authorities) {
+   public User(int id, int familyId, String username, String password, String firstName, String lastName, String authorities) {
       this.id = id;
+      this.familyId = familyId;
       this.username = username;
       this.password = password;
+      this.firstName = firstName;
+      this.lastName = lastName;
       if(authorities != null) this.setAuthorities(authorities);
       this.activated = true;
    }
@@ -48,6 +54,30 @@ public class User {
 
    public void setPassword(String password) {
       this.password = password;
+   }
+
+   public int getFamilyId() {
+      return familyId;
+   }
+
+   public void setFamilyId(int familyId) {
+      this.familyId = familyId;
+   }
+
+   public String getFirstName() {
+      return firstName;
+   }
+
+   public void setFirstName(String firstName) {
+      this.firstName = firstName;
+   }
+
+   public String getLastName() {
+      return lastName;
+   }
+
+   public void setLastName(String lastName) {
+      this.lastName = lastName;
    }
 
    public boolean isActivated() {
