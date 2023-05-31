@@ -64,7 +64,6 @@ public class AuthenticationController {
             Family family = new Family(newUser.getLastName(), newUser.getEmail());
             int familyId = familyDao.create(family);
             userDao.create(newUser.getUsername(),newUser.getPassword(), newUser.getRole(), newUser.getFirstName(), newUser.getLastName(), familyId);
-            //TBD: Create a family here
         }
     }
 

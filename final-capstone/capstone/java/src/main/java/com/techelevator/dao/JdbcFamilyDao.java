@@ -1,15 +1,12 @@
 package com.techelevator.dao;
 
 import com.techelevator.model.Family;
-import com.techelevator.model.User;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import javax.validation.constraints.Null;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +41,17 @@ public class JdbcFamilyDao implements FamilyDao {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public int getFamilyIdByUsername(String username){
+        String sql = "SELECT family.family_id FROM family JOIN users\n" +
+                "ON users.family_id = family.family_id WHERE username = ?";
+        SqlRowSet result = jdbcTemplate.queryForRowSet(sql, username);
+        if(result.next()){
+            return result.getInt("family_id");
+        }
+        return -1;
     }
 
     @Override

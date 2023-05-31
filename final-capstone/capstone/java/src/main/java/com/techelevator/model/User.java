@@ -17,6 +17,7 @@ public class User {
    private boolean activated;
    private String firstName;
    private String lastName;
+   private String role;
    private Set<Authority> authorities = new HashSet<>();
 
    public User() { }
@@ -29,6 +30,14 @@ public class User {
       this.firstName = firstName;
       this.lastName = lastName;
       if(authorities != null) this.setAuthorities(authorities);
+      this.activated = true;
+   }
+
+   public User(String username, String password, String firstName, String lastName){
+      this.username = username;
+      this.password = password;
+      this.firstName = firstName;
+      this.lastName = lastName;
       this.activated = true;
    }
 
