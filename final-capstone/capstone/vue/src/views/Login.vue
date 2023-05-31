@@ -1,7 +1,7 @@
 <template>
   <div id="login">
     <form @submit.prevent="login">
-      <h1 >Please Sign In</h1>
+      <h1 >Log In</h1>
       <div role="alert" v-if="invalidCredentials">
         Invalid username and password!
       </div>
@@ -9,18 +9,25 @@
         Thank you for registering, please sign in.
       </div>
       <div class="form-input-group">
-        <label for="username">Username</label>
+        <label for="username">👤 Username</label>
         <input type="text" id="username" v-model="user.username" required autofocus />
       </div>
       <div class="form-input-group">
-        <label for="password">Password</label>
+        <label for="password">🔒 Password</label>
         <input type="password" id="password" v-model="user.password" required />
       </div>
       <button type="submit">Sign in</button>
       <p>
       <router-link :to="{ name: 'register' }">Need an account? Sign up.</router-link></p>
+      <div class="running-board">
+        <p> 📕 📙 📒 📗 📘 📓 📕 📙 📒 📗 📘 📓 📕 📙 📒 📗 📘 📓 📕 📙 📒 📗 📘 📓 📕 📙 📒 📗 📘 📓 📕 📙 📒 📗 📘 📓 📕 📙 📒 📗 📘 📓 📕 📙 📒 📗 📘 📓📕 📙 📒 📗 📘 📓 📕 📙 📒 📗 📘 📓 📕 📙 📒 📗 📘 📓 📕 📙 📒 📗 📘 </p>
+      </div>
     </form>
-  </div>
+    <div class="image">
+      <h1>the logo will go under here</h1>
+
+    </div>
+    </div>
 </template>
 
 <script>
@@ -61,11 +68,34 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap');
+
+form{
+  border: 3px;
+  border-style:groove;
+   background-image: url('https://img.freepik.com/premium-photo/natural-recycled-paper-texture-background_118047-8737.jpg');
+    font-family: 'Libre Baskerville', serif;
+    font: RGB(88,85,99);
+}
 .form-input-group {
+  font-family: 'Libre Baskerville', serif;
   margin-bottom: 1rem;
+  color: RGB(88,85,99);
 }
 label {
+   font-family: 'Libre Baskerville', serif;
   margin-right: 0.5rem;
+  font: RGB(88,85,99);
 }
+.image{
+ display: flex;
+ background-image: url('https://assets.weforum.org/article/image/JMF96ETfn1kSViVnUou1Z0XIDwWcPpT5mrPc7-ytpAc.jpg');
+ flex: row;
+ width: 1902px;
+ height: 645px;
+ padding: 0px;
+ margin: 0px;
+}
+
 </style>
