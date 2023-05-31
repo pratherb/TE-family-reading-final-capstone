@@ -7,6 +7,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -24,13 +26,17 @@ public class UserController {
 
     @RequestMapping(value = ENDPOINT, method = RequestMethod.POST)
     public User createFamilyMember(@RequestBody User user, Principal principal) {
-        System.out.println(user.getPassword());
         int familyId = familyDao.getFamilyIdByUsername(principal.getName());
         int newUserId = userDao.create(
                 user.getUsername(), user.getPassword(), "child",
                 user.getFirstName(), user.getLastName(), familyId
         );
         return userDao.getUserById(newUserId);
+    }
+
+    @RequestMapping(value = ENDPOINT, method = RequestMethod.GET)
+    public List<User> getUsers(){
+        return userDao.findAll();
     }
 
 }
