@@ -6,7 +6,7 @@
           <router-link v-bind:to="{ name: 'prizes' }"> Prizes </router-link>
           <router-link v-bind:to="{ name: 'settings' }"> Settings </router-link>
       </div>
-      <h3 id="member-heading">Members</h3>
+      <h3 id="member-heading">Family Members</h3>
        <ul v-for="member in filteredMembers" v-bind:key="member.name">
           <li>
               {{ member.name }}
@@ -17,6 +17,7 @@
 
 <script>
 export default {
+    name: "members",
     data() {
         return {
             filterText: '',
