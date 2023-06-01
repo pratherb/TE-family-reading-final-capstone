@@ -29,7 +29,4 @@ public class BookController {
     public List<Book> queryForBookByIsbn(@PathVariable  String isbn){
         return  bookDao.searchBooksByIsbn(isbn);
     }
-
-
-
 }

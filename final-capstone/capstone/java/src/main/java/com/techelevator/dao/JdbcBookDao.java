@@ -107,7 +107,8 @@ public class JdbcBookDao implements BookDao {
                 author = authorArray.get(0).getAsString();
                 numPages = doc.get("number_of_pages_median").getAsInt();
             } catch (RuntimeException e) {
-                //If a value isn't found, let's set the Book object's values to the default values then continue the loop
+                //If a value isn't found, we end up here. let's set the Book object's values to the default values then continue the loop
+                //If this isn't caught here, we might crash.
                 System.out.println("Some expected data was not found.");
                 book.setTitle(title);
                 book.setIsbn(isbn);
