@@ -1,6 +1,7 @@
 <template>
   <div>
-      <h2>Reading Log</h2>
+    <h2>BookBound Image Here</h2>
+      <h3>Reading Log</h3>
   </div>
 </template>
 
