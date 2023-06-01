@@ -15,6 +15,10 @@ public class Book {
         this.numPages = numPages;
     }
 
+    public Book() {
+
+    }
+
     public String getTitle() {
         return title;
     }
