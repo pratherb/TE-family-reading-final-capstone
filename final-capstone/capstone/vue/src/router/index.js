@@ -11,6 +11,7 @@ import Prizes from '../views/Prizes.vue'
 import Reading from '../views/Reading.vue'
 import Log from '../views/Log.vue'
 import UserProfile from '../views/UserProfile.vue'
+import AddMember from '../views/AddMember.vue'
 
 Vue.use(Router)
 
@@ -89,6 +90,11 @@ const router = new Router({
       name: "userprofile",
       component: UserProfile
     },
+    {
+      path: "/addmember",
+      name: "addmember",
+      component: AddMember
+    }
   ]
 })
 

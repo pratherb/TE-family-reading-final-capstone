@@ -1,7 +1,7 @@
 <template>
   <div class="family-settings">
     <h2 name='image'>BookBound Image Here</h2>
-      <h3 name='head'>Family Settings</h3>
+    <h3 name='head'>Family Settings</h3>
   </div>
 </template>
 

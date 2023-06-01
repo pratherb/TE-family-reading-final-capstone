@@ -1,5 +1,8 @@
 <template>
   <div class="members">
+      <div class="loading" v-if="isLoading">
+          <img src="../assets/book_pages_opening.gif" />
+      </div>
       <h2>BookBound Image Here</h2>
       <div id="nav">
           <router-link v-bind:to="{ name: 'reading' }"> Reading </router-link>
@@ -7,6 +10,11 @@
           <router-link v-bind:to="{ name: 'settings' }"> Settings </router-link>
       </div>
       <h3 id="member-heading">Family Members</h3>
+      <div class="button">
+          <router-link to="/addmember">
+          <button>Add Family Member</button>
+          </router-link>
+      </div>
        <ul v-for="member in filteredMembers" v-bind:key="member.name">
           <li>
               {{ member.name }}
@@ -16,10 +24,17 @@
 </template>
 
 <script>
+
+
 export default {
     name: "members",
+    components: {
+        
+    },
     data() {
         return {
+            isLoading: true,
+            errorMsg: "",
             filterText: '',
             members: [
                 {
