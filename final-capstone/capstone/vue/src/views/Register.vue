@@ -1,37 +1,43 @@
 <template>
   <div id="register" class="text-center">
+    <div class="regLogo">
+      <img src="../images/sharpened-transparent-logo.png">
+    </div>
     <form @submit.prevent="register">
       <h1>Create Account</h1>
       <div role="alert" v-if="registrationErrors">
         {{ registrationErrorMsg }}
       </div>
       <div class="form-input-group">
-        <label for="firstName">First Name</label>
+        <label for="firstName">First Name: </label>
         <input type="text" id="firstName" v-model="user.firstName" required autofocus />
       </div>
       <div class="form-input-group">
-        <label for="lastName">Last Name</label>
+        <label for="lastName">Last Name: </label>
         <input type="text" id="lastName" v-model="user.lastName" required autofocus />
       </div>
       <div class="form-input-group">
-        <label for="email">Email</label>
+        <label for="email">Email: </label>
         <input type="email" id="email" v-model="user.email" required autofocus />
       </div>
       <div class="form-input-group">
-        <label for="username">Username</label>
+        <label for="username">Username: </label>
         <input type="text" id="username" v-model="user.username" required autofocus />
       </div>
       <div class="form-input-group">
-        <label for="password">Password</label>
+        <label for="password">Password: </label>
         <input type="password" id="password" v-model="user.password" required />
       </div>
       <div class="form-input-group">
-        <label for="confirmPassword">Confirm Password</label>
+        <label for="confirmPassword">Confirm Password: </label>
         <input type="password" id="confirmPassword" v-model="user.confirmPassword" required />
       </div>
       <button type="submit">Create Account</button>
       <p><router-link :to="{ name: 'login' }">Already have an account? Log in.</router-link></p>
     </form>
+    <div class="belowformarea">
+    
+    </div>
   </div>
 </template>
 
@@ -89,10 +95,34 @@ export default {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap');
+
+form{
+      display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    align-items: baseline;
+}
 .form-input-group {
-  margin-bottom: 1rem;
+  display: flex;
+font-family: 'Libre Baskerville', serif;
+border: solid, 1px, black;
+margin-bottom: 1rem;
+ color: rgb(88,85,99);
 }
 label {
   margin-right: 0.5rem;
+}
+.regLogo{
+  display: flex;
+  background-image:none;
+  justify-content: flex-end;
+  padding: none;
+  margin: none;
+}
+img{
+  width: 150px;
+  padding: none;
 }
 </style>

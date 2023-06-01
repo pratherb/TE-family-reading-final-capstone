@@ -1,5 +1,6 @@
 <template>
   <div id="login">
+      
     <form @submit.prevent="login">
       <h1 >Log In</h1>
       <div role="alert" v-if="invalidCredentials">
@@ -24,8 +25,7 @@
       </div>
     </form>
     <div class="image">
-      <img src="/images/Untitled_Artwork.jpg">
-
+      <img src="../images/sharpened-transparent-logo.png">
     </div>
     </div>
 </template>
@@ -71,30 +71,31 @@ export default {
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap');
 
+
 form{
+  background: linear-gradient(to right, rgba(122, 85, 85, 0.3), rgba(	255, 165, 0,0.3), rgba(255,255,0,0.3), rgba(50,205,50,0.3), rgba(0,191,255,0.3), rgba(148,0,211,0.3));
   border: 3px;
   border-style:groove;
-   background-image: url('https://img.freepik.com/premium-photo/natural-recycled-paper-texture-background_118047-8737.jpg');
+  color: rgb(88,85,99);
     font-family: 'Libre Baskerville', serif;
-    font: RGB(88,85,99);
+    font: rgb(88,85,99);
 }
 .form-input-group {
   font-family: 'Libre Baskerville', serif;
   margin-bottom: 1rem;
-  color: RGB(88,85,99);
+  color: rgb(88,85,99);
 }
 label {
    font-family: 'Libre Baskerville', serif;
   margin-right: 0.5rem;
-  font: RGB(88,85,99);
+  font: rgb(88,85,99);
 }
 .image{
- display: flex;
- flex: row;
- width: 1902px;
- height: 645px;
- padding: 0px;
- margin: 0px;
+   background-image:url('https://img.freepik.com/premium-photo/vintage-paper-texture-background-with-copy-space-space-text_213524-427.jpg?w=1380');
+  display:flex;
+justify-content: center;
 }
-
+img{
+  width:30%
+}
 </style>
