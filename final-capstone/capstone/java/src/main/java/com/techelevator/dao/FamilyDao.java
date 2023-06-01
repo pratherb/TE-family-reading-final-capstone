@@ -7,6 +7,7 @@ import java.util.List;
 public interface FamilyDao {
 
     List<Family> findAll();
+
     Family getFamilyById(int id);
 
     int getFamilyIdByUsername(String username);
