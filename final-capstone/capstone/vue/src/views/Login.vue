@@ -24,7 +24,7 @@
       </div>
     </form>
     <div class="image">
-      <h1>the logo will go under here</h1>
+      <img src="/images/Untitled_Artwork.jpg">
 
     </div>
     </div>
@@ -90,7 +90,6 @@ label {
 }
 .image{
  display: flex;
- background-image: url('https://assets.weforum.org/article/image/JMF96ETfn1kSViVnUou1Z0XIDwWcPpT5mrPc7-ytpAc.jpg');
  flex: row;
  width: 1902px;
  height: 645px;
