@@ -11,9 +11,9 @@ public class User {
    private int id;
    private int familyId;
    private String username;
-   @JsonIgnore
+   //@JsonIgnore
    private String password;
-   @JsonIgnore
+   //@JsonIgnore
    private boolean activated;
    private String firstName;
    private String lastName;

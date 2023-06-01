@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.BadSqlGrammarException;
+import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -62,6 +65,18 @@ public class JdbcUserDao implements UserDao {
     }
 
     @Override
+    public List<User> getUsersByFamilyId(int id) {
+        List<User> users = new ArrayList<>();
+        String sql = "SELECT * FROM users WHERE family_id = ?";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, id);
+        while (results.next()){
+            User user = mapRowToUser(results);
+            users.add(user);
+        }
+        return users;
+    }
+
+    @Override
     public User findByUsername(String username) {
         if (username == null) throw new IllegalArgumentException("Username cannot be null");
 
@@ -83,6 +98,20 @@ public class JdbcUserDao implements UserDao {
             return findIdByUsername(username);
         }
         return -1;
+    }
+
+    @Override
+    public void delete(String username){
+        String sql = "DELETE FROM users WHERE username = ?";
+        try {
+            jdbcTemplate.update(sql, username);
+        } catch(CannotGetJdbcConnectionException e){
+            throw new RuntimeException("Cannot connect to database", e);
+        }catch(BadSqlGrammarException e){
+            throw new RuntimeException("Syntax error", e);
+        }catch(DataIntegrityViolationException e){
+            throw new RuntimeException("Data integrity violation, delete not completed", e);
+        }
     }
 
     private User mapRowToUser(SqlRowSet rs) {
