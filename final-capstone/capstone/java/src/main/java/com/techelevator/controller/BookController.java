@@ -5,7 +5,6 @@ import com.techelevator.dao.FamilyDao;
 import com.techelevator.model.Book;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
 import java.security.Principal;
 import java.util.List;
 
@@ -23,8 +22,8 @@ public class BookController {
         this.familyDao = familyDao;
     }
 
-    @RequestMapping(value = ENDPOINT + "/{title}", method = RequestMethod.GET)
-    public String queryForBook(@PathVariable String title){
+    @RequestMapping(value = ENDPOINT + "/title={title}", method = RequestMethod.GET)
+    public List<Book> queryForBookByTitle(@PathVariable String title) {
         return bookDao.searchBooksByTitle(title);
     }
 
@@ -42,5 +41,11 @@ public class BookController {
     @RequestMapping(value = ENDPOINT + "/{id}", method = RequestMethod.GET)
     public List<Book> getUserReadingList(String username) {
         return bookDao.getUserReadingList(username);
+    }
+
+        //Search by ISBN
+        @RequestMapping(value = ENDPOINT + "/isbn={isbn}", method = RequestMethod.GET)
+        public List<Book> queryForBookByIsbn (@PathVariable String isbn){
+            return bookDao.searchBooksByIsbn(isbn);
     }
 }
