@@ -59,7 +59,7 @@ export default {
                 .add(newMember)
                 .then((response) => {
                     if (response.status === 201) {
-                        this.$router.push(`/user/${newMember.username}`); 
+                        this.$router.push(`/user${newMember.username}`); 
                     }
                 })
           } 
