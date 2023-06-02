@@ -20,21 +20,21 @@ public class BookController {
     }
 
     @RequestMapping(value = ENDPOINT + "/title={title}", method = RequestMethod.GET)
-    public List<Book> queryForBookByTitle(@PathVariable String title){
+    public List<Book> queryForBookByTitle(@PathVariable String title) {
         return bookDao.searchBooksByTitle(title);
     }
 
     //Search by ISBN
     @RequestMapping(value = ENDPOINT + "/isbn={isbn}", method = RequestMethod.GET)
-    public List<Book> queryForBookByIsbn(@PathVariable  String isbn){
-        return  bookDao.searchBooksByIsbn(isbn);
+    public List<Book> queryForBookByIsbn(@PathVariable String isbn) {
+        return bookDao.searchBooksByIsbn(isbn);
     }
 
     //TBD
 
     //Create book by ISBN
     @RequestMapping(value = ENDPOINT + "/isbn={isbn}", method = RequestMethod.POST)
-    public Book create(@PathVariable String isbn){
+    public Book create(@PathVariable String isbn) {
         return null;
     }
 
