@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 
+import java.security.Principal;
 import java.sql.SQLDataException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -21,11 +22,6 @@ public class JdbcReadingActivityDao implements ReadingActivityDao {
     public JdbcReadingActivityDao(JdbcTemplate jdbcTemplate, UserDao userDao) {
         this.jdbcTemplate = jdbcTemplate;
         this.userDao = userDao;
-    }
-
-    @Override
-    public List<ReadingActivity> findAllByUserId(int userId) {
-        return null;
     }
 
     @Override
@@ -78,18 +74,26 @@ public class JdbcReadingActivityDao implements ReadingActivityDao {
     }
 
     @Override
-    public ReadingActivity create(ReadingActivity readingActivity) {
+    public ReadingActivity create(ReadingActivity readingActivity, Principal principal) {
         String sql = "INSERT INTO reading_activity" +
                 "(user_id, book_isbn, minutes_read, format, notes)" +
                 "VALUES (?,?,?,?,?)";
+        String sql2 = "INSERT INTO book" +
+                "(book_isbn, title, author, num_pages)" +
+                "VALUES (?,?,?,?)";
         try {
-            jdbcTemplate.update(sql,
-                    readingActivity.getUserId(), readingActivity.getBookIsbn(), readingActivity.getMinutesRead(),
+            //isbn is an INT in the database, but a String in Java - this fixes that
+            int isbn = Integer.parseInt(readingActivity.getBookIsbn());
+            //Find out the ID of the user recording this activity (or who is logged in)
+            int userId = userDao.findByUsername(principal.getName()).getId();
+            int result = jdbcTemplate.update(sql,
+                    userId, isbn, readingActivity.getMinutesRead(),
                     readingActivity.getFormat(), readingActivity.getNotes());
             return readingActivity;
 
         } catch (DataAccessException e) {
             System.out.println("Error creating reading activity.");
+            System.out.println(e.getMessage());
         }
         return null;
     }
