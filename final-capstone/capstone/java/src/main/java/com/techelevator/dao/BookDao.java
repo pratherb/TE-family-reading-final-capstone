@@ -18,4 +18,6 @@ public interface BookDao {
     List<Book> getFamilyReadingList(int familyId);
     List<Book> getUserReadingList(String username);
 
+    void deleteBookById (String isbn);
+
 }

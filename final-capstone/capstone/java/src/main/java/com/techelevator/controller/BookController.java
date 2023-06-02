@@ -36,6 +36,11 @@ public class BookController {
         return bookDao.addBookToReadingList(book, username);
     }
 
+    @RequestMapping(value = ENDPOINT, method = RequestMethod.DELETE)
+    public void deleteBook(String isbn) {
+        bookDao.deleteBookById(isbn);
+    }
+
     @RequestMapping(value = ENDPOINT + "all", method = RequestMethod.GET)
     public List<Book> getFamilyReadingList(Principal principal) {
         int familyId = familyDao.getFamilyIdByUsername(principal.getName());

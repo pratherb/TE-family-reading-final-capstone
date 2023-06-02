@@ -5,9 +5,11 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.techelevator.model.Book;
-import com.techelevator.model.User;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.*;
+import org.springframework.jdbc.BadSqlGrammarException;
+import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
@@ -15,7 +17,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 
 @Component
@@ -63,6 +64,7 @@ public class JdbcBookDao implements BookDao {
 
     @Override
     public Book addBookToReadingList(Book book, String username) {
+
         //add book to user's reading list via user_book table in database
         Book newBook = new Book();
         String sql = "insert into user_book (book_isbn, user_id, finished, date_finished) values (?,?,?,?)";
@@ -112,6 +114,24 @@ public class JdbcBookDao implements BookDao {
             userReading.add(book);
         }
         return userReading;
+    }
+
+    @Override
+    public void deleteBookById(String isbn){
+        String activitySql = "DELETE FROM reading_activity WHERE book_isbn = ?";
+        String userBookSql = "DELETE FROM user_book WHERE book_isbn = ?";
+        String bookSql = "DELETE FROM book WHERE book_isbn = ?";
+        try {
+            jdbcTemplate.update(activitySql, isbn);
+            jdbcTemplate.update(userBookSql, isbn);
+            jdbcTemplate.update(bookSql, isbn);
+        } catch(CannotGetJdbcConnectionException e){
+            throw new RuntimeException("Cannot connect to database", e);
+        }catch(BadSqlGrammarException e){
+            throw new RuntimeException("Syntax error", e);
+        }catch(DataIntegrityViolationException e){
+            throw new RuntimeException("Data integrity violation, delete not completed", e);
+        }
     }
 
     //Enum to define the type of search we want to do
