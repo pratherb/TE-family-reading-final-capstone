@@ -3,7 +3,6 @@ package com.techelevator.controller;
 import com.techelevator.dao.BookDao;
 import com.techelevator.dao.FamilyDao;
 import com.techelevator.model.Book;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.List;
@@ -27,10 +26,10 @@ public class BookController {
         return bookDao.searchBooksByTitle(title);
     }
 
-    @RequestMapping(value = ENDPOINT, method = RequestMethod.POST)
-    public Book addBookToReadingList(Book book, Principal principal) {
-        return bookDao.addBookToReadingList(book, principal.getName());
-    }
+//    @RequestMapping(value = ENDPOINT, method = RequestMethod.POST)
+//    public Book addBookToReadingList(Book book, Principal principal) {
+//        return bookDao.addBookToReadingList(book, principal.getName());
+//    }
 
     @RequestMapping(value = ENDPOINT, method = RequestMethod.POST)
     public Book addBookToReadingList(Book book, String username) {
@@ -50,8 +49,8 @@ public class BookController {
 
     //Search by ISBN
     @RequestMapping(value = ENDPOINT + "/isbn={isbn}", method = RequestMethod.GET)
-    public List<Book> queryForBookByIsbn(@PathVariable String isbn) {
-        return bookDao.searchBooksByIsbn(isbn);
+    public Book queryForBookByIsbn(@PathVariable String isbn) {
+        return bookDao.searchBookByIsbn(isbn);
     }
 
     //TBD

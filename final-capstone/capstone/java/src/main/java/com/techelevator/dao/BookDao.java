@@ -6,14 +6,16 @@ import java.util.List;
 
 public interface BookDao {
 
+    //Calls to Open Library
     List<Book> searchBooksByTitle(String title);
+    Book searchBookByIsbn(String isbn);
 
-    List<Book> searchBooksByIsbn(String isbn);
+    //Handle books
+    Book createBook(Book book);
 
+    //Handle reading list
     Book addBookToReadingList(Book book, String username);
-
     List<Book> getFamilyReadingList(int familyId);
-
     List<Book> getUserReadingList(String username);
 
 }

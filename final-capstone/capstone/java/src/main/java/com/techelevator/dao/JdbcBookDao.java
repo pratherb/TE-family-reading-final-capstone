@@ -6,6 +6,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.techelevator.model.Book;
 import com.techelevator.model.User;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.*;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -50,10 +51,14 @@ public class JdbcBookDao implements BookDao {
         );
     }
 
-    public List<Book> searchBooksByIsbn(String isbn) {
-        return mapJsonToBooks(
+    public Book searchBookByIsbn(String isbn) {
+        List<Book> bookList = mapJsonToBooks(
                 getJsonFromApi(isbn, SearchType.Isbn)
         );
+        return bookList.get(0); //Return only 1 book, in case there are multiple results for some reason
+//        return mapJsonToBooks(
+//                getJsonFromApi(isbn, SearchType.Isbn)
+//        );
     }
 
     @Override
@@ -63,10 +68,26 @@ public class JdbcBookDao implements BookDao {
         String sql = "insert into user_book (book_isbn, user_id, finished, date_finished) values (?,?,?,?)";
         int userId = userDao.findIdByUsername(username);
         int result = jdbcTemplate.update(book.getIsbn(), userId, false, null);
-        if (result == 1){
+        if (result == 1) {
             newBook = getBookFromDatabaseByISBN(book.getIsbn());
         }
         return newBook;
+    }
+
+    @Override
+    public Book createBook(Book book) {
+        String sql = "INSERT INTO book" +
+                "(book_isbn, title, author, num_pages)" +
+                "VALUES(?,?,?,?)";
+        try {
+            jdbcTemplate.update(sql,
+                    book.getIsbn(), book.getTitle(), book.getAuthor(), book.getNumPages());
+            return book;
+
+        } catch (DataAccessException e) {
+            System.out.println("Error creating book.");
+        }
+        return null;
     }
 
     @Override
@@ -86,7 +107,7 @@ public class JdbcBookDao implements BookDao {
         List<Book> userReading = new ArrayList<>();
         String sql = "SELECT * FROM user_book WHERE user_book.user_id = (SELECT users.user_id FROM users WHERE username = ?)";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, username);
-        while (results.next()){
+        while (results.next()) {
             Book book = mapRowToBook(results);
             userReading.add(book);
         }
@@ -130,7 +151,7 @@ public class JdbcBookDao implements BookDao {
         Book book = new Book();
         String sql = "SELECT book FROM book WHERE book_isbn = ?";
         SqlRowSet result = jdbcTemplate.queryForRowSet(sql, isbn);
-        if (result.next()){
+        if (result.next()) {
             book = mapRowToBook(result);
         }
         return book;
@@ -138,8 +159,8 @@ public class JdbcBookDao implements BookDao {
 
     /**
      * Return a list of Book objects created from a JsonObject
-     * @param jsonObject
-     * JsonObject to parse
+     *
+     * @param jsonObject JsonObject to parse
      * @return
      */
     public List<Book> mapJsonToBooks(JsonObject jsonObject) {
