@@ -3,9 +3,6 @@
     <div id="add" class="text-center">
       <form v-on:submit.prevent="addForm">
         <h1>Add Family Member</h1>
-        <!-- <div role="alert" v-if="addErrors">
-        {{ addErrorMsg }}
-      </div> -->
         <div class="form-input-group">
           <label for="username">Username</label>
           <input type="text" id="username" v-model="user.username" required />
