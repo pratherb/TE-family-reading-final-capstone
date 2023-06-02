@@ -16,9 +16,11 @@ import java.util.List;
 public class JdbcReadingActivityDao implements ReadingActivityDao {
 
     private final JdbcTemplate jdbcTemplate;
+    private UserDao userDao;
 
-    public JdbcReadingActivityDao(JdbcTemplate jdbcTemplate) {
+    public JdbcReadingActivityDao(JdbcTemplate jdbcTemplate, UserDao userDao) {
         this.jdbcTemplate = jdbcTemplate;
+        this.userDao = userDao;
     }
 
     @Override
@@ -36,6 +38,7 @@ public class JdbcReadingActivityDao implements ReadingActivityDao {
                 ReadingActivity readingActivity = mapRowToReadingActivity(results);
                 readingActivityList.add(readingActivity);
             }
+            return readingActivityList;
         } catch (DataAccessException e) {
             System.out.println("Error accessing reading activity.");
         }
@@ -57,36 +60,77 @@ public class JdbcReadingActivityDao implements ReadingActivityDao {
     }
 
     @Override
-    //Returns ID of new reading activity
-    public int create(ReadingActivity readingActivity) {
+    public List<ReadingActivity> findAllByUsername(String username) {
+        String sql = "SELECT * FROM reading_activity WHERE user_id = ?";
+        List<ReadingActivity> readingActivityList = new ArrayList<>();
+        int userId = userDao.findByUsername(username).getId();
+        try{
+            SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
+            while (results.next()){
+                ReadingActivity readingActivity = mapRowToReadingActivity(results);
+                readingActivityList.add(readingActivity);
+            }
+            return readingActivityList;
+        } catch(DataAccessException e){
+            System.out.println("Error accessing reading activity list.");
+        }
+        return null;
+    }
+
+    @Override
+    public ReadingActivity create(ReadingActivity readingActivity) {
         String sql = "INSERT INTO reading_activity" +
                 "(user_id, book_isbn, minutes_read, format, notes)" +
                 "VALUES (?,?,?,?,?)";
-        try{
+        try {
             jdbcTemplate.update(sql,
-                    readingActivity.getUserId(), readingActivity.getBookIsbn(),readingActivity.getMinutesRead(),
+                    readingActivity.getUserId(), readingActivity.getBookIsbn(), readingActivity.getMinutesRead(),
                     readingActivity.getFormat(), readingActivity.getNotes());
-            return 1;
+            return readingActivity;
 
-        } catch(DataAccessException e){
+        } catch (DataAccessException e) {
             System.out.println("Error creating reading activity.");
         }
-        return -1;
+        return null;
     }
 
     @Override
     public ReadingActivity update(ReadingActivity readingActivity) {
+        String sql = "UPDATE reading_activity SET" +
+                "user_id = ?, book_isbn = ?, minutes_read = ?, format = ?, notes = ?" +
+                "WHERE activity_id = ?";
+        try {
+            jdbcTemplate.update(sql,
+                    readingActivity.getUserId(), readingActivity.getBookIsbn(), readingActivity.getMinutesRead(),
+                    readingActivity.getFormat(), readingActivity.getFormat(), readingActivity.getNotes(),
+                    readingActivity.getId());
+            return readingActivity;
+        } catch (DataAccessException e) {
+            System.out.println("Error updating reading activity.");
+        }
         return null;
     }
 
     @Override
-    public ReadingActivity deleteById(int readingActivityId) {
-        return null;
+    public void deleteById(int readingActivityId) {
+        //TBD: Call delete methods from other DAOs as necessary
+        String sql = "DELETE FROM reading_activity WHERE activity_id = ?";
+        try{
+            jdbcTemplate.update(sql, readingActivityId);
+        } catch(DataAccessException e){
+            System.out.println("Error deleting reading activity.");
+        }
     }
 
     @Override
-    public ReadingActivity deleteAllByUserId(int userId) {
-        return null;
+    public void deleteAllByUserId(int userId) {
+        //TBD: Call delete methods from other DAOs as necessary
+        String sql = "DELETE FROM reading_activity WHERE user_id = ?";
+        try{
+            jdbcTemplate.update(sql, userId);
+        } catch (DataAccessException e){
+            System.out.println("Error deleting user's reading activities.");
+        }
     }
 
     private ReadingActivity mapRowToReadingActivity(SqlRowSet rs) {
