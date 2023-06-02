@@ -29,4 +29,13 @@ public class BookController {
     public List<Book> queryForBookByIsbn(@PathVariable  String isbn){
         return  bookDao.searchBooksByIsbn(isbn);
     }
+
+    //TBD
+
+    //Create book by ISBN
+    @RequestMapping(value = ENDPOINT + "/isbn={isbn}", method = RequestMethod.POST)
+    public Book create(@PathVariable String isbn){
+        return null;
+    }
+
 }
