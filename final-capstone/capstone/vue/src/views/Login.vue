@@ -1,6 +1,6 @@
 <template>
   <div id="login">
-     
+    <h1>Login</h1>
     <form @submit.prevent="login">
        <h1 class="image">
         <img src="../images/sharpened-transparent-logo.png">
@@ -56,7 +56,7 @@ export default {
           if (response.status == 200) {
             this.$store.commit("SET_AUTH_TOKEN", response.data.token);
             this.$store.commit("SET_USER", response.data.user);
-            this.$router.push("/");
+            this.$router.push("/members");
           }
         })
         .catch(error => {
@@ -87,7 +87,7 @@ form{
 }
 .all-input{
   display: flex;
-  /* background-image: url('https://t4.ftcdn.net/jpg/00/22/56/07/360_F_22560741_69yMhsfAa5hndN8UxMTp2bhvkSqDPjCM.jpg'); */
+
   background-image: url('file:///C:/Users/Student/Downloads/360_F_22560741_69yMhsfAa5hndN8UxMTp2bhvkSqDPjCM-removebg-preview.png');
    background-repeat: no-repeat;
   flex-direction: column;
