@@ -5,7 +5,13 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.techelevator.model.Book;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.*;
+import org.springframework.jdbc.BadSqlGrammarException;
+import org.springframework.jdbc.CannotGetJdbcConnectionException;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -17,16 +23,20 @@ import java.util.List;
 public class JdbcBookDao implements BookDao {
 
     private final RestTemplate restTemplate;
+    private final JdbcTemplate jdbcTemplate;
     private final String API_SEARCH = "https://openlibrary.org/search.json?";
     private final int LIMIT_RESULTS = 10; //How many results to get at a time
+    private UserDao userDao;
 
     //API communication
     private HttpHeaders httpHeaders; //Headers for an HTTP request
 
-    public JdbcBookDao() {
+    public JdbcBookDao(UserDao userDao) {
         this.restTemplate = new RestTemplate();
+        this.jdbcTemplate = new JdbcTemplate();
         this.httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.TEXT_PLAIN);
+        this.userDao = userDao;
     }
 
     //Call these methods from a Controller to get a list of Book objects, which will display as neatly organized
@@ -42,10 +52,86 @@ public class JdbcBookDao implements BookDao {
         );
     }
 
-    public List<Book> searchBooksByIsbn(String isbn) {
-        return mapJsonToBooks(
+    public Book searchBookByIsbn(String isbn) {
+        List<Book> bookList = mapJsonToBooks(
                 getJsonFromApi(isbn, SearchType.Isbn)
         );
+        return bookList.get(0); //Return only 1 book, in case there are multiple results for some reason
+//        return mapJsonToBooks(
+//                getJsonFromApi(isbn, SearchType.Isbn)
+//        );
+    }
+
+    @Override
+    public Book addBookToReadingList(Book book, String username) {
+
+        //add book to user's reading list via user_book table in database
+        Book newBook = new Book();
+        String sql = "insert into user_book (book_isbn, user_id, finished, date_finished) values (?,?,?,?)";
+        int userId = userDao.findIdByUsername(username);
+        int result = jdbcTemplate.update(book.getIsbn(), userId, false, null);
+        if (result == 1) {
+            newBook = getBookFromDatabaseByISBN(book.getIsbn());
+        }
+        return newBook;
+    }
+
+    @Override
+    public Book createBook(Book book) {
+        String sql = "INSERT INTO book" +
+                "(book_isbn, title, author, num_pages)" +
+                "VALUES(?,?,?,?)";
+        try {
+            jdbcTemplate.update(sql,
+                    book.getIsbn(), book.getTitle(), book.getAuthor(), book.getNumPages());
+            return book;
+
+        } catch (DataAccessException e) {
+            System.out.println("Error creating book.");
+        }
+        return null;
+    }
+
+    @Override
+    public List<Book> getFamilyReadingList(int familyId) {
+        List<Book> familyReading = new ArrayList<>();
+        String sql = "SELECT * FROM user_book WHERE user_book.user_id IN (SELECT users.user_id FROM users WHERE family_id = ?)";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, familyId);
+        while (results.next()) {
+            Book book = mapRowToBook(results);
+            familyReading.add(book);
+        }
+        return familyReading;
+    }
+
+    @Override
+    public List<Book> getUserReadingList(String username) {
+        List<Book> userReading = new ArrayList<>();
+        String sql = "SELECT * FROM user_book WHERE user_book.user_id = (SELECT users.user_id FROM users WHERE username = ?)";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, username);
+        while (results.next()) {
+            Book book = mapRowToBook(results);
+            userReading.add(book);
+        }
+        return userReading;
+    }
+
+    @Override
+    public void deleteBookById(String isbn){
+        String activitySql = "DELETE FROM reading_activity WHERE book_isbn = ?";
+        String userBookSql = "DELETE FROM user_book WHERE book_isbn = ?";
+        String bookSql = "DELETE FROM book WHERE book_isbn = ?";
+        try {
+            jdbcTemplate.update(activitySql, isbn);
+            jdbcTemplate.update(userBookSql, isbn);
+            jdbcTemplate.update(bookSql, isbn);
+        } catch(CannotGetJdbcConnectionException e){
+            throw new RuntimeException("Cannot connect to database", e);
+        }catch(BadSqlGrammarException e){
+            throw new RuntimeException("Syntax error", e);
+        }catch(DataIntegrityViolationException e){
+            throw new RuntimeException("Data integrity violation, delete not completed", e);
+        }
     }
 
     //Enum to define the type of search we want to do
@@ -81,10 +167,20 @@ public class JdbcBookDao implements BookDao {
 
     }
 
+    private Book getBookFromDatabaseByISBN(String isbn) {
+        Book book = new Book();
+        String sql = "SELECT book FROM book WHERE book_isbn = ?";
+        SqlRowSet result = jdbcTemplate.queryForRowSet(sql, isbn);
+        if (result.next()) {
+            book = mapRowToBook(result);
+        }
+        return book;
+    }
+
     /**
      * Return a list of Book objects created from a JsonObject
-     * @param jsonObject
-     * JsonObject to parse
+     *
+     * @param jsonObject JsonObject to parse
      * @return
      */
     public List<Book> mapJsonToBooks(JsonObject jsonObject) {
@@ -125,5 +221,14 @@ public class JdbcBookDao implements BookDao {
             bookList.add(book);
         }
         return bookList;
+    }
+
+    private Book mapRowToBook(SqlRowSet rs) {
+        Book book = new Book();
+        book.setIsbn(rs.getString("book_isbn"));
+        book.setAuthor(rs.getString("author"));
+        book.setTitle(rs.getString("title"));
+        book.setNumPages(rs.getInt("num_pages"));
+        return book;
     }
 }
