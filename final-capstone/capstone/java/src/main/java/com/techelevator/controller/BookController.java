@@ -32,20 +32,25 @@ public class BookController {
         return bookDao.addBookToReadingList(book, principal.getName());
     }
 
+    @RequestMapping(value = ENDPOINT, method = RequestMethod.POST)
+    public Book addBookToReadingList(Book book, String username) {
+        return bookDao.addBookToReadingList(book, username);
+    }
+
     @RequestMapping(value = ENDPOINT + "all", method = RequestMethod.GET)
     public List<Book> getFamilyReadingList(Principal principal) {
         int familyId = familyDao.getFamilyIdByUsername(principal.getName());
         return bookDao.getFamilyReadingList(familyId);
     }
 
-    @RequestMapping(value = ENDPOINT + "/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = ENDPOINT + "/{username}", method = RequestMethod.GET)
     public List<Book> getUserReadingList(String username) {
         return bookDao.getUserReadingList(username);
     }
 
-        //Search by ISBN
-        @RequestMapping(value = ENDPOINT + "/isbn={isbn}", method = RequestMethod.GET)
-        public List<Book> queryForBookByIsbn (@PathVariable String isbn){
+    //Search by ISBN
+    @RequestMapping(value = ENDPOINT + "/isbn={isbn}", method = RequestMethod.GET)
+    public List<Book> queryForBookByIsbn (@PathVariable String isbn){
             return bookDao.searchBooksByIsbn(isbn);
     }
 }
