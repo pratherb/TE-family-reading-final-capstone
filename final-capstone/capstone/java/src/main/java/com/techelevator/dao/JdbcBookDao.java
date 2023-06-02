@@ -5,28 +5,36 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.techelevator.model.Book;
+import com.techelevator.model.User;
 import org.springframework.http.*;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 @Component
 public class JdbcBookDao implements BookDao {
 
     private final RestTemplate restTemplate;
+    private final JdbcTemplate jdbcTemplate;
     private final String API_SEARCH = "https://openlibrary.org/search.json?";
     private final int LIMIT_RESULTS = 10; //How many results to get at a time
+    private UserDao userDao;
 
     //API communication
     private HttpHeaders httpHeaders; //Headers for an HTTP request
 
-    public JdbcBookDao() {
+    public JdbcBookDao(UserDao userDao) {
         this.restTemplate = new RestTemplate();
+        this.jdbcTemplate = new JdbcTemplate();
         this.httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.TEXT_PLAIN);
+        this.userDao = userDao;
     }
 
     //Call these methods from a Controller to get a list of Book objects, which will display as neatly organized
@@ -46,6 +54,43 @@ public class JdbcBookDao implements BookDao {
         return mapJsonToBooks(
                 getJsonFromApi(isbn, SearchType.Isbn)
         );
+    }
+
+    @Override
+    public Book addBookToReadingList(Book book, String username) {
+        //add book to user's reading list via user_book table in database
+        Book newBook = new Book();
+        String sql = "insert into user_book (book_isbn, user_id, finished, date_finished) values (?,?,?,?)";
+        int userId = userDao.findIdByUsername(username);
+        int result = jdbcTemplate.update(book.getIsbn(), userId, false, null);
+        if (result == 1){
+            newBook = getBookFromDatabaseByISBN(book.getIsbn());
+        }
+        return newBook;
+    }
+
+    @Override
+    public List<Book> getFamilyReadingList(int familyId) {
+        List<Book> familyReading = new ArrayList<>();
+        String sql = "SELECT * FROM user_book WHERE user_book.user_id IN (SELECT users.user_id FROM users WHERE family_id = ?)";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, familyId);
+        while (results.next()) {
+            Book book = mapRowToBook(results);
+            familyReading.add(book);
+        }
+        return familyReading;
+    }
+
+    @Override
+    public List<Book> getUserReadingList(String username) {
+        List<Book> userReading = new ArrayList<>();
+        String sql = "SELECT * FROM user_book WHERE user_book.user_id = (SELECT users.user_id FROM users WHERE username = ?)";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, username);
+        while (results.next()){
+            Book book = mapRowToBook(results);
+            userReading.add(book);
+        }
+        return userReading;
     }
 
     //Enum to define the type of search we want to do
@@ -79,6 +124,16 @@ public class JdbcBookDao implements BookDao {
         Gson gson = new Gson();
         return gson.fromJson(response, JsonObject.class); //Convert the raw JSON response to a JsonObject and return it
 
+    }
+
+    private Book getBookFromDatabaseByISBN(String isbn) {
+        Book book = new Book();
+        String sql = "SELECT book FROM book WHERE book_isbn = ?";
+        SqlRowSet result = jdbcTemplate.queryForRowSet(sql, isbn);
+        if (result.next()){
+            book = mapRowToBook(result);
+        }
+        return book;
     }
 
     /**
@@ -125,5 +180,14 @@ public class JdbcBookDao implements BookDao {
             bookList.add(book);
         }
         return bookList;
+    }
+
+    private Book mapRowToBook(SqlRowSet rs) {
+        Book book = new Book();
+        book.setIsbn(rs.getString("book_isbn"));
+        book.setAuthor(rs.getString("author"));
+        book.setTitle(rs.getString("title"));
+        book.setNumPages(rs.getInt("num_pages"));
+        return book;
     }
 }
