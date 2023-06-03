@@ -93,9 +93,14 @@ public class JdbcBookDao implements BookDao {
     }
 
     @Override
-    public List<Book> getFamilyReadingList(int familyId) {
+    public List<Book> getFamilyReadingList(int familyId, boolean finished) {
         List<Book> familyReading = new ArrayList<>();
-        String sql = "SELECT * FROM user_book WHERE user_book.user_id IN (SELECT users.user_id FROM users WHERE family_id = ?)";
+        String sql = "";
+        if (finished) {
+            sql = "SELECT * FROM user_book WHERE finished = true AND user_book.user_id IN (SELECT users.user_id FROM users WHERE family_id = ?)";
+        } else {
+            sql = "SELECT * FROM user_book WHERE user_book.user_id IN (SELECT users.user_id FROM users WHERE family_id = ?)";
+        }
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, familyId);
         while (results.next()) {
             Book book = mapRowToBook(results);
@@ -105,9 +110,16 @@ public class JdbcBookDao implements BookDao {
     }
 
     @Override
-    public List<Book> getUserReadingList(String username) {
+    public List<Book> getUserReadingList(String username, boolean finished) {
         List<Book> userReading = new ArrayList<>();
-        String sql = "SELECT * FROM user_book WHERE user_book.user_id = (SELECT users.user_id FROM users WHERE username = ?)";
+        String sql = "";
+        if (finished){
+            sql = "SELECT * FROM user_book " +
+                    "WHERE user_book.user_id = (SELECT users.user_id FROM users WHERE username = ?) " +
+                    "AND finished = true";
+        }else {
+            sql = "SELECT * FROM user_book WHERE user_book.user_id = (SELECT users.user_id FROM users WHERE username = ?)";
+        }
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, username);
         while (results.next()) {
             Book book = mapRowToBook(results);
