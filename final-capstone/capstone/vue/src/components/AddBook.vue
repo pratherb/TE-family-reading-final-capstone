@@ -1,31 +1,33 @@
 <template>
   <div>
     <div id="add" class="text-center">
-      <form v-on:submit.prevent="getBook">
+      <form>
         <h1>Add Book</h1>
-       <!-- <div>
-        <label for ="titleOrIsbn">Switch ISBN or Title</label>
-         <input type="checkbox" name="titleOrIsbn" id="isbn-button" v-on:change="switchLookup()">
-      </div> -->
-        <!-- <div class="form-input-group">
+        <div>
           <label for="title">Title</label>
-          <input 
-            type="text" 
-            id="title" 
-            v-model="book.title"/>
-        </div> -->
-        <div class="form-input-group">
+          <input type="radio" name="titleOrIsbn" id="title-button" v-model="selectedOption" value="title" />
           <label for="isbn">ISBN</label>
-          <input
-            type="number"
-            id="isbn"
-            v-model="book.isbn"/>
+          <input type="radio" name="titleOrIsbn" id="isbn-button" v-model="selectedOption" value="isbn" />
         </div>
-        <button type="submit">Find Book</button>
+        <div class="form-input-group" v-if="selectedOption === 'title'">
+          <label for="title-input">Title</label>
+          <input type="text" id="title-input" v-model="book.title" />
+        </div>
+        <div class="form-input-group" v-if="selectedOption === 'isbn'">
+          <label for="isbn-input">ISBN</label>
+          <input type="text" id="isbn-input" v-model="book.isbn" />
+        </div>
+        <button type="submit" v-on:submit.prevent="getBookISBN" v-if="selectedOption === 'isbn'">Find Book By ISBN</button>
+        <button type="submit" v-on:submit.prevent="getBookTitle" v-if="selectedOption === 'title'">Find Book By Title</button>
       </form>
     </div>
   <div>
-    <ul></ul>
+    <ul v-for="book in bookResults" v-bind:key="book.isbn">
+      <li>
+        <h3>{{book.title}}</h3>
+        <p>By {{author}}, pages: {{book.numPages}}, ISBN: {{book.isbn}}</p>
+      </li>
+    </ul>
   </div>
   </div>
 </template>
@@ -37,7 +39,8 @@ export default {
   name: "addbook",
   data() {
     return {
-      book: {
+      selectedOption: "isbn",
+      bookToSearch: {
         title: "",
         isbn: "",
       },
@@ -50,33 +53,21 @@ export default {
     };
   },
   methods: {
-    getBook(){
+    getBookISBN() {
       bookService
-        .get(this.book.isbn)
-        .
-
+        .get(this.bookToSearch.isbn)
+        .then(response => {
+          if (response.status === 200){
+            this.bookResults.push(response.data);
+          }
+        })
+    },
+    getBookTitle() {
+      
     }
-    // addBook() {
-    //   const newBook = {
-    //     title: this.book.title,
-    //     isbn: this.book.isbn,
-    //   };
-    //   if (this.username != "") {
-    //     bookService.add(newBook).then((response) => {
-    //       if (response.status === 200) {
-    //         this.book = {
-    //           title: "",
-    //           isbn: "",
-    //         };
-    //         this.$router.push({path: "/members"});
-    //       }
-    //     });
-    //   }
-    // },
   },
 };
 </script>
 
 <style scoped>
-
 </style>
