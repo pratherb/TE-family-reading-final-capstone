@@ -3,25 +3,19 @@
     <div id="add" class="text-center">
       <form v-on:submit.prevent="addForm">
         <h1>Add Book</h1>
-       <div>
-         <label for ="title">Title</label>
-         <input type="radio" name="titleOrIsbn" id="title-button">
-        <label for ="isbn">ISBN</label>
-         <input type="radio" name="titleOrIsbn" id="isbn-button">
-      </div>
-        <div class="form-input-group" v-if="searchTitle">
+        <div>
           <label for="title">Title</label>
-          <input 
-            type="text" 
-            id="title" 
-            v-model="book.title"/>
-        </div>
-        <div class="form-input-group" v-if="searchIsbn">
+          <input type="radio" name="titleOrIsbn" id="title-button" v-model="selectedOption" value="title" />
           <label for="isbn">ISBN</label>
-          <input
-            type="number"
-            id="isbn"
-            v-model="book.isbn"/>
+          <input type="radio" name="titleOrIsbn" id="isbn-button" v-model="selectedOption" value="isbn" />
+        </div>
+        <div class="form-input-group" v-if="selectedOption === 'title'">
+          <label for="title-input">Title</label>
+          <input type="text" id="title-input" v-model="book.title" />
+        </div>
+        <div class="form-input-group" v-if="selectedOption === 'isbn'">
+          <label for="isbn-input">ISBN</label>
+          <input type="number" id="isbn-input" v-model="book.isbn" />
         </div>
         <button type="submit">Create Book</button>
       </form>
@@ -30,14 +24,11 @@
 </template>
 
 <script>
-// import bookService from "../services/BookService";
-
 export default {
   name: "addbook",
   data() {
     return {
-      searchIsbn: false,
-      seachTitle: false,
+      selectedOption: "isbn",
       book: {
         title: "",
         isbn: "",
@@ -45,27 +36,12 @@ export default {
     };
   },
   methods: {
-    // addBook() {
-    //   const newBook = {
-    //     title: this.book.title,
-    //     isbn: this.book.isbn,
-    //   };
-    //   if (this.username != "") {
-    //     bookService.add(newBook).then((response) => {
-    //       if (response.status === 200) {
-    //         this.book = {
-    //           title: "",
-    //           isbn: "",
-    //         };
-    //         this.$router.push({path: "/members"});
-    //       }
-    //     });
-    //   }
-    // },
+    addForm() {
+      // Handle form submission
+    },
   },
 };
 </script>
 
 <style scoped>
-
 </style>
