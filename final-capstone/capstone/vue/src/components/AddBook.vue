@@ -1,50 +1,61 @@
 <template>
   <div>
     <div id="add" class="text-center">
-      <form v-on:submit.prevent="addForm">
+      <form v-on:submit.prevent="getBook">
         <h1>Add Book</h1>
-       <div>
-         <label for ="title">Title</label>
-         <input type="radio" name="titleOrIsbn" id="title-button">
-        <label for ="isbn">ISBN</label>
-         <input type="radio" name="titleOrIsbn" id="isbn-button">
-      </div>
-        <div class="form-input-group" v-if="searchTitle">
+       <!-- <div>
+        <label for ="titleOrIsbn">Switch ISBN or Title</label>
+         <input type="checkbox" name="titleOrIsbn" id="isbn-button" v-on:change="switchLookup()">
+      </div> -->
+        <!-- <div class="form-input-group">
           <label for="title">Title</label>
           <input 
             type="text" 
             id="title" 
             v-model="book.title"/>
-        </div>
-        <div class="form-input-group" v-if="searchIsbn">
+        </div> -->
+        <div class="form-input-group">
           <label for="isbn">ISBN</label>
           <input
             type="number"
             id="isbn"
             v-model="book.isbn"/>
         </div>
-        <button type="submit">Create Book</button>
+        <button type="submit">Find Book</button>
       </form>
     </div>
+  <div>
+    <ul></ul>
+  </div>
   </div>
 </template>
 
 <script>
-// import bookService from "../services/BookService";
+import bookService from "../services/BookService";
 
 export default {
   name: "addbook",
   data() {
     return {
-      searchIsbn: false,
-      seachTitle: false,
       book: {
         title: "",
         isbn: "",
       },
+      bookResults: [{
+        title: "",
+        isbn: "",
+        author: "",
+        numPages: 0,
+      }]
     };
   },
   methods: {
+    getBook(){
+      bookService
+        .get(this.book.isbn)
+        .
+
+    }
     // addBook() {
     //   const newBook = {
     //     title: this.book.title,

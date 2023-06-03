@@ -6,9 +6,9 @@ const http = axios.create({
 
 export default {
 
-  listBooksByTitle(title) {
-    return http.get(`/title=${title}`);
-  },
+  // listBooksByTitle(title) {
+  //   return http.get(`/title=${title}`);
+  // },
 
   get(isbn) {
     return http.get(`/isbn=${isbn}`)
