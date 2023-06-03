@@ -11,7 +11,8 @@ export default {
   },
 
   get(isbn) {
-    return http.get(`/isbn=${isbn}`)
+    console.log("reached the get method");
+    return http.get(`/isbn=${isbn}`);
   },
 
   addToReadingList(isbn, username){
