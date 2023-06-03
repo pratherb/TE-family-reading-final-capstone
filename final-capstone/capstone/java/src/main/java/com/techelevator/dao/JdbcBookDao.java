@@ -64,15 +64,23 @@ public class JdbcBookDao implements BookDao {
 
     @Override
     public Book addBookToReadingList(Book book, String username) {
-
+        Book newBook;
         //add book to user's reading list via user_book table in database
+
+        //Is this book in the database? If not, add it
+        if(getBookFromDatabaseByISBN(book.getIsbn()) == null){
+            newBook = createBook(book);
+        }
+        //If the book is there, get a reference to it
+        else{
+            newBook = getBookFromDatabaseByISBN(book.getIsbn());
+        }
         String sql = "insert into user_book (book_isbn, user_id, finished, date_finished) values (?,?,?,?)";
-        Book newBook = createBook(book);
         int userId = userDao.findIdByUsername(username);
         int result = jdbcTemplate.update(sql,
-                Integer.parseInt(newBook.getIsbn()), userId, false, null);
+                newBook.getIsbn(), userId, false, null);
         if (result == 1) {
-            newBook = getBookFromDatabaseByISBN(book.getIsbn());
+            newBook = getBookFromDatabaseByISBN(newBook.getIsbn());
         }
         return newBook;
     }
@@ -85,9 +93,8 @@ public class JdbcBookDao implements BookDao {
         try {
             //First, check to see if book is not already in DB
             if(getBookFromDatabaseByISBN(book.getIsbn()) == null){
-                int isbn = Integer.parseInt(book.getIsbn());
                 jdbcTemplate.update(sql,
-                        isbn, book.getTitle(), book.getAuthor(), book.getNumPages());
+                        book.getIsbn(), book.getTitle(), book.getAuthor(), book.getNumPages());
                 return book;
             }
             //If book is alrady there, return a reference to the book in question
@@ -190,7 +197,7 @@ public class JdbcBookDao implements BookDao {
     private Book getBookFromDatabaseByISBN(String isbn) {
         Book book = new Book();
         String sql = "SELECT * FROM book WHERE book_isbn = ?";
-        SqlRowSet result = jdbcTemplate.queryForRowSet(sql, Integer.parseInt(isbn));
+        SqlRowSet result = jdbcTemplate.queryForRowSet(sql, isbn);
         if (result.next()) {
             book = mapRowToBook(result);
         }

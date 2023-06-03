@@ -26,7 +26,9 @@ CREATE TABLE users (
 );
 
 CREATE TABLE book (
-    book_isbn int UNIQUE,
+    --ISBN changed from int to varchar.
+    -- Long ISBNs can exceed the limit for how big an int can be.
+    book_isbn varchar(50) UNIQUE,
     title varchar(50),
     author varchar(50),
     num_pages int,
@@ -40,7 +42,10 @@ CREATE TABLE user_book (
     date_finished date,
     CONSTRAINT pk_book_user PRIMARY KEY (user_id, book_isbn),
     CONSTRAINT fk_user_book_id FOREIGN KEY (user_id) REFERENCES users (user_id),
-    CONSTRAINT fk_user_book_isbn FOREIGN KEY (book_isbn) REFERENCES book (book_isbn)
+    -- Removing this constraint for now. Might cause issues when a user wants to remove a book,
+    -- while it exists in another user's list.
+    -- -Vince
+    --CONSTRAINT fk_user_book_isbn FOREIGN KEY (book_isbn) REFERENCES book (book_isbn)
 );
 
 CREATE TABLE reading_activity (
@@ -52,7 +57,8 @@ CREATE TABLE reading_activity (
     notes varchar(100),
     CONSTRAINT pk_read PRIMARY KEY (activity_id),
     CONSTRAINT fk_read_user FOREIGN KEY (user_id) REFERENCES users (user_id),
-    CONSTRAINT fk_read_book FOREIGN KEY (book_isbn) REFERENCES book (book_isbn)
+    -- Removing this constraint for similar reasons.
+    --CONSTRAINT fk_read_book FOREIGN KEY (book_isbn) REFERENCES book (book_isbn)
 );
 
 COMMIT TRANSACTION;

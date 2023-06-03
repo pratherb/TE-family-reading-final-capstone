@@ -81,8 +81,6 @@ public class JdbcReadingActivityDao implements ReadingActivityDao {
                 "(user_id, book_isbn, minutes_read, format, notes)" +
                 "VALUES (?,?,?,?,?)";
         try {
-            //isbn is an INT in the database, but a String in Java - this fixes that
-            int isbn = Integer.parseInt(readingActivity.getBookIsbn());
             //Find out the ID of the user recording this activity (or who is logged in)
             int userId = userDao.findByUsername(principal.getName()).getId();
 
@@ -91,7 +89,7 @@ public class JdbcReadingActivityDao implements ReadingActivityDao {
             Book book = bookDao.searchBookByIsbn(readingActivity.getBookIsbn());
             bookDao.createBook(book);
             int result = jdbcTemplate.update(sql,
-                    userId, isbn, readingActivity.getMinutesRead(),
+                    userId, book.getIsbn(), readingActivity.getMinutesRead(),
                     readingActivity.getFormat(), readingActivity.getNotes());
             return readingActivity;
 

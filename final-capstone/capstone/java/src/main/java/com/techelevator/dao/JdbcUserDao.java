@@ -31,10 +31,10 @@ public class JdbcUserDao implements UserDao {
 
     @Override
     public int findIdByUsername(String username) {
-        String sql = "SELECT user_id FROM users WHERE username = ?";
         if (username == null) throw new IllegalArgumentException("Username cannot be null");
+        String sql = "SELECT user_id FROM users WHERE username = ?";
         try {
-            int userId = jdbcTemplate.queryForObject(sql, Integer.class, username);
+            return jdbcTemplate.queryForObject(sql, Integer.class, username);
         } catch (DataAccessException | NullPointerException e) {
             System.out.println("User " + username + " was not found.");
         }
