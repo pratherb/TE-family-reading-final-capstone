@@ -11,6 +11,7 @@ export default {
   },
 
   get(isbn) {
+    console.log("reached the get method")
     return http.get(`/isbn=${isbn}`);
   },
 
