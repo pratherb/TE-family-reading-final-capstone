@@ -37,11 +37,11 @@ CREATE TABLE book (
 
 CREATE TABLE user_book (
     user_id int NOT NULL,
-    book_isbn int NOT NULL,
+    book_isbn varchar(50) NOT NULL,
     finished boolean,
     date_finished date,
     CONSTRAINT pk_book_user PRIMARY KEY (user_id, book_isbn),
-    CONSTRAINT fk_user_book_id FOREIGN KEY (user_id) REFERENCES users (user_id),
+    CONSTRAINT fk_user_book_id FOREIGN KEY (user_id) REFERENCES users (user_id)
     -- Removing this constraint for now. Might cause issues when a user wants to remove a book,
     -- while it exists in another user's list.
     -- -Vince
@@ -51,12 +51,12 @@ CREATE TABLE user_book (
 CREATE TABLE reading_activity (
     activity_id SERIAL,
     user_id int NOT NULL,
-    book_isbn int NOT NULL,
+    book_isbn varchar(50) NOT NULL,
     minutes_read int NOT NULL,
     format varchar(50),
     notes varchar(100),
     CONSTRAINT pk_read PRIMARY KEY (activity_id),
-    CONSTRAINT fk_read_user FOREIGN KEY (user_id) REFERENCES users (user_id),
+    CONSTRAINT fk_read_user FOREIGN KEY (user_id) REFERENCES users (user_id)
     -- Removing this constraint for similar reasons.
     --CONSTRAINT fk_read_book FOREIGN KEY (book_isbn) REFERENCES book (book_isbn)
 );

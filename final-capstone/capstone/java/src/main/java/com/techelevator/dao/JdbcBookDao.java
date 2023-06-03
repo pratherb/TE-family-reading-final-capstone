@@ -14,6 +14,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,25 +65,46 @@ public class JdbcBookDao implements BookDao {
 
     @Override
     public Book addBookToReadingList(Book book, String username) {
-        Book newBook;
-        //add book to user's reading list via user_book table in database
 
-        //Is this book in the database? If not, add it
-        if(getBookFromDatabaseByISBN(book.getIsbn()) == null){
-            newBook = createBook(book);
+        //If this book is not yet found in the reading list
+        if(getBookFromReadingListByIsbn(book.getIsbn(), username) == null)
+        {
+            Book newBook;
+            //add book to user's reading list via user_book table in database
+
+            //Is this book in the database? If not, add it
+            if (getBookFromDatabaseByISBN(book.getIsbn()) == null) {
+                newBook = createBook(book);
+            }
+            //If the book is there, get a reference to it
+            else {
+                newBook = getBookFromDatabaseByISBN(book.getIsbn());
+            }
+            String sql = "insert into user_book (book_isbn, user_id, finished, date_finished) values (?,?,?,?)";
+            int userId = userDao.findIdByUsername(username);
+            int result = jdbcTemplate.update(sql,
+                    newBook.getIsbn(), userId, false, null);
+            if (result == 1) {
+                newBook = getBookFromDatabaseByISBN(newBook.getIsbn());
+            }
+            return newBook;
         }
-        //If the book is there, get a reference to it
         else{
-            newBook = getBookFromDatabaseByISBN(book.getIsbn());
+            throw new RuntimeException("Book is already in reading list for " + username + ".");
         }
-        String sql = "insert into user_book (book_isbn, user_id, finished, date_finished) values (?,?,?,?)";
-        int userId = userDao.findIdByUsername(username);
-        int result = jdbcTemplate.update(sql,
-                newBook.getIsbn(), userId, false, null);
-        if (result == 1) {
-            newBook = getBookFromDatabaseByISBN(newBook.getIsbn());
+    }
+
+    private Book getBookFromReadingListByIsbn(String isbn, String username){
+        String sql = "SELECT isbn FROM user_book WHERE isbn = ? AND user_id = ?";
+        try{
+            int userId = userDao.findByUsername(username).getId();
+            String result = jdbcTemplate.queryForObject(sql, String.class, isbn, userId);
+            return getBookFromDatabaseByISBN(isbn);
         }
-        return newBook;
+        catch (DataAccessException e){
+            System.out.println("Book does not yet exist in " + username + " reading list.");
+        }
+        return null;
     }
 
     @Override
@@ -92,7 +114,7 @@ public class JdbcBookDao implements BookDao {
                 "VALUES(?,?,?,?)";
         try {
             //First, check to see if book is not already in DB
-            if(getBookFromDatabaseByISBN(book.getIsbn()) == null){
+            if (getBookFromDatabaseByISBN(book.getIsbn()) == null) {
                 jdbcTemplate.update(sql,
                         book.getIsbn(), book.getTitle(), book.getAuthor(), book.getNumPages());
                 return book;
@@ -128,19 +150,22 @@ public class JdbcBookDao implements BookDao {
     public List<Book> getUserReadingList(String username, boolean finished) {
         List<Book> userReading = new ArrayList<>();
         String sql = "";
-        if (finished) {
-            sql = "SELECT * FROM user_book " +
-                    "WHERE user_book.user_id = (SELECT users.user_id FROM users WHERE username = ?) " +
-                    "AND finished = true";
-        } else {
-            sql = "SELECT * FROM user_book WHERE user_book.user_id = (SELECT users.user_id FROM users WHERE username = ?)";
+        sql = "SELECT * FROM user_book " +
+                "WHERE user_book.user_id = (SELECT users.user_id FROM users WHERE username = ?) ";
+//                    "AND finished = true";
+//        } else {
+//            sql = "SELECT * FROM user_book WHERE user_book.user_id = (SELECT users.user_id FROM users WHERE username = ?)";
+        try {
+            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, username);
+            while (results.next()) {
+                Book book = mapRowToBook(results);
+                userReading.add(book);
+            }
+            return userReading;
+        } catch (DataAccessException e) {
+            System.out.println("Error getting user reading list.");
         }
-        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, username);
-        while (results.next()) {
-            Book book = mapRowToBook(results);
-            userReading.add(book);
-        }
-        return userReading;
+        return null;
     }
 
     @Override
@@ -197,11 +222,17 @@ public class JdbcBookDao implements BookDao {
     private Book getBookFromDatabaseByISBN(String isbn) {
         Book book = new Book();
         String sql = "SELECT * FROM book WHERE book_isbn = ?";
-        SqlRowSet result = jdbcTemplate.queryForRowSet(sql, isbn);
-        if (result.next()) {
-            book = mapRowToBook(result);
+        try {
+            SqlRowSet result = jdbcTemplate.queryForRowSet(sql, isbn);
+            if (result.next()) {
+                book = mapRowToBook(result);
+                return book;
+            }
+        } catch (DataAccessException e) {
+            System.out.println("ISBN " + isbn + " was not found in local db.");
+            return null;
         }
-        return book;
+        return null;
     }
 
     /**

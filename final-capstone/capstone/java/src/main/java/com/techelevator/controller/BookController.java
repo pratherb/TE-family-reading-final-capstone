@@ -26,9 +26,6 @@ public class BookController {
         return bookDao.searchBooksByTitle(title);
     }
 
-    //Vince changed the method signature from this:
-    //addBookToReadingList(Book book, String username
-    //To align with frontend - i think :)
     @RequestMapping(value = ENDPOINT + "/isbn={isbn}", method = RequestMethod.POST)
     public Book addBookToReadingList(@PathVariable String isbn, @RequestParam String username) {
         return bookDao.addBookToReadingList(queryForBookByIsbn(isbn), username);

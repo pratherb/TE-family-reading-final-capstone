@@ -32,9 +32,9 @@ public class JdbcUserDao implements UserDao {
     @Override
     public int findIdByUsername(String username) {
         if (username == null) throw new IllegalArgumentException("Username cannot be null");
-        String sql = "SELECT user_id FROM users WHERE username = ?";
+        String sql = "SELECT user_id FROM users WHERE lower(username) = ?";
         try {
-            return jdbcTemplate.queryForObject(sql, Integer.class, username);
+            return jdbcTemplate.queryForObject(sql, Integer.class, username.toLowerCase());
         } catch (DataAccessException | NullPointerException e) {
             System.out.println("User " + username + " was not found.");
         }
