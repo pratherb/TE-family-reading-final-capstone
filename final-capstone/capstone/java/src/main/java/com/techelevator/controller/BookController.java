@@ -63,7 +63,9 @@ public class BookController {
     //Create book by ISBN
     @RequestMapping(value = ENDPOINT + "/isbn={isbn}", method = RequestMethod.POST)
     public Book create(@PathVariable String isbn) {
-        return null;
+        //Try to call Open Library and get book data
+        Book newBook = bookDao.searchBookByIsbn(isbn);
+        return bookDao.createBook(newBook);
     }
 
 }

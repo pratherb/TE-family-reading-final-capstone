@@ -5,11 +5,12 @@ import com.techelevator.model.ReadingActivity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
 @CrossOrigin
-@PreAuthorize("isAuthenticated()")
+//@PreAuthorize("isAuthenticated()")
 public class ReadingActivityController {
 
     private ReadingActivityDao readingActivityDao;
@@ -30,7 +31,7 @@ public class ReadingActivityController {
     }
 
     @RequestMapping(value = ENDPOINT, method = RequestMethod.POST)
-    public ReadingActivity create(@RequestBody ReadingActivity readingActivity){
-        return readingActivityDao.create(readingActivity);
+    public ReadingActivity create(@RequestBody ReadingActivity readingActivity, Principal principal){
+        return readingActivityDao.create(readingActivity, principal);
     }
 }

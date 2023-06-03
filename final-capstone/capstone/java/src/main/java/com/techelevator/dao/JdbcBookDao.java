@@ -31,9 +31,9 @@ public class JdbcBookDao implements BookDao {
     //API communication
     private HttpHeaders httpHeaders; //Headers for an HTTP request
 
-    public JdbcBookDao(UserDao userDao) {
+    public JdbcBookDao(UserDao userDao, JdbcTemplate jdbcTemplate) {
         this.restTemplate = new RestTemplate();
-        this.jdbcTemplate = new JdbcTemplate();
+        this.jdbcTemplate = jdbcTemplate;
         this.httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.TEXT_PLAIN);
         this.userDao = userDao;
@@ -83,7 +83,7 @@ public class JdbcBookDao implements BookDao {
                 "VALUES(?,?,?,?)";
         try {
             jdbcTemplate.update(sql,
-                    book.getIsbn(), book.getTitle(), book.getAuthor(), book.getNumPages());
+                    Integer.parseInt(book.getIsbn()), book.getTitle(), book.getAuthor(), book.getNumPages());
             return book;
 
         } catch (DataAccessException e) {
