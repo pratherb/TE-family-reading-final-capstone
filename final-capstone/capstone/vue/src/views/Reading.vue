@@ -2,12 +2,21 @@
   <div class="reading">
     <h2 name='image'>BookBound Image Here</h2>
     <h3>Reading</h3>
+    <add-book></add-book>
   </div>
 </template>
 
 <script>
+import AddBook from "../components/AddBook.vue"
+
 export default {
   name: 'reading',
+  components: {
+    AddBook
+  },
+  methods: {
+
+  }
 
 }
 </script>

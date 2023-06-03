@@ -79,7 +79,7 @@ const router = new Router({
       component: Prizes
     },
     {
-      path: "/reading",
+      path: "/book",
       name: "reading",
       component: Reading
     },

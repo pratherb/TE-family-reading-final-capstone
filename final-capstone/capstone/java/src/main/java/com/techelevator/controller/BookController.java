@@ -47,8 +47,8 @@ public class BookController {
         return bookDao.getFamilyReadingList(familyId, finished);
     }
 
-    @RequestMapping(value = ENDPOINT + "/{username}", method = RequestMethod.GET)
-    public List<Book> getUserReadingList(String username, boolean finished) {
+    @RequestMapping(value = "/user/{username}", method = RequestMethod.GET)
+    public List<Book> getUserReadingList(@PathVariable String username, boolean finished) {
         return bookDao.getUserReadingList(username, finished);
     }
 
