@@ -48,7 +48,7 @@ public class UserController {
         return userDao.getUsersByFamilyId(id);
     }
 
-    @RequestMapping(value = ENDPOINT, method = RequestMethod.PUT)
+    @RequestMapping(value = ENDPOINT, method = RequestMethod.DELETE)
     public void deleteUserByUsername(String username, Principal principal){
         if (principal.getName().equals(username)){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cannot delete current user");
