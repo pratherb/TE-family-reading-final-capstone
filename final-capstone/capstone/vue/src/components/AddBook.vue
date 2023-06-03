@@ -1,34 +1,48 @@
 <template>
   <div>
     <div id="add" class="text-center">
-      <form>
+      <form v-on:submit.prevent="getBook">
         <h1>Add Book</h1>
         <div>
           <label for="title">Title</label>
-          <input type="radio" name="titleOrIsbn" id="title-button" v-model="selectedOption" value="title" />
+          <input
+            type="radio"
+            name="titleOrIsbn"
+            id="title-button"
+            v-model="selectedOption"
+            value="title"
+          />
           <label for="isbn">ISBN</label>
-          <input type="radio" name="titleOrIsbn" id="isbn-button" v-model="selectedOption" value="isbn" />
+          <input
+            type="radio"
+            name="titleOrIsbn"
+            id="isbn-button"
+            v-model="selectedOption"
+            value="isbn"
+          />
         </div>
         <div class="form-input-group" v-if="selectedOption === 'title'">
           <label for="title-input">Title</label>
-          <input type="text" id="title-input" v-model="bookToSearch.title" />
+          <input type="text" id="title-input" v-model="bookToSearch.searchTerm" />
         </div>
         <div class="form-input-group" v-if="selectedOption === 'isbn'">
           <label for="isbn-input">ISBN</label>
-          <input type="text" id="isbn-input" v-model="bookToSearch.isbn" />
+          <input type="text" id="isbn-input" v-model="bookToSearch.searchTerm" />
         </div>
-        <button type="submit" v-on:click="makeVisible" v-on:submit.prevent="getBookISBN" v-if="selectedOption === 'isbn'">Find Book By ISBN</button>
-        <button type="submit" v-on:click="makeVisible" v-on:submit.prevent="getBookTitle" v-if="selectedOption === 'title'">Find Book By Title</button>
+        <button type="submit" v-on:click="makeVisible">Find Book</button>
       </form>
     </div>
-  <div v-show="showResults">
-    <ul v-for="book in bookResults" v-bind:key="book.isbn">
-      <li>
-        <h3>{{book.title}}</h3>
-        <p>By {{author}}, pages: {{book.numPages}}, ISBN: {{book.isbn}}</p>
-      </li>
-    </ul>
-  </div>
+    <div v-show="showResults">
+      <ul v-for="book in bookResults" v-bind:key="book.isbn">
+        <li>
+          <h3>{{ book.title }}</h3>
+          <p>
+            By {{ book.author }}, pages: {{ book.numPages }}, ISBN:
+            {{ book.isbn }}
+          </p>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -40,40 +54,35 @@ export default {
   data() {
     return {
       showResults: false,
+      isbn: 0,
       selectedOption: "isbn",
       bookToSearch: {
-        title: "",
-        isbn: "",
+        searchTerm: "",
       },
-      bookResults: [{
-        title: "",
-        isbn: "",
-        author: "",
-        numPages: 0,
-      }]
+      bookResults: [],
     };
   },
   methods: {
-    getBookISBN() {
-      bookService
-        .get(this.bookToSearch.isbn)
-        console.log("hi this is the console")
-        console.log(this.bookToSearch.isbn)
-        .then(response => {
-          console.log(response.data)
-          console.log(response.status)
-          if (response.status === 200){
-            this.bookResults.push(response.data);
+    getBook() {
+      const searchTerm = this.bookToSearch.searchTerm;
+      if (this.selectedOption == "isbn") {
+        bookService.get(searchTerm).then((response) => {
+          if (response.status === 200) {
+            this.bookResults = [response.data];
           }
-        })
+        });
+      } else {
+        bookService.listBooksByTitle(searchTerm).then((response) => {
+          if (response.status === 200) {
+            this.bookResults = response.data;
+          }
+        });
+      }
     },
-    getBookTitle() {
-      
-    },
-    makeVisible(){
+    makeVisible() {
       this.showResults = true;
-    }
-  }
+    },
+  },
 };
 </script>
 

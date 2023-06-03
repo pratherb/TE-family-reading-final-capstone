@@ -16,11 +16,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.techelevator.model.User;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import javax.validation.constraints.Null;
 import javax.xml.crypto.Data;
 
 @Component
+@CrossOrigin
 public class JdbcUserDao implements UserDao {
 
     private final JdbcTemplate jdbcTemplate;
