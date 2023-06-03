@@ -78,9 +78,6 @@ public class JdbcReadingActivityDao implements ReadingActivityDao {
         String sql = "INSERT INTO reading_activity" +
                 "(user_id, book_isbn, minutes_read, format, notes)" +
                 "VALUES (?,?,?,?,?)";
-        String sql2 = "INSERT INTO book" +
-                "(book_isbn, title, author, num_pages)" +
-                "VALUES (?,?,?,?)";
         try {
             //isbn is an INT in the database, but a String in Java - this fixes that
             int isbn = Integer.parseInt(readingActivity.getBookIsbn());
