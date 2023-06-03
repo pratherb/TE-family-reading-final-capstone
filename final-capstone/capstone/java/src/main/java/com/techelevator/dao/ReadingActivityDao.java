@@ -2,15 +2,15 @@ package com.techelevator.dao;
 
 import com.techelevator.model.ReadingActivity;
 
+import java.security.Principal;
 import java.util.List;
 
 public interface ReadingActivityDao {
 
-    List<ReadingActivity> findAllByUserId(int userId);
     List<ReadingActivity> findAllByUsername(String username);
     List<ReadingActivity> findAll();
     ReadingActivity getById(int readingActivityId);
-    ReadingActivity create(ReadingActivity readingActivity);
+    ReadingActivity create(ReadingActivity readingActivity, Principal principal);
     ReadingActivity update(ReadingActivity readingActivity);
     void deleteById(int readingActivityId);
     void deleteAllByUserId(int userId);
