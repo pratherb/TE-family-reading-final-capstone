@@ -26,14 +26,12 @@ public class BookController {
         return bookDao.searchBooksByTitle(title);
     }
 
-//    @RequestMapping(value = ENDPOINT, method = RequestMethod.POST)
-//    public Book addBookToReadingList(Book book, Principal principal) {
-//        return bookDao.addBookToReadingList(book, principal.getName());
-//    }
-
-    @RequestMapping(value = ENDPOINT, method = RequestMethod.POST)
-    public Book addBookToReadingList(Book book, String username) {
-        return bookDao.addBookToReadingList(book, username);
+    //Vince changed the method signature from this:
+    //addBookToReadingList(Book book, String username
+    //To align with frontend - i think :)
+    @RequestMapping(value = ENDPOINT + "/isbn={isbn}", method = RequestMethod.POST)
+    public Book addBookToReadingList(@PathVariable String isbn, @RequestBody String username) {
+        return bookDao.addBookToReadingList(queryForBookByIsbn(isbn), username);
     }
 
     @RequestMapping(value = ENDPOINT, method = RequestMethod.DELETE)
@@ -57,15 +55,4 @@ public class BookController {
     public Book queryForBookByIsbn(@PathVariable String isbn) {
         return bookDao.searchBookByIsbn(isbn);
     }
-
-    //TBD
-
-    //Create book by ISBN
-    @RequestMapping(value = ENDPOINT + "/isbn={isbn}", method = RequestMethod.POST)
-    public Book create(@PathVariable String isbn) {
-        //Try to call Open Library and get book data
-        Book newBook = bookDao.searchBookByIsbn(isbn);
-        return bookDao.createBook(newBook);
-    }
-
 }

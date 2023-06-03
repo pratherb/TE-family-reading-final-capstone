@@ -66,10 +66,11 @@ public class JdbcBookDao implements BookDao {
     public Book addBookToReadingList(Book book, String username) {
 
         //add book to user's reading list via user_book table in database
-        Book newBook = new Book();
         String sql = "insert into user_book (book_isbn, user_id, finished, date_finished) values (?,?,?,?)";
+        Book newBook = createBook(book);
         int userId = userDao.findIdByUsername(username);
-        int result = jdbcTemplate.update(book.getIsbn(), userId, false, null);
+        int result = jdbcTemplate.update(sql,
+                Integer.parseInt(newBook.getIsbn()), userId, false, null);
         if (result == 1) {
             newBook = getBookFromDatabaseByISBN(book.getIsbn());
         }
@@ -82,12 +83,19 @@ public class JdbcBookDao implements BookDao {
                 "(book_isbn, title, author, num_pages)" +
                 "VALUES(?,?,?,?)";
         try {
-            jdbcTemplate.update(sql,
-                    Integer.parseInt(book.getIsbn()), book.getTitle(), book.getAuthor(), book.getNumPages());
-            return book;
+            //First, check to see if book is not already in DB
+            if(getBookFromDatabaseByISBN(book.getIsbn()) == null){
+                int isbn = Integer.parseInt(book.getIsbn());
+                jdbcTemplate.update(sql,
+                        isbn, book.getTitle(), book.getAuthor(), book.getNumPages());
+                return book;
+            }
+            //If book is alrady there, return a reference to the book in question
+            return getBookFromDatabaseByISBN(book.getIsbn());
 
         } catch (DataAccessException e) {
             System.out.println("Error creating book.");
+            System.out.println(e.getMessage());
         }
         return null;
     }
@@ -113,11 +121,11 @@ public class JdbcBookDao implements BookDao {
     public List<Book> getUserReadingList(String username, boolean finished) {
         List<Book> userReading = new ArrayList<>();
         String sql = "";
-        if (finished){
+        if (finished) {
             sql = "SELECT * FROM user_book " +
                     "WHERE user_book.user_id = (SELECT users.user_id FROM users WHERE username = ?) " +
                     "AND finished = true";
-        }else {
+        } else {
             sql = "SELECT * FROM user_book WHERE user_book.user_id = (SELECT users.user_id FROM users WHERE username = ?)";
         }
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, username);
@@ -129,7 +137,7 @@ public class JdbcBookDao implements BookDao {
     }
 
     @Override
-    public void deleteBookById(String isbn){
+    public void deleteBookById(String isbn) {
         String activitySql = "DELETE FROM reading_activity WHERE book_isbn = ?";
         String userBookSql = "DELETE FROM user_book WHERE book_isbn = ?";
         String bookSql = "DELETE FROM book WHERE book_isbn = ?";
@@ -137,11 +145,11 @@ public class JdbcBookDao implements BookDao {
             jdbcTemplate.update(activitySql, isbn);
             jdbcTemplate.update(userBookSql, isbn);
             jdbcTemplate.update(bookSql, isbn);
-        } catch(CannotGetJdbcConnectionException e){
+        } catch (CannotGetJdbcConnectionException e) {
             throw new RuntimeException("Cannot connect to database", e);
-        }catch(BadSqlGrammarException e){
+        } catch (BadSqlGrammarException e) {
             throw new RuntimeException("Syntax error", e);
-        }catch(DataIntegrityViolationException e){
+        } catch (DataIntegrityViolationException e) {
             throw new RuntimeException("Data integrity violation, delete not completed", e);
         }
     }
@@ -181,8 +189,8 @@ public class JdbcBookDao implements BookDao {
 
     private Book getBookFromDatabaseByISBN(String isbn) {
         Book book = new Book();
-        String sql = "SELECT book FROM book WHERE book_isbn = ?";
-        SqlRowSet result = jdbcTemplate.queryForRowSet(sql, isbn);
+        String sql = "SELECT * FROM book WHERE book_isbn = ?";
+        SqlRowSet result = jdbcTemplate.queryForRowSet(sql, Integer.parseInt(isbn));
         if (result.next()) {
             book = mapRowToBook(result);
         }

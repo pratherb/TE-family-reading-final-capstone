@@ -18,10 +18,12 @@ public class JdbcReadingActivityDao implements ReadingActivityDao {
 
     private final JdbcTemplate jdbcTemplate;
     private UserDao userDao;
+    private BookDao bookDao;
 
-    public JdbcReadingActivityDao(JdbcTemplate jdbcTemplate, UserDao userDao) {
+    public JdbcReadingActivityDao(JdbcTemplate jdbcTemplate, UserDao userDao, BookDao bookDao) {
         this.jdbcTemplate = jdbcTemplate;
         this.userDao = userDao;
+        this.bookDao = bookDao;
     }
 
     @Override
@@ -83,6 +85,11 @@ public class JdbcReadingActivityDao implements ReadingActivityDao {
             int isbn = Integer.parseInt(readingActivity.getBookIsbn());
             //Find out the ID of the user recording this activity (or who is logged in)
             int userId = userDao.findByUsername(principal.getName()).getId();
+
+            //First we need to add a book entry to the database, due to FK constraints
+            //Get a book from Open Library using the readingActivity ISBN
+            Book book = bookDao.searchBookByIsbn(readingActivity.getBookIsbn());
+            bookDao.createBook(book);
             int result = jdbcTemplate.update(sql,
                     userId, isbn, readingActivity.getMinutesRead(),
                     readingActivity.getFormat(), readingActivity.getNotes());
