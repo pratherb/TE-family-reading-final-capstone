@@ -5,9 +5,9 @@
       </div>
       <h2>BookBound Image Here</h2>
       <div id="nav">
-          <router-link v-bind:to="{ name: 'reading' }"> Reading </router-link>
-          <router-link v-bind:to="{ name: 'prizes' }"> Prizes </router-link>
-          <router-link v-bind:to="{ name: 'settings' }"> Settings </router-link>
+          <router-link v-bind:to="{ name: 'reading' }"> Reading </router-link>&nbsp;|&nbsp;
+          <router-link v-bind:to="{ name: 'prizes' }"> Prizes </router-link>&nbsp;|&nbsp;
+          <router-link v-bind:to="{ name: 'settings' }"> Settings </router-link>&nbsp;|&nbsp;
       </div>
       <h3 id="member-heading">Family Members</h3>
       <div class="button">
