@@ -88,7 +88,7 @@ form{
 .all-input{
   display: flex;
 
-  background-image: url('file:///C:/Users/Student/Downloads/360_F_22560741_69yMhsfAa5hndN8UxMTp2bhvkSqDPjCM-removebg-preview.png');
+  /* background-image: url('file:///C:/Users/Student/Downloads/360_F_22560741_69yMhsfAa5hndN8UxMTp2bhvkSqDPjCM-removebg-preview.png'); */
    background-repeat: no-repeat;
   flex-direction: column;
     flex-wrap: wrap;

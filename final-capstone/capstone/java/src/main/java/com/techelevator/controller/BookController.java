@@ -42,14 +42,14 @@ public class BookController {
     }
 
     @RequestMapping(value = ENDPOINT + "all", method = RequestMethod.GET)
-    public List<Book> getFamilyReadingList(Principal principal) {
+    public List<Book> getFamilyReadingList(Principal principal, boolean finished) {
         int familyId = familyDao.getFamilyIdByUsername(principal.getName());
-        return bookDao.getFamilyReadingList(familyId);
+        return bookDao.getFamilyReadingList(familyId, finished);
     }
 
     @RequestMapping(value = ENDPOINT + "/{username}", method = RequestMethod.GET)
-    public List<Book> getUserReadingList(String username) {
-        return bookDao.getUserReadingList(username);
+    public List<Book> getUserReadingList(String username, boolean finished) {
+        return bookDao.getUserReadingList(username, finished);
     }
 
     //Search by ISBN
