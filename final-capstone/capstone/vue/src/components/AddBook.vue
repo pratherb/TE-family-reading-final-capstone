@@ -21,14 +21,14 @@
         <button type="submit" v-on:submit.prevent="getBookTitle" v-if="selectedOption === 'title'">Find Book By Title</button>
       </form>
     </div>
-  <div>
+  <!-- <div>
     <ul v-for="book in bookResults" v-bind:key="book.isbn">
       <li>
         <h3>{{book.title}}</h3>
         <p>By {{author}}, pages: {{book.numPages}}, ISBN: {{book.isbn}}</p>
       </li>
     </ul>
-  </div>
+  </div> -->
   </div>
 </template>
 
