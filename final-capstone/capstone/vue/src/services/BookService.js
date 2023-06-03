@@ -1,17 +1,33 @@
 import axios from 'axios';
 
 const http = axios.create({
-  baseURL: "http://localhost:9000/book/isbn="
+  baseURL: "http://localhost:9000/book"
 });
 
 export default {
 
-  list() {
-    return http.get('/book');
+  listBooksByTitle(title) {
+    return http.get(`/title=${title}`);
   },
 
-  get(id) {
-    return http.get(`/book/${id}`)
+  get(isbn) {
+    return http.get(`/isbn=${isbn}`)
+  },
+
+  addToReadingList(isbn, username){
+    return http.post(`/isbn=${isbn}`, username);
+  },
+
+  getFamilyReadingList(finished){
+    return http.get(`/all`, finished);
+  },
+
+  getUserReadingList(username, finished){
+    return http.get(`/user/${username}`, finished);
+  },
+
+  delete(isbn){
+    return http.delete(isbn);
   }
 
 }
