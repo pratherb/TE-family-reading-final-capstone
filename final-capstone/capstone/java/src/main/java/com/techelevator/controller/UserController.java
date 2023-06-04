@@ -8,7 +8,6 @@ import com.techelevator.model.Family;
 import com.techelevator.model.User;
 import com.techelevator.service.EmailService;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -66,9 +65,14 @@ public class UserController {
         return bookDao.getUserReadingList(username);
     }
 
-    @RequestMapping(value = ENDPOINT + "/reading/isbn={isbn}", method = RequestMethod.POST)
-    public Book addBookToReadingList(@PathVariable String isbn, @RequestParam String username) {
-        return bookDao.addBookToReadingList(bookDao.searchBookByIsbn(isbn), username);
+//    @RequestMapping(value = ENDPOINT + "/reading/isbn={isbn}", method = RequestMethod.POST)
+//    public Book addBookToReadingList(@PathVariable String isbn, @RequestParam String username) {
+//        return bookDao.addBookToReadingList(bookDao.searchBookByIsbn(isbn), username);
+//    }
+
+    @RequestMapping(value = "/book" + "/isbn={isbn}", method = RequestMethod.POST)
+    public Book addBookToReadingListByPrincipal(@PathVariable String isbn, Principal principal){
+        return bookDao.addBookToReadingListByPrincipal(bookDao.searchBookByIsbn(isbn), principal);
     }
 
 }

@@ -14,9 +14,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,6 +87,38 @@ public class JdbcBookDao implements BookDao {
     public Book addBookToReadingList(Book book, String username) {
 
         //If this book is not yet found in the reading list
+        if (getBookFromReadingListByIsbn(book.getIsbn(), username) == null) {
+            Book newBook;
+            //Is this book not in the database? If not create it
+            if (getBookFromDatabaseByISBN(book.getIsbn()) == null) {
+                newBook = createBook(book);
+            }
+            //If the book is there, get a reference to it
+            else {
+                newBook = getBookFromDatabaseByISBN(book.getIsbn());
+            }
+            String sql = "insert into user_book (book_isbn, user_id, finished, date_finished) values (?,?,?,?)";
+            try {
+                int userId = userDao.findIdByUsername(username);
+                int result = jdbcTemplate.update(sql,
+                        newBook.getIsbn(), userId, false, null);
+                if (result > 0) {
+                    newBook = getBookFromDatabaseByISBN(newBook.getIsbn());
+                }
+                return newBook;
+            } catch (DataAccessException e) {
+                System.out.println("Error adding book " + book.getTitle() + " to user list " + username);
+            }
+        } else {
+            System.out.println("Book is already in reading list for " + username + ".");
+        }
+        return null;
+    }
+
+    @Override
+    public Book addBookToReadingListByPrincipal(Book book, Principal principal) {
+        //If this book is not yet found in the reading list
+        String username = principal.getName();
         if (getBookFromReadingListByIsbn(book.getIsbn(), username) == null) {
             Book newBook;
             //Is this book not in the database? If not create it
@@ -217,7 +249,7 @@ public class JdbcBookDao implements BookDao {
                 "WHERE user_id = ?";
         //Plug value of completed into sql string
         sql = sql.concat("\nAND finished = " + Boolean.toString(completed).toUpperCase());
-         try {
+        try {
             SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
             while (results.next()) {
                 Book book = mapRowToBook(results);

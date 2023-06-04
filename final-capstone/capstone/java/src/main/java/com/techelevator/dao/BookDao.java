@@ -2,6 +2,7 @@ package com.techelevator.dao;
 
 import com.techelevator.model.Book;
 
+import java.security.Principal;
 import java.util.List;
 
 public interface BookDao {
@@ -9,6 +10,8 @@ public interface BookDao {
     //Calls to Open Library
     List<Book> searchBooksByTitle(String title);
     Book searchBookByIsbn(String isbn);
+
+    Book addBookToReadingListByPrincipal(Book book, Principal principal);
 
     //Handle books
     Book createBook(Book book);
