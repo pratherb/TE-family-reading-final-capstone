@@ -12,12 +12,14 @@ public interface BookDao {
 
     //Handle books
     Book createBook(Book book);
+    void delete(String isbn);
 
     //Handle reading list
     Book addBookToReadingList(Book book, String username);
-    List<Book> getFamilyReadingList(int familyId, boolean finished);
-    List<Book> getUserReadingList(String username, boolean finished);
-
-    void deleteBookById (String isbn);
-
+    List<Book> getFamilyReadingList(int familyId);
+    List<Book> getUserReadingList(String username);
+    List<Book> getUserReadingListByCompletion(int userId, Boolean completed);
+    List<Book> getFamilyReadingListByCompletion(int familyId, Boolean completed);
+    Book updateReadingListEntryByIsbn(Book book, String isbn);
+    void deleteReadingListEntryByIsbn(String isbn);
 }

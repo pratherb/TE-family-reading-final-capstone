@@ -25,12 +25,12 @@ public class ReadingActivityController {
         return readingActivityDao.findAll();
     }
 
-    @RequestMapping(value = ENDPOINT + "&user={username}", method = RequestMethod.GET)
-    public List<ReadingActivity> findAllByUsername(@PathVariable String username) {
+    @RequestMapping(value = ENDPOINT + "/", method = RequestMethod.GET)
+    public List<ReadingActivity> findAllByUsername(@RequestParam String username) {
         return readingActivityDao.findAllByUsername(username);
     }
 
-    @RequestMapping(value = ENDPOINT, method = RequestMethod.POST)
+    @RequestMapping(value = ENDPOINT + "/", method = RequestMethod.POST)
     public ReadingActivity create(@RequestBody ReadingActivity readingActivity, Principal principal){
         return readingActivityDao.create(readingActivity, principal);
     }
