@@ -2,13 +2,36 @@
   <div class="prizes">
     <h2 name='image'>BookBound Image Here</h2>
       <h3>Prizes</h3>
+      <h4>{{ prize.prizeName }}</h4>
+      <p>{{ prize.description }}</p>
+      <p>{{ prize.milestone }}</p>
+      <p>{{ prize.userGroup }}</p>
+      <p>{{ prize.maxPrizes }}</p>
+      <p>{{ prize.startDate }}</p>
+      <p>{{ prize.endDate }}</p>
   </div>
 </template>
 
 <script>
-export default {
-  name: 'prizes'
+import PrizeService from '../services/PrizeService';
 
+export default {
+  name: 'prizes',
+  data() {
+    return {
+      isLoading: true,
+      prizeList: []
+    }
+  },
+  created() {
+    PrizeService
+      .listPrizes(this.$route.params.prizeName)
+      .then((response) => {
+        console.log(response.data)
+        this.prizeList = response.data;
+        this.isLoading = false;
+      })
+  }
 }
 </script>
 
