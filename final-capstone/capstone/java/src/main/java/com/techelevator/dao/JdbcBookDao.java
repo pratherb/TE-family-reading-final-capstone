@@ -222,13 +222,17 @@ public class JdbcBookDao implements BookDao {
     }
 
     @Override
-    public List<Book> getUserReadingList(String username) {
+    public List<Book> getUserReadingList(String username, boolean finished) {
         List<Book> bookList = new ArrayList<>();
         int userId = userDao.findByUsername(username).getId();
-        String sql = "SELECT * from book b\n" +
-                "JOIN user_book ub ON ub.book_isbn = b.book_isbn\n" +
-                "JOIN users u ON u.user_id = ub.user_id\n" +
-                "WHERE u.user_id = ?";
+        String sql ="";
+        if (finished){
+            sql = "SELECT * from book JOIN user_book ON user_book.book_isbn = book.book_isbn " +
+                    "WHERE user_id =? AND finished=true";
+        } else {
+            sql = "SELECT * from book JOIN user_book ON user_book.book_isbn = book.book_isbn " +
+                    "WHERE user_id =?";
+        }
         try {
             SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
             while (results.next()) {
@@ -237,30 +241,30 @@ public class JdbcBookDao implements BookDao {
             }
             return bookList;
         } catch (DataAccessException e) {
-            System.out.println("Error retrieving reading list of user 1with id " + userId);
+            System.out.println("Error retrieving reading list of user with id " + userId);
         }
         return null;
     }
 
-    @Override
-    public List<Book> getUserReadingListByCompletion(int userId, Boolean completed) {
-        List<Book> bookList = new ArrayList<>();
-        String sql = "SELECT * FROM user_book\n" +
-                "WHERE user_id = ?";
-        //Plug value of completed into sql string
-        sql = sql.concat("\nAND finished = " + Boolean.toString(completed).toUpperCase());
-        try {
-            SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
-            while (results.next()) {
-                Book book = mapRowToBook(results);
-                bookList.add(book);
-            }
-            return bookList;
-        } catch (DataAccessException e) {
-            System.out.println("Error retrieving completed books for user with id " + userId);
-        }
-        return null;
-    }
+//    @Override
+//    public List<Book> getUserReadingListByCompletion(int userId, Boolean completed) {
+//        List<Book> bookList = new ArrayList<>();
+//        String sql = "SELECT * FROM user_book\n" +
+//                "WHERE user_id = ?";
+//        //Plug value of completed into sql string
+//        sql = sql.concat("\nAND finished = " + Boolean.toString(completed).toUpperCase());
+//        try {
+//            SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
+//            while (results.next()) {
+//                Book book = mapRowToBook(results);
+//                bookList.add(book);
+//            }
+//            return bookList;
+//        } catch (DataAccessException e) {
+//            System.out.println("Error retrieving completed books for user with id " + userId);
+//        }
+//        return null;
+//    }
 
     @Override
     public List<Book> getFamilyReadingListByCompletion(int familyId, Boolean completed) {

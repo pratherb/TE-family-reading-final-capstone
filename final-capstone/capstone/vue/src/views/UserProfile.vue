@@ -1,26 +1,51 @@
 <template>
   <div>
     <h1>BookBound Dragon Here</h1>
-    <h2>User Profile</h2><!-- Changes with each user -->
+    <h2>{{$route.params.username}}</h2><!-- Changes with each user -->
     <h3 id="reading-list">Currently Reading</h3>
+
+    <div class="loading" v-if="isLoading">
+      <img src="../assets/book_pages_opening.gif" />
+    </div>
+
+    <div v-else>
+    <label for="finished">Show finished books only</label><br>
+    <input type="checkbox" id="finished" name="finished" v-on:checked="this.finished=true">
     <div>
-      <ul v-for="book in books" v-bind:key="book.title">
+      <ul v-for="book in readingList" v-bind:key="book.isbn">
         <li>
-          {{ book.title }}
+          <h4>{{book.title}}</h4>
+          <p>Author: {{book.author}}</p>
+          <p>ISBN: {{book.isbn}}</p>
+          <p>Pages: {{book.numPages}}</p>
         </li>
       </ul>
-      <div class="button">
-        <router-link to="/userprofile">
-          <button>Add Book</button>
-        </router-link>
-      </div>
     </div>
+    </div>
+
   </div>
 </template>
 
 <script>
+import ReadingListService from '../services/ReadingListService';
 export default {
-  name: "userprofile",
+  name: "user-profile",
+  finished: false,
+  data() {
+    return {
+      isLoading: true,
+      readingList: [] 
+    }
+  },
+  created () {
+    ReadingListService
+      .getUserReadingList(this.$route.params.username, this.finished)
+      .then((response)=>{
+        console.log(response.data)
+        this.readingList = response.data;
+        this.isLoading = false;
+      })
+  }
 };
 </script>
 

@@ -60,9 +60,9 @@ public class UserController {
         }
     }
 
-    @RequestMapping(value = ENDPOINT + "/reading", method = RequestMethod.GET)
-    public List<Book> getUserReadingList(@RequestParam String username) {
-        return bookDao.getUserReadingList(username);
+    @RequestMapping(value = ENDPOINT + "/{username}", method = RequestMethod.GET)
+    public List<Book> getUserReadingList(@PathVariable String username, boolean finished) {
+        return bookDao.getUserReadingList(username, finished);
     }
 
 //    @RequestMapping(value = ENDPOINT + "/reading/isbn={isbn}", method = RequestMethod.POST)

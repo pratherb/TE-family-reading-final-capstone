@@ -15,16 +15,8 @@ export default {
     return http.get(`/isbn=${isbn}`);
   },
 
-  addToReadingList(isbn, username){
-    return http.post(`/isbn=${isbn}`, username);
-  },
-
-  getFamilyReadingList(finished){
-    return http.get(`/all`, finished);
-  },
-
-  getUserReadingList(username, finished){
-    return http.get(`/user/${username}`, finished);
+  addToReadingList(isbn){
+    return http.post(`/isbn=${isbn}`);
   },
 
   delete(isbn){
