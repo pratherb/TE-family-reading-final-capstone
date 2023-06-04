@@ -19,8 +19,9 @@ export default {
           .addToReadingList(isbn)
           .then((response)=> {
             if (response.status === 200) {
-              this.$router.push({name: 'members'});
-            
+                const username = this.$store.state.user.username;
+            this.$router.push({ name: 'user-profile', params: { username } });
+                          
             }
           })
       }
