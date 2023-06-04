@@ -5,6 +5,7 @@ DROP TABLE IF EXISTS user_book;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS book;
 DROP TABLE IF EXISTS family;
+DROP TABLE IF EXISTS prize;
 
 CREATE TABLE family (
     family_id SERIAL,
@@ -59,6 +60,19 @@ CREATE TABLE reading_activity (
     CONSTRAINT fk_read_user FOREIGN KEY (user_id) REFERENCES users (user_id)
     -- Removing this constraint for similar reasons.
     --CONSTRAINT fk_read_book FOREIGN KEY (book_isbn) REFERENCES book (book_isbn)
+);
+
+CREATE TABLE prize(
+    prize_id SERIAL,
+    user_id INT, --Has a user_id if a user is tracking a prize
+    name VARCHAR(50) UNIQUE NOT NULL,
+    description VARCHAR(250),
+    milestone INT,
+    user_group VARCHAR(50), --Can be won by child, parent, or both
+    start_date DATE,
+    end_date DATE,
+    CONSTRAINT pk_prize PRIMARY KEY (prize_id),
+    CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users (user_id)
 );
 
 COMMIT TRANSACTION;
