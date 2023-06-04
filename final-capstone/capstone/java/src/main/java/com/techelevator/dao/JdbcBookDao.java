@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.client.RestTemplate;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +44,6 @@ public class JdbcBookDao implements BookDao {
 
     //Call these methods from a Controller to get a list of Book objects, which will display as neatly organized
     //JSON data in Postman and for use in front-end
-    @Override
     //Attempting to call Open Library and search by title, returning a list of results
     public List<Book> searchBooksByTitle(String title) {
         //mapJsonToBooks returns a list of Book objects
@@ -64,104 +64,6 @@ public class JdbcBookDao implements BookDao {
 //        );
     }
 
-    @Override
-    public Book addBookToReadingList(Book book, String username) {
-
-        //add book to user's reading list via user_book table in database
-        Book newBook = new Book();
-        String sql = "insert into user_book (book_isbn, user_id, finished, date_finished) values (?,?,?,?)";
-        int userId = userDao.findIdByUsername(username);
-        int result = jdbcTemplate.update(book.getIsbn(), userId, false, null);
-        if (result == 1) {
-            newBook = getBookFromDatabaseByISBN(book.getIsbn());
-        }
-        return newBook;
-    }
-
-    @Override
-    public Book createBook(Book book) {
-        String sql = "INSERT INTO book" +
-                "(book_isbn, title, author, num_pages)" +
-                "VALUES(?,?,?,?)";
-        try {
-            jdbcTemplate.update(sql,
-                    Integer.parseInt(book.getIsbn()), book.getTitle(), book.getAuthor(), book.getNumPages());
-            return book;
-
-        } catch (DataAccessException e) {
-            System.out.println("Error creating book.");
-        }
-        return null;
-    }
-
-    @Override
-    public List<Book> getFamilyReadingList(int familyId, boolean finished) {
-        List<Book> familyReading = new ArrayList<>();
-        String sql = "";
-        if (finished) {
-            sql = "SELECT * FROM user_book WHERE finished = true AND user_book.user_id IN (SELECT users.user_id FROM users WHERE family_id = ?)";
-        } else {
-            sql = "SELECT * FROM user_book WHERE user_book.user_id IN (SELECT users.user_id FROM users WHERE family_id = ?)";
-        }
-        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, familyId);
-        while (results.next()) {
-            Book book = mapRowToBook(results);
-            familyReading.add(book);
-        }
-        return familyReading;
-    }
-
-    @Override
-    public List<Book> getUserReadingList(String username, boolean finished) {
-        List<Book> userReading = new ArrayList<>();
-        String sql = "";
-        if (finished){
-            sql = "SELECT * FROM user_book " +
-                    "WHERE user_book.user_id = (SELECT users.user_id FROM users WHERE username = ?) " +
-                    "AND finished = true";
-        }else {
-            sql = "SELECT * FROM user_book WHERE user_book.user_id = (SELECT users.user_id FROM users WHERE username = ?)";
-        }
-        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, username);
-        while (results.next()) {
-            Book book = mapRowToBook(results);
-            userReading.add(book);
-        }
-        return userReading;
-    }
-
-    @Override
-    public void deleteBookById(String isbn){
-        String activitySql = "DELETE FROM reading_activity WHERE book_isbn = ?";
-        String userBookSql = "DELETE FROM user_book WHERE book_isbn = ?";
-        String bookSql = "DELETE FROM book WHERE book_isbn = ?";
-        try {
-            jdbcTemplate.update(activitySql, isbn);
-            jdbcTemplate.update(userBookSql, isbn);
-            jdbcTemplate.update(bookSql, isbn);
-        } catch(CannotGetJdbcConnectionException e){
-            throw new RuntimeException("Cannot connect to database", e);
-        }catch(BadSqlGrammarException e){
-            throw new RuntimeException("Syntax error", e);
-        }catch(DataIntegrityViolationException e){
-            throw new RuntimeException("Data integrity violation, delete not completed", e);
-        }
-    }
-
-    //Enum to define the type of search we want to do
-    //Define the search type by using SearchType.Title..etc as a parameter
-    public enum SearchType {
-        Title,
-        Isbn
-    }
-
-    /**
-     * Send a search query to OpenLibrary.
-     *
-     * @param query      Search term.
-     * @param searchType The type of search. SearchType.Title, SearchType.Isbn, etc
-     * @return
-     */
     public JsonObject getJsonFromApi(String query, SearchType searchType) {
         query = query.replace(" ", "+"); //Replace spaces with plus sign because web apis don't like spaces
         switch (searchType) { //Adjust the API call URL depending on the search type
@@ -181,14 +83,235 @@ public class JdbcBookDao implements BookDao {
 
     }
 
+    @Override
+    public Book addBookToReadingList(Book book, String username) {
+
+        //If this book is not yet found in the reading list
+        if (getBookFromReadingListByIsbn(book.getIsbn(), username) == null) {
+            Book newBook;
+            //Is this book not in the database? If not create it
+            if (getBookFromDatabaseByISBN(book.getIsbn()) == null) {
+                newBook = createBook(book);
+            }
+            //If the book is there, get a reference to it
+            else {
+                newBook = getBookFromDatabaseByISBN(book.getIsbn());
+            }
+            String sql = "insert into user_book (book_isbn, user_id, finished, date_finished) values (?,?,?,?)";
+            try {
+                int userId = userDao.findIdByUsername(username);
+                int result = jdbcTemplate.update(sql,
+                        newBook.getIsbn(), userId, false, null);
+                if (result > 0) {
+                    newBook = getBookFromDatabaseByISBN(newBook.getIsbn());
+                }
+                return newBook;
+            } catch (DataAccessException e) {
+                System.out.println("Error adding book " + book.getTitle() + " to user list " + username);
+            }
+        } else {
+            System.out.println("Book is already in reading list for " + username + ".");
+        }
+        return null;
+    }
+
+    @Override
+    public Book addBookToReadingListByPrincipal(Book book, Principal principal) {
+        //If this book is not yet found in the reading list
+        String username = principal.getName();
+        if (getBookFromReadingListByIsbn(book.getIsbn(), username) == null) {
+            Book newBook;
+            //Is this book not in the database? If not create it
+            if (getBookFromDatabaseByISBN(book.getIsbn()) == null) {
+                newBook = createBook(book);
+            }
+            //If the book is there, get a reference to it
+            else {
+                newBook = getBookFromDatabaseByISBN(book.getIsbn());
+            }
+            String sql = "insert into user_book (book_isbn, user_id, finished, date_finished) values (?,?,?,?)";
+            try {
+                int userId = userDao.findIdByUsername(username);
+                int result = jdbcTemplate.update(sql,
+                        newBook.getIsbn(), userId, false, null);
+                if (result > 0) {
+                    newBook = getBookFromDatabaseByISBN(newBook.getIsbn());
+                }
+                return newBook;
+            } catch (DataAccessException e) {
+                System.out.println("Error adding book " + book.getTitle() + " to user list " + username);
+            }
+        } else {
+            System.out.println("Book is already in reading list for " + username + ".");
+        }
+        return null;
+    }
+
+    private Book getBookFromReadingListByIsbn(String isbn, String username) {
+        String sql = "SELECT book_isbn FROM user_book WHERE book_isbn = ? AND user_id = ?";
+        try {
+            int userId = userDao.findByUsername(username).getId();
+            String result = jdbcTemplate.queryForObject(sql, String.class, isbn, userId);
+            if (result != null) return getBookFromDatabaseByISBN(isbn);
+            else throw new RuntimeException("Book " + isbn + " not found in local db.");
+        } catch (DataAccessException e) {
+            System.out.println("Did not find book " + isbn + " in user list " + username);
+        }
+        return null;
+    }
+
+    @Override
+    public Book createBook(Book book) {
+        String sql = "INSERT INTO book" +
+                "(book_isbn, title, author, num_pages)" +
+                "VALUES(?,?,?,?)";
+        try {
+            //First, check to see if book is not already in DB
+            if (getBookFromDatabaseByISBN(book.getIsbn()) == null) {
+                jdbcTemplate.update(sql,
+                        book.getIsbn(), book.getTitle(), book.getAuthor(), book.getNumPages());
+                return book;
+            }
+            //If book is alrady there, return a reference to the book in question
+            return getBookFromDatabaseByISBN(book.getIsbn());
+
+        } catch (DataAccessException e) {
+            System.out.println("Error creating book.");
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    @Override
+    public void delete(String isbn) {
+        String activitySql = "DELETE FROM reading_activity WHERE book_isbn = ?";
+        String userBookSql = "DELETE FROM user_book WHERE book_isbn = ?";
+        String bookSql = "DELETE FROM book WHERE book_isbn = ?";
+        try {
+            jdbcTemplate.update(activitySql, isbn);
+            jdbcTemplate.update(userBookSql, isbn);
+            jdbcTemplate.update(bookSql, isbn);
+        } catch (CannotGetJdbcConnectionException e) {
+            throw new RuntimeException("Cannot connect to database", e);
+        } catch (BadSqlGrammarException e) {
+            throw new RuntimeException("Syntax error", e);
+        } catch (DataIntegrityViolationException e) {
+            throw new RuntimeException("Data integrity violation, delete not completed", e);
+        }
+    }
+
+    @Override
+    public List<Book> getFamilyReadingList(int familyId) {
+        List<Book> bookList = new ArrayList<>();
+        String sql = "SELECT * from book b\n" +
+                "JOIN user_book ub ON b.book_isbn = ub.book_isbn\n" +
+                "JOIN users u ON u.user_id = ub.user_id\n" +
+                "JOIN family f ON f.family_id = u.family_id\n" +
+                "WHERE f.family_id = ?";
+        try {
+            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, familyId);
+            while (results.next()) {
+                Book book = mapRowToBook(results);
+                bookList.add(book);
+            }
+            return bookList;
+        } catch (DataAccessException e) {
+            System.out.println("Error retrieving reading list of family with id " + familyId);
+        }
+        return null;
+    }
+
+    @Override
+    public List<Book> getUserReadingList(String username, boolean finished) {
+        List<Book> bookList = new ArrayList<>();
+        int userId = userDao.findByUsername(username).getId();
+        String sql ="";
+        if (finished){
+            sql = "SELECT * from book JOIN user_book ON user_book.book_isbn = book.book_isbn " +
+                    "WHERE user_id =? AND finished=true";
+        } else {
+            sql = "SELECT * from book JOIN user_book ON user_book.book_isbn = book.book_isbn " +
+                    "WHERE user_id =?";
+        }
+        try {
+            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
+            while (results.next()) {
+                Book book = mapRowToBook(results);
+                bookList.add(book);
+            }
+            return bookList;
+        } catch (DataAccessException e) {
+            System.out.println("Error retrieving reading list of user with id " + userId);
+        }
+        return null;
+    }
+
+//    @Override
+//    public List<Book> getUserReadingListByCompletion(int userId, Boolean completed) {
+//        List<Book> bookList = new ArrayList<>();
+//        String sql = "SELECT * FROM user_book\n" +
+//                "WHERE user_id = ?";
+//        //Plug value of completed into sql string
+//        sql = sql.concat("\nAND finished = " + Boolean.toString(completed).toUpperCase());
+//        try {
+//            SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
+//            while (results.next()) {
+//                Book book = mapRowToBook(results);
+//                bookList.add(book);
+//            }
+//            return bookList;
+//        } catch (DataAccessException e) {
+//            System.out.println("Error retrieving completed books for user with id " + userId);
+//        }
+//        return null;
+//    }
+
+    @Override
+    public List<Book> getFamilyReadingListByCompletion(int familyId, Boolean completed) {
+        List<Book> bookList = new ArrayList<>();
+        String sql = "SELECT * from book b\n" +
+                "JOIN user_book ub ON b.book_isbn = ub.book_isbn\n" +
+                "JOIN users u ON u.user_id = ub.user_id\n" +
+                "JOIN family f ON f.family_id = u.family_id\n" +
+                "WHERE f.family_id = ?";
+        sql = sql.concat("\nAND finished = " + Boolean.toString(completed).toUpperCase());
+        try {
+            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, familyId);
+            while (results.next()) {
+                Book book = mapRowToBook(results);
+                bookList.add(book);
+            }
+            return bookList;
+        } catch (DataAccessException e) {
+            System.out.println("Error retrieving reading list of family with id " + familyId);
+        }
+        return null;
+    }
+
+    @Override
+    public Book updateReadingListEntryByIsbn(Book book, String isbn) {
+        return null;
+    }
+
+    @Override
+    public void deleteReadingListEntryByIsbn(String isbn) {
+
+    }
+
     private Book getBookFromDatabaseByISBN(String isbn) {
         Book book = new Book();
-        String sql = "SELECT book FROM book WHERE book_isbn = ?";
-        SqlRowSet result = jdbcTemplate.queryForRowSet(sql, isbn);
-        if (result.next()) {
-            book = mapRowToBook(result);
+        String sql = "SELECT * FROM book WHERE book_isbn = ?";
+        try {
+            SqlRowSet result = jdbcTemplate.queryForRowSet(sql, isbn);
+            if (result.next()) {
+                book = mapRowToBook(result);
+                return book;
+            }
+        } catch (DataAccessException e) {
+            System.out.println("ISBN " + isbn + " was not found in local db.");
+            return null;
         }
-        return book;
+        return null;
     }
 
     /**
@@ -235,6 +358,13 @@ public class JdbcBookDao implements BookDao {
             bookList.add(book);
         }
         return bookList;
+    }
+
+    //Enum to define the type of search we want to do
+    //Define the search type by using SearchType.Title..etc as a parameter
+    public enum SearchType {
+        Title,
+        Isbn
     }
 
     private Book mapRowToBook(SqlRowSet rs) {

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.BadSqlGrammarException;
@@ -16,6 +17,9 @@ import org.springframework.stereotype.Component;
 
 import com.techelevator.model.User;
 import org.springframework.web.bind.annotation.CrossOrigin;
+
+import javax.validation.constraints.Null;
+import javax.xml.crypto.Data;
 
 @Component
 @CrossOrigin
@@ -30,15 +34,13 @@ public class JdbcUserDao implements UserDao {
     @Override
     public int findIdByUsername(String username) {
         if (username == null) throw new IllegalArgumentException("Username cannot be null");
-
-        int userId;
+        String sql = "SELECT user_id FROM users WHERE lower(username) = ?";
         try {
-            userId = jdbcTemplate.queryForObject("select user_id from users where username = ?", int.class, username);
-        } catch (EmptyResultDataAccessException e) {
-            throw new UsernameNotFoundException("User " + username + " was not found.");
+            return jdbcTemplate.queryForObject(sql, Integer.class, username.toLowerCase());
+        } catch (DataAccessException | NullPointerException e) {
+            System.out.println("User " + username + " was not found.");
         }
-
-        return userId;
+        return -1;
     }
 
 	@Override

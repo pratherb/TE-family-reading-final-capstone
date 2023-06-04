@@ -33,13 +33,9 @@
       </form>
     </div>
     <div v-show="showResults">
-      <ul v-for="book in bookResults" v-bind:key="book.isbn">
+      <ul>
         <li>
-          <h3>{{ book.title }}</h3>
-          <p>
-            By {{ book.author }}, pages: {{ book.numPages }}, ISBN:
-            {{ book.isbn }}
-          </p>
+          <book-detail v-for="book in this.$store.state.bookResults" v-bind:key="book.isbn" v-bind:book="book"/>
         </li>
       </ul>
     </div>
@@ -48,8 +44,10 @@
 
 <script>
 import bookService from "../services/BookService";
+import BookDetail from './BookDetail.vue';
 
 export default {
+  components: { BookDetail },
   name: "addbook",
   data() {
     return {
@@ -69,15 +67,22 @@ export default {
         bookService.get(searchTerm).then((response) => {
           if (response.status === 200) {
             this.bookResults = [response.data];
+            this.$store.commit('ADD_BOOK_RESULTS', this.bookResults);
+            this.resetBookResults();
           }
         });
       } else {
         bookService.listBooksByTitle(searchTerm).then((response) => {
           if (response.status === 200) {
             this.bookResults = response.data;
+            this.$store.commit('ADD_BOOK_RESULTS', this.bookResults);
+            this.resetBookResults();
           }
         });
       }
+    },
+    resetBookResults() {
+      this.bookResults = []
     },
     makeVisible() {
       this.showResults = true;
