@@ -15,8 +15,8 @@ export default {
     return http.get(`/isbn=${isbn}`);
   },
 
-  addToReadingList(isbn, username){
-    return http.post(`/isbn=${isbn}`, username);
+  addToReadingList(isbn){
+    return http.post(`/isbn=${isbn}`);
   },
 
   getFamilyReadingList(finished){

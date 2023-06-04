@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>BookBound Dragon Here</h1>
-    <h2>User Profile</h2><!-- Changes with each user -->
+    <h2>{{$route.params.username}}</h2><!-- Changes with each user -->
     <h3 id="reading-list">Currently Reading</h3>
     <div>
       <ul v-for="book in books" v-bind:key="book.title">
@@ -10,9 +10,6 @@
         </li>
       </ul>
       <div class="button">
-        <router-link to="/userprofile">
-          <button>Add Book</button>
-        </router-link>
       </div>
     </div>
   </div>
@@ -20,7 +17,7 @@
 
 <script>
 export default {
-  name: "userprofile",
+  name: "user-profile",
 };
 </script>
 

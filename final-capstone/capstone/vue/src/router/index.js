@@ -89,8 +89,8 @@ const router = new Router({
       component: Log
     },
     {
-      path: "/userprofile",
-      name: "userprofile",
+      path: "/user-profile:username",
+      name: "user-profile",
       component: UserProfile
     },
     {
