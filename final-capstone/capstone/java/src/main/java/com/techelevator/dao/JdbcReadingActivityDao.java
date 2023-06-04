@@ -76,7 +76,7 @@ public class JdbcReadingActivityDao implements ReadingActivityDao {
     }
 
     @Override
-    public ReadingActivity create(ReadingActivity readingActivity, Principal principal) {
+    public ReadingActivity create(ReadingActivity readingActivity, String username, Principal principal) {
         String sql = "INSERT INTO reading_activity" +
                 "(user_id, book_isbn, minutes_read, format, notes)" +
                 "VALUES (?,?,?,?,?)";

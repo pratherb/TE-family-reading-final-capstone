@@ -31,7 +31,7 @@ public class ReadingActivityController {
     }
 
     @RequestMapping(value = ENDPOINT + "/", method = RequestMethod.POST)
-    public ReadingActivity create(@RequestBody ReadingActivity readingActivity, Principal principal){
-        return readingActivityDao.create(readingActivity, principal);
+    public ReadingActivity create(@RequestBody ReadingActivity readingActivity, @RequestParam String username, Principal principal){
+        return readingActivityDao.create(readingActivity, username, principal);
     }
 }
