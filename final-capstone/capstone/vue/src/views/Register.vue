@@ -1,10 +1,11 @@
 <template>
   <div id="register" class="text-center">
     <div class="regLogo">
+       <h1 class="create_account" > Create Account: </h1>
       <img src="../images/sharpened-transparent-logo.png">
     </div>
     <form @submit.prevent="register">
-      <h1>Create Account</h1>
+     
       <div role="alert" v-if="registrationErrors">
         {{ registrationErrorMsg }}
       </div>
@@ -35,9 +36,6 @@
       <button type="submit">Create Account</button>
       <p><router-link :to="{ name: 'login' }">Already have an account? Log in.</router-link></p>
     </form>
-    <div class="belowformarea">
-    
-    </div>
   </div>
 </template>
 
@@ -95,9 +93,19 @@ export default {
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap');
+@import url('https://fonts.cdnfonts.com/css/socake');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 
+.create_account{
+  font-size: 55px;
+  display: flex;
+  color: rgb(88,85,99);
+  width: 100%;
+  height:200%;
+   font-family: 'Socake', sans-serif;
+}
 form{
+  background: rgb(115, 147, 126);
       display: flex;
     flex-direction: column;
     flex-wrap: wrap;
@@ -105,8 +113,8 @@ form{
     align-items: baseline;
 }
 .form-input-group {
-  display: flex;
-font-family: 'Libre Baskerville', serif;
+display: flex;
+font-family: 'Montserrat', sans-serif;
 border: solid, 1px, black;
 margin-bottom: 1rem;
  color: rgb(88,85,99);
@@ -116,13 +124,17 @@ label {
 }
 .regLogo{
   display: flex;
-  background-image:none;
+  background: rgba(254, 209, 113, 0.5);
   justify-content: flex-end;
   padding: none;
   margin: none;
+  border:2px;
+  border-style: solid;
+  border-color: black;
 }
 img{
   width: 150px;
   padding: none;
 }
+
 </style>
