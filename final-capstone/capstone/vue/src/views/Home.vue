@@ -94,8 +94,8 @@ width: 300px;
 }
 #bookcover{
     width: 200px;
-    margin-bottom: 40px;
-    margin-top: 40px;
+    margin-bottom: 50px;
+    margin-top: 50px;
     border: 11px;
     border-style: solid;
     border-color:  rgb(187, 12, 12);
@@ -163,11 +163,12 @@ padding-right: 70px;
 
 .product_details{
   background: rgb(115, 147, 126);
-  border: rgb(115, 147, 126);
+  border-color: rgb(115, 147, 126);
   border-style: solid;
   border-radius: 80px;
-  padding: 30px;
-  margin:30px;
+  padding: 15px;
+  margin:20px;
+  font-size: 20px;
 }
 .home{
   background: rgba(254, 209, 113, 0.5);
