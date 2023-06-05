@@ -1,10 +1,11 @@
 <template>
   <div id="login">
-    <form @submit.prevent="login">
-      <h1 class="welcome" > Welcome! Please Log In!</h1>
-        <h1 class="image">
+     <h1 class="welcome" > Welcome! Please Log In!
+        <div class="logo">
         <img src="../images/sharpened-transparent-logo.png">
-      </h1>
+        </div>
+        </h1>
+    <form @submit.prevent="login">
       <div role="alert" v-if="invalidCredentials">
         Invalid username and password!
       </div>
@@ -27,7 +28,7 @@
       
       </div>
       <div class="running-board">
-        <p> 📕 📙 📒 📗 📘 📓 📕 📙 📒 📗 📘 📓 📕 📙 📒 📗 📘 📓 📕 📙 📒 📗 📘 📓 📕 📙 📒 📗 📘 📓 📕 📙 📒 📗 📘 📓 📕 📙 📒 📗 📘 📓 📕 📙 📒 📗 📘 📓📕 📙 📒 📗 📘 📓 📕 📙 📒 📗 📘 📓 📕 📙 📒 📗 📘 📓 📕 📙 📒 📗 📘 </p>
+        <p> 📕 📙 📒 📗 📘 📓 📕 📙 📒 📗 📘 📓 📕 📙 📒 📗 📘 📓 📕 📙 📒 📗 📘 📓 📕 📙 📒 📗 📘 📓 📕 📙 📒 📗 📘 📓 📕 📙 📒 📗 📘 📓 📕 📙 📒 📗 📘 📓📕 📙 📒 📗 📘 📓 📕 📙 📒 📗 📘 📓 📕 📙 📒 📗 📘 📓 📕 📙 📒 📗 📘 📓</p>
       </div>
       </div>
     </form>
@@ -77,10 +78,13 @@ export default {
 @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 
 .background_for_image{
-  background:rgba(254, 209, 113, 0.5);
+  background:rgb(115, 147, 126);
+  margin: 0;
+  padding: 0;
 }
 
 form{
+  background: rgb(115, 147, 126);
   border: 3px;
   border-style:groove;
   color: rgb(88,85,99);
@@ -91,7 +95,7 @@ form{
 }
 .all-input{
   display: flex;
-  /* background-image: url("../images/open_book_transparent-removebg-preview.png"); */
+  background-image: url("../images/open_book_transparent-removebg-preview.png");
    background-repeat: no-repeat;
   flex-direction: column;
     flex-wrap: wrap;
@@ -101,7 +105,6 @@ form{
    height: 400px;
 }
 .form-input-group {
-  
   font-family:'Montserrat', sans-serif;;
   margin-bottom: 1rem;
   color: rgb(88,85,99);
@@ -109,37 +112,31 @@ form{
     margin-right: 20px;
 }
 .running-board{
-  margin-top: 3%;
-  background:rgb(115, 147, 126);
+margin-top: 150px;
+background: rgb(115, 147, 126);
 }
 
 label {
    font-family: 'Montserrat', sans-serif;
   margin-right: 0.5rem;
-  font: rgb(88,85,99)
+  color: rgb(88,85,99)
 }
-.image{
-  display:flex;
-justify-content: flex-start;
-flex-direction: row;
-height: 20%;
-margin:0;
-background:rgba(254, 209, 113, 0.5);
-
+.logo{
+display:flex;
+align-items: center;
 }
 
 img{
-  width:600px;
-  height: 650px;
+  width:400px;
+  height: 450px;
 }
 
 .welcome {
 display: flex;
     justify-content: center;
-    background:rgb(115, 147, 126);
-    margin:0;
+    background:rgba(254, 209, 113, 0.5);
     padding-top: 80px;
-    height: 150px;
+    height: 200px;
     width: 100%;
     font-size: 60px;
     font-family: 'Socake', sans-serif;
