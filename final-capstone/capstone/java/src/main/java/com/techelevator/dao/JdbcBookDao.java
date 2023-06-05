@@ -28,6 +28,8 @@ public class JdbcBookDao implements BookDao {
     private final RestTemplate restTemplate;
     private final JdbcTemplate jdbcTemplate;
     private final String API_SEARCH = "https://openlibrary.org/search.json?";
+    private final String COVER_URL_BASE = "https://covers.openlibrary.org/b/isbn/";
+    private final String COVER_URL_SIZE = "L";
     private final int LIMIT_RESULTS = 10; //How many results to get at a time
     private UserDao userDao;
 
@@ -328,6 +330,8 @@ public class JdbcBookDao implements BookDao {
             String title = "Not found";
             String author = "Not found";
             String isbn = "Not found";
+            String publisher = "Nof found";
+            String coverUrl = "";
             int numPages = 0;
             Book book = new Book();
             JsonObject doc = i.getAsJsonObject(); //Get each element as an individual JsonObject
@@ -339,6 +343,9 @@ public class JdbcBookDao implements BookDao {
                 JsonArray authorArray = doc.getAsJsonArray("author_name"); //There could be multiple authors
                 author = authorArray.get(0).getAsString();
                 numPages = doc.get("number_of_pages_median").getAsInt();
+                JsonArray publisherArray = doc.getAsJsonArray("publisher");
+                publisher = publisherArray.get(0).getAsString();
+                coverUrl = COVER_URL_BASE + isbn + "-" + COVER_URL_SIZE + ".jpg";
             } catch (RuntimeException e) {
                 //If a value isn't found, we end up here. let's set the Book object's values to the default values then continue the loop
                 //If this isn't caught here, we might crash.
@@ -347,6 +354,8 @@ public class JdbcBookDao implements BookDao {
                 book.setIsbn(isbn);
                 book.setAuthor(author);
                 book.setNumPages(numPages);
+                book.setPublisher(publisher);
+                book.setCoverUrl(coverUrl);
                 bookList.add(book);
                 continue;
             }
@@ -355,6 +364,8 @@ public class JdbcBookDao implements BookDao {
             book.setIsbn(isbn);
             book.setAuthor(author);
             book.setNumPages(numPages);
+            book.setPublisher(publisher);
+            book.setCoverUrl(coverUrl);
             bookList.add(book);
         }
         return bookList;
@@ -373,6 +384,8 @@ public class JdbcBookDao implements BookDao {
         book.setAuthor(rs.getString("author"));
         book.setTitle(rs.getString("title"));
         book.setNumPages(rs.getInt("num_pages"));
+        book.setPublisher(rs.getString("publisher"));
+        book.setCoverUrl("cover_url");
         return book;
     }
 }
