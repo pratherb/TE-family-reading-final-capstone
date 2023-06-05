@@ -91,7 +91,7 @@ form{
 }
 .all-input{
   display: flex;
-  background-image: url("../images/open_book_transparent-removebg-preview.png");
+  /* background-image: url("../images/open_book_transparent-removebg-preview.png"); */
    background-repeat: no-repeat;
   flex-direction: column;
     flex-wrap: wrap;

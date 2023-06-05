@@ -1,5 +1,6 @@
 <template>
   <div class="home">
+    
     <logo-slider>
   
   <div class="slideshow">
