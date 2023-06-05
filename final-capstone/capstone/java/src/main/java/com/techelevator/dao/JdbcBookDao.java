@@ -172,7 +172,7 @@ public class JdbcBookDao implements BookDao {
                         book.getIsbn(), book.getTitle(), book.getAuthor(), book.getNumPages());
                 return book;
             }
-            //If book is alrady there, return a reference to the book in question
+            //If book is already there, return a reference to the book in question
             return getBookFromDatabaseByISBN(book.getIsbn());
 
         } catch (DataAccessException e) {

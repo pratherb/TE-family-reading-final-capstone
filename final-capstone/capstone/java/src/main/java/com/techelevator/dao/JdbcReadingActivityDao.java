@@ -47,7 +47,7 @@ public class JdbcReadingActivityDao implements ReadingActivityDao {
     public ReadingActivity getById(int readingActivityId) {
         String sql = "SELECT * FROM reading_activity WHERE activity_id = ?";
         try {
-            SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
+            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, readingActivityId);
             if (results.next()) {
                 return mapRowToReadingActivity(results);
             }
@@ -59,11 +59,10 @@ public class JdbcReadingActivityDao implements ReadingActivityDao {
 
     @Override
     public List<ReadingActivity> findAllByUsername(String username) {
-        String sql = "SELECT * FROM reading_activity WHERE user_id = ?";
+        String sql = "SELECT * FROM reading_activity WHERE username = ?";
         List<ReadingActivity> readingActivityList = new ArrayList<>();
-        int userId = userDao.findByUsername(username).getId();
         try{
-            SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
+            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, username);
             while (results.next()){
                 ReadingActivity readingActivity = mapRowToReadingActivity(results);
                 readingActivityList.add(readingActivity);
@@ -76,23 +75,21 @@ public class JdbcReadingActivityDao implements ReadingActivityDao {
     }
 
     @Override
-    public ReadingActivity create(ReadingActivity readingActivity, String username, Principal principal) {
+    public ReadingActivity create(ReadingActivity readingActivity) {
         String sql = "INSERT INTO reading_activity" +
-                "(user_id, book_isbn, minutes_read, format, notes)" +
-                "VALUES (?,?,?,?,?)";
+                "(username, book_isbn, minutes_read, format, notes)" +
+                "VALUES (?,?,?,?,?) RETURNING activity_id";
+        int activityId = 0;
         try {
-            //Find out the ID of the user recording this activity (or who is logged in)
-            int userId = userDao.findByUsername(principal.getName()).getId();
-
             //First we need to add a book entry to the database, due to FK constraints
             //Get a book from Open Library using the readingActivity ISBN
             Book book = bookDao.searchBookByIsbn(readingActivity.getBookIsbn());
             bookDao.createBook(book);
-            int result = jdbcTemplate.update(sql,
-                    userId, book.getIsbn(), readingActivity.getMinutesRead(),
+            activityId = jdbcTemplate.queryForObject(sql, Integer.class,
+                    readingActivity.getUsername(), book.getIsbn(), readingActivity.getMinutesRead(),
                     readingActivity.getFormat(), readingActivity.getNotes());
-            return readingActivity;
-
+            ReadingActivity newActivity = getById(activityId);
+            return newActivity;
         } catch (DataAccessException e) {
             System.out.println("Error creating reading activity.");
             System.out.println(e.getMessage());
@@ -103,11 +100,11 @@ public class JdbcReadingActivityDao implements ReadingActivityDao {
     @Override
     public ReadingActivity update(ReadingActivity readingActivity) {
         String sql = "UPDATE reading_activity SET" +
-                "user_id = ?, book_isbn = ?, minutes_read = ?, format = ?, notes = ?" +
+                "username = ?, book_isbn = ?, minutes_read = ?, format = ?, notes = ?" +
                 "WHERE activity_id = ?";
         try {
             jdbcTemplate.update(sql,
-                    readingActivity.getUserId(), readingActivity.getBookIsbn(), readingActivity.getMinutesRead(),
+                    readingActivity.getUsername(), readingActivity.getBookIsbn(), readingActivity.getMinutesRead(),
                     readingActivity.getFormat(), readingActivity.getFormat(), readingActivity.getNotes(),
                     readingActivity.getId());
             return readingActivity;
@@ -129,11 +126,11 @@ public class JdbcReadingActivityDao implements ReadingActivityDao {
     }
 
     @Override
-    public void deleteAllByUserId(int userId) {
+    public void deleteAllByUsername(String username) {
         //TBD: Call delete methods from other DAOs as necessary
-        String sql = "DELETE FROM reading_activity WHERE user_id = ?";
+        String sql = "DELETE FROM reading_activity WHERE username = ?";
         try{
-            jdbcTemplate.update(sql, userId);
+            jdbcTemplate.update(sql, username);
         } catch (DataAccessException e){
             System.out.println("Error deleting user's reading activities.");
         }
@@ -141,7 +138,8 @@ public class JdbcReadingActivityDao implements ReadingActivityDao {
 
     private ReadingActivity mapRowToReadingActivity(SqlRowSet rs) {
         ReadingActivity readingActivity = new ReadingActivity();
-        readingActivity.setUserId(rs.getInt("user_id"));
+        readingActivity.setId(rs.getInt("activity_id"));
+        readingActivity.setUsername(rs.getString("username"));
         readingActivity.setBookIsbn(rs.getString("book_isbn"));
         readingActivity.setMinutesRead(rs.getInt("minutes_read"));
         readingActivity.setFormat(rs.getString("format"));
