@@ -3,7 +3,7 @@ package com.techelevator.model;
 public class ReadingActivity {
 
     private int id;
-    private int userId;
+    private String username;
     private String bookIsbn;
     private int minutesRead;
     private String format;
@@ -12,9 +12,9 @@ public class ReadingActivity {
     public ReadingActivity() {
     }
 
-    public ReadingActivity(int id, int userId, String bookIsbn, int minutesRead, String format, String notes) {
+    public ReadingActivity(int id, String username, String bookIsbn, int minutesRead, String format, String notes) {
         this.id = id;
-        this.userId = userId;
+        this.username = username;
         this.bookIsbn = bookIsbn;
         this.minutesRead = minutesRead;
         this.format = format;
@@ -29,12 +29,12 @@ public class ReadingActivity {
         this.id = id;
     }
 
-    public int getUserId() {
-        return userId;
+    public String getActivityUsername() {
+        return username;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setActivityUsername(String username) {
+        this.username = username;
     }
 
     public String getBookIsbn() {

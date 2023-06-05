@@ -13,5 +13,5 @@ public interface ReadingActivityDao {
     ReadingActivity create(ReadingActivity readingActivity, String username, Principal principal);
     ReadingActivity update(ReadingActivity readingActivity);
     void deleteById(int readingActivityId);
-    void deleteAllByUserId(int userId);
+    void deleteAllByUsername(String username);
 }

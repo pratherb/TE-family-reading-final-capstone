@@ -51,13 +51,13 @@ CREATE TABLE user_book (
 
 CREATE TABLE reading_activity (
     activity_id SERIAL,
-    user_id int NOT NULL,
+    username varchar(50) NOT NULL,
     book_isbn varchar(50) NOT NULL,
     minutes_read int NOT NULL,
     format varchar(50),
     notes varchar(100),
     CONSTRAINT pk_read PRIMARY KEY (activity_id),
-    CONSTRAINT fk_read_user FOREIGN KEY (user_id) REFERENCES users (user_id)
+    CONSTRAINT fk_read_user FOREIGN KEY (username) REFERENCES users (username)
     -- Removing this constraint for similar reasons.
     --CONSTRAINT fk_read_book FOREIGN KEY (book_isbn) REFERENCES book (book_isbn)
 );

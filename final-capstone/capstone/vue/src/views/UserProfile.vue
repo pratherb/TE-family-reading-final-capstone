@@ -10,7 +10,7 @@
 
     <div v-else>
     <label for="finished">Show finished books only</label><br>
-    <input type="checkbox" id="finished" name="finished" v-on:checked="this.finished=true">
+    <input type="checkbox" id="finished" name="finished" v-on:change="flipFinishedAndReload">
     <div>
       <ul v-for="book in readingList" v-bind:key="book.isbn">
         <li>
@@ -21,14 +21,17 @@
         </li>
       </ul>
     </div>
+    <reading-activity/>
     </div>
 
   </div>
 </template>
 
 <script>
+import ReadingActivity from '../components/ReadingActivity.vue';
 import ReadingListService from '../services/ReadingListService';
 export default {
+  components: { ReadingActivity },
   name: "user-profile",
   finished: false,
   data() {
@@ -38,13 +41,25 @@ export default {
     }
   },
   created () {
-    ReadingListService
+    this.addReading();
+  },
+  methods: {
+    addReading() {
+      ReadingListService
       .getUserReadingList(this.$route.params.username, this.finished)
       .then((response)=>{
-        console.log(response.data)
         this.readingList = response.data;
         this.isLoading = false;
       })
+    },
+    flipFinishedAndReload() {
+      if (this.finished == false){
+        this.finished = true;
+      } else {
+        this.finished = false;
+      }
+      this.addReading();
+    }
   }
 };
 </script>
