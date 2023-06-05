@@ -42,16 +42,10 @@ export default {
       members: [],
     };
   },
-  /* computed: {
-        filteredMembers() {
-            return this.members.filter((member) => {
-                return member.name.includes(this.filterText);
-            })
-        }
-    }, */
   created() {
     docsService.list().then((response) => {
       this.members = response.data;
+      this.isLoading = false;
     });
   },
 };
