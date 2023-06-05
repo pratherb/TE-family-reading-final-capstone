@@ -14,8 +14,8 @@ export default {
     return http.post(`/prizes=${prize}`);
   },
 
-  getPrizesEarned(finished){
-    return http.get(`/prizes`, finished);
+  getPrizesEarned(username, finished){
+    return http.get(`/prizes/${username}`, finished);
   },
 
   delete(prizes){
