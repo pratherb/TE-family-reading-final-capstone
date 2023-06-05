@@ -7,7 +7,6 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
-import javax.xml.crypto.Data;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -18,9 +17,29 @@ import java.util.List;
 public class JdbcPrizeDao implements PrizeDao {
 
     private final JdbcTemplate jdbcTemplate;
+    private FamilyDao familyDao;
 
-    public JdbcPrizeDao(JdbcTemplate jdbcTemplate) {
+    public JdbcPrizeDao(JdbcTemplate jdbcTemplate, FamilyDao familyDao) {
         this.jdbcTemplate = jdbcTemplate;
+        this.familyDao = familyDao;
+    }
+
+    //For quick testing
+    @Override
+    public List<Prize> findAll(){
+        List<Prize> prizeList = new ArrayList<>();
+        String sql = "SELECT * FROM prize";
+        try{
+            SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
+            while(results.next()){
+                Prize prize = mapRowToPrize(results);
+                prizeList.add(prize);
+            }
+            return prizeList;
+        } catch (DataAccessException e){
+            System.out.println("Error fetching all prizes.");
+        }
+        return null;
     }
 
     @Override
@@ -52,6 +71,22 @@ public class JdbcPrizeDao implements PrizeDao {
             System.out.println("Error getting prize named " + name);
         }
         return null;
+    }
+
+    @Override
+    public int getIdByName(String name) {
+        String sql = "SELECT * FROM prize\n" +
+                "WHERE name = ?";
+        try {
+            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, name);
+            if (results.next()) {
+                return results.getInt("prize_id");
+            }
+
+        } catch (DataAccessException e) {
+            System.out.println("Error getting prize named " + name);
+        }
+        return -1;
     }
 
     @Override
@@ -92,14 +127,15 @@ public class JdbcPrizeDao implements PrizeDao {
     }
 
     @Override
-    //TBD - this isn't finished
-    //Get prizes by user group (parent/children/both) depending on principal
+    //Get prizes by user group (parent/children/both) for logged in family member
     public List<Prize> getPrizesByUserGroup(String userGroup, Principal principal) {
         List<Prize> prizeList = new ArrayList<>();
         String sql = "SELECT * FROM prize\n" +
-                "WHERE user_group = ?";
+                "WHERE user_group = ?\n" +
+                "AND family_id = ?";
         try {
-            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userGroup);
+            int familyId = familyDao.getFamilyIdByUsername(principal.getName());
+            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userGroup, familyId);
             while (results.next()) {
                 Prize prize = mapRowToPrize(results);
                 prizeList.add(prize);
@@ -112,8 +148,35 @@ public class JdbcPrizeDao implements PrizeDao {
     }
 
     //This needs Principal too - we don't need to see prizes for all family accounts
+    //Do this later - may not be needed
     @Override
     public List<Prize> getPrizesBetweenDates(LocalDate date1, LocalDate date2) {
+        return null;
+    }
+
+    //Get all prizes associated with a family
+    @Override
+    public List<Prize> getPrizesByEmailAddress(String emailAddress){
+        List<Prize> prizeList = new ArrayList<>();
+        String sql = "SELECT * FROM prize p\n"+
+                "JOIN family f ON f.family_id = p.family_id\n" +
+                "WHERE f.email_address = ?";
+        try{
+            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, emailAddress);
+            while(results.next()){
+                Prize prize = mapRowToPrize(results);
+                prizeList.add(prize);
+            }
+            return prizeList;
+        } catch (DataAccessException e){
+            System.out.println("Error getting prizes by email " + emailAddress);
+        }
+        return null;
+    }
+
+    @Override
+    //Probably not needed..
+    public List<Prize> getPrizesByFamilyId(int familyId) {
         return null;
     }
 
@@ -121,12 +184,12 @@ public class JdbcPrizeDao implements PrizeDao {
     public Prize create(Prize prize) {
         Prize newPrize;
         String sql = "INSERT INTO prize\n" +
-                "(user_id, name, description, milestone, user_group, start_date, end_date)\n" +
-                "VALUES(?,?,?,?,?,?,?)\n" +
+                "(user_id, family_id, name, description, milestone, user_group, start_date, end_date)\n" +
+                "VALUES(?,?,?,?,?,?,?,?)\n" +
                 "RETURNING prize_id";
         try {
-            int id = jdbcTemplate.update(sql,
-                    prize.getUserId(), prize.getName(), prize.getDescription(), prize.getMilestone(),
+            int id = jdbcTemplate.queryForObject(sql, Integer.class,
+                    prize.getUserId(), prize.getFamilyId(), prize.getName(), prize.getDescription(), prize.getMilestone(),
                     prize.getUserGroup(), prize.getStartDate(), prize.getEndDate());
             return getById(id);
 
@@ -139,14 +202,20 @@ public class JdbcPrizeDao implements PrizeDao {
     @Override
     public Prize update(Prize prize) {
         int prizeId = -1;
-        String sql = "UPDATE prize\n"+
-                "SET user_id = ?, name = ?, description = ?, milestone = ? "+
-                "user_group = ?, start_date = ?, end_date = ?\n"+
-                "WHERE prize_id = ?";
-        try{
-            //prizeId = getByName()
-
-        } catch (DataAccessException e){
+        String sql = "UPDATE prize\n" +
+                "SET user_id = ?, family_id = ?, name = ?, description = ?, milestone = ? " +
+                "user_group = ?, start_date = ?, end_date = ?\n" +
+                "WHERE prize_id = ?\n"+
+                "RETURNING prize_id";
+        try {
+            prizeId = getIdByName(prize.getName());
+            int updatedPrizeId = jdbcTemplate.update(sql,
+                    prize.getUserId(), prize.getFamilyId(), prize.getName(), prize.getDescription(),
+                    prize.getMilestone(), prize.getUserGroup(), prize.getStartDate(), prize.getEndDate(),
+                    prizeId
+            );
+            return getById(updatedPrizeId);
+        } catch (DataAccessException e) {
             System.out.println("Error updating prize of id ");
         }
         return null;
@@ -154,6 +223,14 @@ public class JdbcPrizeDao implements PrizeDao {
 
     @Override
     public void delete(Prize prize) {
+        int prizeId = getIdByName(prize.getName());
+        String sql = "DELETE FROM prize\n"+
+                "WHERE prize_id = ?";
+        try{
+            jdbcTemplate.update(sql, prizeId);
+        } catch (DataAccessException e){
+            System.out.println("Error deleting prize of id + " + prizeId);
+        }
     }
 
     private Prize mapRowToPrize(SqlRowSet rs) {
@@ -165,6 +242,7 @@ public class JdbcPrizeDao implements PrizeDao {
         try {
             prize.setEndDate(null);
             prize.setUserId(rs.getInt("user_id"));
+            prize.setFamilyId(rs.getInt("family_id"));
             prize.setName(rs.getString("name"));
             prize.setDescription(rs.getString("description"));
             prize.setMilestone(rs.getInt("milestone"));
