@@ -30,7 +30,7 @@ CREATE TABLE book (
     --ISBN changed from int to varchar.
     -- Long ISBNs can exceed the limit for how big an int can be.
     book_isbn varchar(50) UNIQUE,
-    title varchar(50),
+    title varchar(150),
     author varchar(50),
     num_pages int,
     CONSTRAINT pk_book PRIMARY KEY (book_isbn)

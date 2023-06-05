@@ -1,20 +1,28 @@
 <template>
   <div>
+      <div>
+      <br>
+      <br>
+      <h3>Reading Activity</h3>
       <ul v-for="activity in activityList" v-bind:key="activity.id">
           <li>
-              <p>User: {{this.$route.params.username}}</p>
+              <p>User: {{$route.params.username}}</p>
               <p>ISBN: {{activity.bookIsbn}}</p>
               <p>Minutes of reading: {{activity.minutesRead}}</p>
               <p>Format: {{activity.format}}</p>
               <p>Notes: {{activity.notes}}</p>
+              <br>
           </li>
       </ul>
+      </div>
+      <br>
+      <br>
       <div>
           <form v-on:submit.prevent="addActivity">
             <h1>Add Reading Activity</h1>
             <div class="form-input-group">
                 <label for="username">Username</label>
-                <input type="number" id="username" v-model="newActivity.username" required />
+                <input type="text" id="username" v-model="newActivity.username" required />
             </div>
             <div class="form-input-group">
                 <label for="bookIsbn">Book ISBN</label>
@@ -34,7 +42,7 @@
             </div>
             <button type="submit">Add Activity</button>
           </form>
-      </div>
+        </div>
     </div>
 </template>
 
@@ -42,17 +50,17 @@
 import activityService from '../services/ActivityService';
 export default {
     name: "activity",
-    newActivity: {
-        username: "",
-        bookIsbn: "",
-        minutesRead: 0,
-        format: "",
-        notes: ""
-    },
     data() {
        return {
         isLoading: true,
-        activityList: [] 
+        activityList: [],
+        newActivity: {
+            username: "",
+            bookIsbn: "",
+            minutesRead: 0,
+            format: "",
+            notes: ""
+        } 
     }
   },
   created() {
@@ -65,13 +73,16 @@ export default {
   },
   methods: {
       addActivity(){
+          const username = this.$route.params.username;
           activityService
-            .create(this.newActivity, this.$route.params.username)
+            .create(this.newActivity, username)
             .then((response)=>{
-                if (response.status == 201){
+                if (response.status == 200){
                     this.clearNewActivity();
+                    this.$router.push({ name: 'user-profile', params: {username:username} });
                 }
             })
+            this.$router.push({ name: 'user-profile', params: {username:username} });
       },
       clearNewActivity() {
           this.newActivity.username = "";

@@ -29,11 +29,11 @@ public class ReadingActivity {
         this.id = id;
     }
 
-    public String getActivityUsername() {
+    public String getUsername() {
         return username;
     }
 
-    public void setActivityUsername(String username) {
+    public void setUsername(String username) {
         this.username = username;
     }
 

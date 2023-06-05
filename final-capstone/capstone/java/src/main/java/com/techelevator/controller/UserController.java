@@ -36,7 +36,7 @@ public class UserController {
     public User createFamilyMember(@RequestBody User user, Principal principal) {
         int familyId = familyDao.getFamilyIdByUsername(principal.getName());
         int newUserId = userDao.create(
-                user.getUsername(), user.getPassword(), "child",
+                user.getUsername(), user.getPassword(), user.getRole(),
                 user.getFirstName(), user.getLastName(), familyId
         );
         Family family = familyDao.getFamilyById(familyId);

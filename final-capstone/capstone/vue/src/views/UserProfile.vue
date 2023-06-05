@@ -21,8 +21,8 @@
         </li>
       </ul>
     </div>
-    <reading-activity/>
     </div>
+    <reading-activity/>
 
   </div>
 </template>
