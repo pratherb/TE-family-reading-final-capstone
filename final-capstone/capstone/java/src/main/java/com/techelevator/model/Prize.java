@@ -11,8 +11,9 @@ public class Prize {
     private LocalDate startDate;
     private LocalDate endDate;
     private int userId = -1; //userId exists if it's being tracked by a user
+    private int familyId; //Not null - family that "owns" this prize
 
-    public Prize(String name, String description, int milestone, String userGroup, int maxPrizes, LocalDate startDate, LocalDate endDate, int userId) {
+    public Prize(String name, String description, int milestone, String userGroup, int maxPrizes, LocalDate startDate, LocalDate endDate, int userId, int familyId) {
         this.name = name;
         this.description = description;
         this.milestone = milestone;
@@ -21,6 +22,7 @@ public class Prize {
         this.startDate = startDate;
         this.endDate = endDate;
         this.userId = userId;
+        this.familyId = familyId;
     }
 
     public Prize() {
@@ -88,5 +90,13 @@ public class Prize {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public int getFamilyId() {
+        return familyId;
+    }
+
+    public void setFamilyId(int familyId) {
+        this.familyId = familyId;
     }
 }

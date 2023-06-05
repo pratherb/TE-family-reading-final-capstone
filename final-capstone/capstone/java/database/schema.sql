@@ -5,6 +5,7 @@ DROP TABLE IF EXISTS user_book;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS book;
 DROP TABLE IF EXISTS family;
+DROP TABLE IF EXISTS user_prize;
 DROP TABLE IF EXISTS prize;
 
 CREATE TABLE family (
@@ -30,7 +31,7 @@ CREATE TABLE book (
     --ISBN changed from int to varchar.
     -- Long ISBNs can exceed the limit for how big an int can be.
     book_isbn varchar(50) UNIQUE,
-    title varchar(50),
+    title varchar(150),
     author varchar(50),
     num_pages int,
     CONSTRAINT pk_book PRIMARY KEY (book_isbn)
@@ -51,13 +52,13 @@ CREATE TABLE user_book (
 
 CREATE TABLE reading_activity (
     activity_id SERIAL,
-    user_id int NOT NULL,
+    username varchar(50) NOT NULL,
     book_isbn varchar(50) NOT NULL,
     minutes_read int NOT NULL,
     format varchar(50),
     notes varchar(100),
     CONSTRAINT pk_read PRIMARY KEY (activity_id),
-    CONSTRAINT fk_read_user FOREIGN KEY (user_id) REFERENCES users (user_id)
+    CONSTRAINT fk_read_user FOREIGN KEY (username) REFERENCES users (username)
     -- Removing this constraint for similar reasons.
     --CONSTRAINT fk_read_book FOREIGN KEY (book_isbn) REFERENCES book (book_isbn)
 );
@@ -65,6 +66,7 @@ CREATE TABLE reading_activity (
 CREATE TABLE prize(
     prize_id SERIAL,
     user_id INT, --Has a user_id if a user is tracking a prize
+    family_id INT NOT NULL, --Family that set up this prize
     name VARCHAR(50) UNIQUE NOT NULL,
     description VARCHAR(250),
     milestone INT,
@@ -72,7 +74,18 @@ CREATE TABLE prize(
     start_date DATE,
     end_date DATE,
     CONSTRAINT pk_prize PRIMARY KEY (prize_id),
-    CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users (user_id)
+    CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users (user_id),
+    CONSTRAINT fk_family_id FOREIGN KEY (family_id) REFERENCES family (family_id)
+);
+
+CREATE TABLE user_prize (
+    user_prize_id SERIAL,
+    user_id INT NOT NULL,
+    prize_id INT NOT NULL,
+    won_date DATE, -- Might be cool to log when a prize was won, can be null until we decide to implement
+    CONSTRAINT pk_user_prize PRIMARY KEY (user_prize_id),
+    CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users (user_id),
+    CONSTRAINT fk_prize_id FOREIGN KEY (prize_id) REFERENCES prize (prize_id)
 );
 
 COMMIT TRANSACTION;

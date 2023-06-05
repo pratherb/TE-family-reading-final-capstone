@@ -14,24 +14,24 @@ import java.util.List;
 public class ReadingActivityController {
 
     private ReadingActivityDao readingActivityDao;
-    private final String ENDPOINT = "/activity";
+    private final String ENDPOINT = "/user/";
 
     public ReadingActivityController(ReadingActivityDao readingActivityDao) {
         this.readingActivityDao = readingActivityDao;
     }
 
-    @RequestMapping(value = ENDPOINT, method = RequestMethod.GET)
+    @RequestMapping(value = ENDPOINT + "{username}/activity/all", method = RequestMethod.GET)
     public List<ReadingActivity> findAll() {
         return readingActivityDao.findAll();
     }
 
-    @RequestMapping(value = ENDPOINT + "/", method = RequestMethod.GET)
-    public List<ReadingActivity> findAllByUsername(@RequestParam String username) {
+    @RequestMapping(value = ENDPOINT + "{username}/activity", method = RequestMethod.GET)
+    public List<ReadingActivity> findAllByUsername(@PathVariable String username) {
         return readingActivityDao.findAllByUsername(username);
     }
 
-    @RequestMapping(value = ENDPOINT + "/", method = RequestMethod.POST)
-    public ReadingActivity create(@RequestBody ReadingActivity readingActivity, @RequestParam String username, Principal principal){
-        return readingActivityDao.create(readingActivity, username, principal);
+    @RequestMapping(value = ENDPOINT + "{username}/activity", method = RequestMethod.POST)
+    public ReadingActivity create(@RequestBody ReadingActivity readingActivity){
+        return readingActivityDao.create(readingActivity);
     }
 }

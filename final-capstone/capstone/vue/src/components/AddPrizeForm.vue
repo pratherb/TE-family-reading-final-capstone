@@ -31,7 +31,7 @@
           <label for="end-date">End Date</label>
           <input type="date" id="end-date" v-model="prizes.endDate" required />
         </div>
-        <button type="submit">Create Prize</button>
+        <button v-on:click="addToPrizeList(prize)">Add to Prize List</button>
       </form>
     </div>
   </div>

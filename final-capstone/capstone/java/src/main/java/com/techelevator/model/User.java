@@ -33,11 +33,12 @@ public class User {
       this.activated = true;
    }
 
-   public User(String username, String password, String firstName, String lastName){
+   public User(String username, String password, String firstName, String lastName, String role){
       this.username = username;
       this.password = password;
       this.firstName = firstName;
       this.lastName = lastName;
+      this.role = role;
       this.activated = true;
    }
 
@@ -87,6 +88,14 @@ public class User {
 
    public void setLastName(String lastName) {
       this.lastName = lastName;
+   }
+
+   public String getRole() {
+      return role;
+   }
+
+   public void setRole(String role) {
+      this.role = role;
    }
 
    public boolean isActivated() {

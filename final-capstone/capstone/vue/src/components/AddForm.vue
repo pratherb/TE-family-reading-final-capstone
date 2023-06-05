@@ -24,6 +24,15 @@
           <label for="lastname">Last Name</label>
           <input type="text" id="lastname" v-model="user.lastName" required />
         </div>
+        <div class="form-input-group">
+          <label for="role">Role</label>
+          <select id="role" v-model="user.role" required>
+            <option value="parent">Parent</option>
+            <option value="child">Child</option>
+          </select>
+          <br>
+        </div>
+        <br>
         <button type="submit">Create Family Member</button>
       </form>
     </div>
@@ -42,7 +51,7 @@ export default {
         password: "",
         firstName: "",
         lastName: "",
-        role: "user",
+        role: "",
       },
       registrationErrors: false,
       registrationErrorMsg: "There were problems registering this user.",
@@ -55,6 +64,7 @@ export default {
         password: this.user.password,
         firstName: this.user.firstName,
         lastName: this.user.lastName,
+        role: this.user.role
       };
       if (this.username != "") {
         userService.add(newMember).then((response) => {
@@ -64,7 +74,7 @@ export default {
               password: "",
               firstName: "",
               lastName: "",
-              role: "user",
+              role: "",
             };
             this.$router.push({path: "/members"});
           }
