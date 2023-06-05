@@ -6,12 +6,12 @@ const http = axios.create({
 
 export default {
 
-  listPrizes(prizes) {
-    return http.get(`/prizes=${prizes}`);
+  listPrizes(prize) {
+    return http.get(`/prizes=${prize}`);
   },
 
-  addToPrizeList(prizes){
-    return http.post(`/prizes=${prizes}`);
+  addToPrizeList(prize){
+    return http.post(`/prizes=${prize}`);
   },
 
   getPrizesEarned(finished){
