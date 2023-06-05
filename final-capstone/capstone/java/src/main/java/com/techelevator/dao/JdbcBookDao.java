@@ -165,13 +165,14 @@ public class JdbcBookDao implements BookDao {
     @Override
     public Book createBook(Book book) {
         String sql = "INSERT INTO book" +
-                "(book_isbn, title, author, num_pages)" +
-                "VALUES(?,?,?,?)";
+                "(book_isbn, title, author, num_pages, publisher, cover_url)" +
+                "VALUES(?,?,?,?,?,?)";
         try {
             //First, check to see if book is not already in DB
             if (getBookFromDatabaseByISBN(book.getIsbn()) == null) {
                 jdbcTemplate.update(sql,
-                        book.getIsbn(), book.getTitle(), book.getAuthor(), book.getNumPages());
+                        book.getIsbn(), book.getTitle(), book.getAuthor(), book.getNumPages(),
+                        book.getPublisher(), book.getCoverUrl());
                 return book;
             }
             //If book is already there, return a reference to the book in question
@@ -385,7 +386,7 @@ public class JdbcBookDao implements BookDao {
         book.setTitle(rs.getString("title"));
         book.setNumPages(rs.getInt("num_pages"));
         book.setPublisher(rs.getString("publisher"));
-        book.setCoverUrl("cover_url");
+        book.setCoverUrl(rs.getString("cover_url"));
         return book;
     }
 }

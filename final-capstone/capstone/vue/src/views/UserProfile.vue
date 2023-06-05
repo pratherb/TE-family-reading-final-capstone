@@ -12,12 +12,13 @@
     <label for="finished">Show finished books only</label><br>
     <input type="checkbox" id="finished" name="finished" v-on:change="flipFinishedAndReload">
     <div>
-      <ul v-for="book in readingList" v-bind:key="book.isbn">
+      <ul>
         <li>
-          <h4>{{book.title}}</h4>
+        <book-detail v-for="book in readingList" :key="book.isbn" :book="book" />
+          <!-- <h4>{{book.title}}</h4>
           <p>Author: {{book.author}}</p>
           <p>ISBN: {{book.isbn}}</p>
-          <p>Pages: {{book.numPages}}</p>
+          <p>Pages: {{book.numPages}}</p> -->
         </li>
       </ul>
     </div>
@@ -30,10 +31,11 @@
 <script>
 import ReadingActivity from '../components/ReadingActivity.vue';
 import ReadingListService from '../services/ReadingListService';
+import BookDetail from '../components/BookDetail.vue'
 export default {
-  components: { ReadingActivity },
+  components: { ReadingActivity, BookDetail },
   name: "user-profile",
-  finished: false,
+   finished: false,
   data() {
     return {
       isLoading: true,
