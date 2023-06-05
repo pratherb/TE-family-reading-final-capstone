@@ -1,27 +1,5 @@
 <template>
   <div class="members">
-<<<<<<< HEAD
-      <div class="loading" v-if="isLoading">
-          <img src="../assets/book_pages_opening.gif" />
-      </div>
-      <h2>BookBound Image Here</h2>
-      <div id="nav">
-          <router-link v-bind:to="{ name: 'reading' }"> Reading </router-link>&nbsp;|&nbsp;
-          <router-link v-bind:to="{ name: 'prizes' }"> Prizes </router-link>&nbsp;|&nbsp;
-          <router-link v-bind:to="{ name: 'settings' }"> Settings </router-link>&nbsp;|&nbsp;
-      </div>
-      <h3 id="member-heading">Family Members</h3>
-      <div class="button">
-          <router-link to="/addmember">
-          <button>Add Family Member</button>
-          </router-link>
-      </div>
-       <ul v-for="member in members" v-bind:key="member.id">
-          <li>
-              {{ member.username }}
-          </li>
-      </ul>
-=======
     <div class="loading" v-if="isLoading">
       <img src="../assets/book_pages_opening.gif" />
     </div>
@@ -47,7 +25,6 @@
           >{{ member.username }}</router-link>
       </li>
     </ul>
->>>>>>> main
   </div>
 </template>
 
