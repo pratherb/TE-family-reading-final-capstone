@@ -1,9 +1,10 @@
 <template>
   <div>
-      <h4>{{book.title}}</h4>
+      <img :src="book.coverUrl">
       <p>Author: {{book.author}}</p>
       <p>ISBN: {{book.isbn}}</p>
       <p>Pages: {{book.numPages}}</p>
+      <p>Publisher: {{book.publisher}}</p>
       <button v-on:click="addToReading(book.isbn)">Add to reading list</button>
   </div>
 </template>

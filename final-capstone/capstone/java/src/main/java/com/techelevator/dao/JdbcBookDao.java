@@ -328,9 +328,9 @@ public class JdbcBookDao implements BookDao {
         for (JsonElement i : docsArray) { //For each element in "docs"..
             //Set default values. Sometimes the API may not have this information, so we need defaults in case.
             String title = "Not found";
-            String author = "Not found";
+            String author = "Unknown";
             String isbn = "Not found";
-            String publisher = "Nof found";
+            String publisher = "Unknown";
             String coverUrl = "";
             int numPages = 0;
             Book book = new Book();
