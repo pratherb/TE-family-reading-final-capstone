@@ -81,14 +81,14 @@ export default {
 
 .title-logo{
   display: flex;
-height: 400px;
-width: 400px;
+width: 300px;
 }
 .title{
   display: flex;
   justify-content: center;
   font-family: 'Socake', sans-serif;
   font-size: 65px;
+  align-items: center;
   color:  rgb(88,85,91);
 }
 #bookcover{
