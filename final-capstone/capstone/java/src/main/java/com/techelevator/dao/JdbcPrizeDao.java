@@ -187,14 +187,20 @@ public class JdbcPrizeDao implements PrizeDao {
                 "(user_id, family_id, name, description, milestone, user_group, start_date, end_date)\n" +
                 "VALUES(?,?,?,?,?,?,?,?)\n" +
                 "RETURNING prize_id";
+        int id = 0;
         try {
-            int id = jdbcTemplate.queryForObject(sql, Integer.class,
+            //User id is optional, right now
+            int userId = prize.getUserId();
+            if(userId <= 0) userId = 0;
+            id = jdbcTemplate.queryForObject(sql, Integer.class,
                     prize.getUserId(), prize.getFamilyId(), prize.getName(), prize.getDescription(), prize.getMilestone(),
                     prize.getUserGroup(), prize.getStartDate(), prize.getEndDate());
             return getById(id);
 
         } catch (DataAccessException e) {
+            System.out.println(id);
             System.out.println("Error creating prize.");
+            System.out.println(e.getMessage());
         }
         return null;
     }

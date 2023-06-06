@@ -1,10 +1,12 @@
 <template>
   <div>
+      <img :src="book.coverUrl">
       <h4>{{book.title}}</h4>
       <p>Author: {{book.author}}</p>
       <p>ISBN: {{book.isbn}}</p>
       <p>Pages: {{book.numPages}}</p>
-      <button v-on:click="addToReading(book.isbn)">Add to reading list</button>
+      <p>Publisher: {{book.publisher}}</p>
+      <button v-if="showButton" v-on:click="addToReading(book.isbn)">Add to reading list</button>
   </div>
 </template>
 
@@ -12,7 +14,13 @@
 import bookService from "../services/BookService";
 export default {
   name: "book-detail",
-  props: ['book'],
+  props: {
+    book:  Object,
+    showButton: {
+      type: Boolean,
+      default: false
+    }   
+  },
   methods: {
       addToReading(isbn){
         bookService
