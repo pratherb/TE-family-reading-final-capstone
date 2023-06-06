@@ -1,37 +1,42 @@
 <template>
   <div>
     <div id="add" class="text-center">
-      <form v-on:submit.prevent="addForm">
+      <form v-on:submit.prevent="addPrize">
         <h1>Add Prize</h1>
         <div class="form-input-group">
           <label for="prize-name">Prize Name</label>
-          <input type="text" id="prize-name" v-model="prizes.prizeName" required />
+          <input type="text" id="prize-name" v-model="prize.name" required />
         </div>
         <div class="form-input-group">
           <label for="prize-description">Prize Description</label>
-          <input type="text" id="prize-description" v-model="prizes.description" required/>
+          <input type="text" id="prize-description" v-model="prize.description" required/>
         </div>
         <div class="form-input-group">
           <label for="milestone">Milestone</label>
-          <input type="text" id="milestone" v-model="prizes.milestone" required />
+          <input type="text" id="milestone" v-model="prize.milestone" required />
         </div>
         <div class="form-input-group">
           <label for="user-group">User Group</label>
-          <input type="checkbox" id="user-group" v-model="prizes.userGroup" required />
+          <label for="user-group" >Parent</label>
+          <input type="radio" name="family-group" id="user-group" v-model="prize.userGroup" required>
+          <label for="user-group" >Child</label>
+          <input type="radio" name="family-group" id="user-group" v-model="prize.userGroup" required>
+          <label for="user-group" >Both</label>
+          <input type="radio" name="family-group" id="user-group" v-model="prize.userGroup" required>
         </div>
         <div class="form-input-group">
           <label for="max-prizes">Max Prizes</label>
-          <input type="text" id="max-prizes" v-model="prizes.maxPrizes" required />
+          <input type="text" id="max-prizes" v-model="prize.maxPrizes" required />
         </div>
         <div class="form-input-group">
           <label for="start-date">Start Date</label>
-          <input type="date" id="start-date" v-model="prizes.startDate" required />
+          <input type="date" id="start-date" v-model="prize.startDate" required />
         </div>
         <div class="form-input-group">
           <label for="end-date">End Date</label>
-          <input type="date" id="end-date" v-model="prizes.endDate" required />
+          <input type="date" id="end-date" v-model="prize.endDate" required />
         </div>
-        <button v-on:click="addToPrizeList(prize)">Add to Prize List</button>
+        <button>Add to Prize List</button>
       </form>
     </div>
   </div>
@@ -45,7 +50,7 @@ export default {
   data() {
     return {
       prize: {
-        prizeName: "",
+        name: "",
         description: "",
         milestone: "",
         userGroup: "",
@@ -58,19 +63,19 @@ export default {
   methods: {
     addPrize() {
       const newPrize = {
-        prizeName: this.prizes.prizeName,
-        description: this.prizes.description,
-        milestone: this.prizes.milestone,
-        userGroup: this.prizes.userGroup,
-        maxPrizes: this.prizes.maxPrizes,
-        startDate: this.prizes.startDate,
-        endDate: this.prizes.endDate
+        name: this.prize.name,
+        description: this.prize.description,
+        milestone: this.prize.milestone,
+        userGroup: this.prize.userGroup,
+        maxPrizes: this.prize.maxPrizes,
+        startDate: this.prize.startDate,
+        endDate: this.prize.endDate
       };
       if (this.username != "") {
-        prizeService.add(newPrize).then((response) => {
+        prizeService.addToPrizeList(newPrize).then((response) => {
           if (response.status === 200) {
             this.prizes = {
-              prizeName: "",
+              name: "",
               description: "",
               milestone: "",
               userGroup: "",
@@ -88,4 +93,5 @@ export default {
 </script>
 
 <style>
+
 </style>

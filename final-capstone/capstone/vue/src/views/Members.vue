@@ -33,14 +33,23 @@
         </td>
       </tr>
     </table>
-     <div id="nav">
-     <button class="selections"> <router-link v-bind:to="{ name: 'reading' }"> Reading</router-link> </button>
-       <button class="selections"><router-link v-bind:to="{ name: 'prizes' }"> Prizes </router-link></button>
-       <button class="selections"><router-link v-bind:to="{ name: 'addmember' }"> Add Family </router-link></button>
-    <div class="addButton">
-      <router-link to="/addmember">
-        <button>Add Family Member</button>
-      </router-link>
+    <div id="nav">
+      <button class="selections">
+        <router-link v-bind:to="{ name: 'reading' }"> Reading</router-link>
+      </button>
+      <button class="selections">
+        <router-link v-bind:to="{ name: 'prizes' }"> Prizes </router-link>
+      </button>
+      <button class="selections">
+        <router-link v-bind:to="{ name: 'addmember' }">
+          Add Family
+        </router-link>
+      </button>
+      <div class="addButton">
+        <router-link to="/addmember">
+          <button>Add Family Member</button>
+        </router-link>
+      </div>
     </div>
   </div>
 </template>

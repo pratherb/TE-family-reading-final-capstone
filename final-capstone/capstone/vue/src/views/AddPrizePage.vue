@@ -1,7 +1,7 @@
 <template>
   <div>
       <h1>Add New Prize</h1>
-      <add-prize-form />
+      <add-prize-form/>
   </div>
 </template>
 

@@ -1,5 +1,11 @@
 <template>
   <div class="prizes">
+    <h2>Prize Details</h2>
+    <div class="addPrize">
+      <router-link to="/addprize">
+        <button>Add Prize</button>
+      </router-link>
+    </div>
       <prize-detail  v-for="prize in prizeList"
         :key="prize.name"
         :prize="prize"

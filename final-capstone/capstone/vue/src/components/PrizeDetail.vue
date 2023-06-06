@@ -16,9 +16,9 @@
 import prizeService from "../services/PrizeService";
 export default {
   name: "prize-detail",
-  props: {
-    prize: Object,
-  },
+  props: [
+    'prize'
+  ],
   methods: {
     addToPrizes(prize) {
       prizeService.addToPrizeList(prize).then((response) => {
