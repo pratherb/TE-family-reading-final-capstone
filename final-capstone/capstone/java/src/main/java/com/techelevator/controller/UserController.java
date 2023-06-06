@@ -61,8 +61,8 @@ public class UserController {
     }
 
     @RequestMapping(value = ENDPOINT + "/{username}", method = RequestMethod.GET)
-    public List<Book> getUserReadingList(@PathVariable String username, boolean finished) {
-        return bookDao.getUserReadingList(username, finished);
+    public List<Book> getUserCurrentlyReading(@PathVariable String username) {
+        return bookDao.getUserCurrentlyReading(username);
     }
 
 //    @RequestMapping(value = ENDPOINT + "/reading/isbn={isbn}", method = RequestMethod.POST)
@@ -73,6 +73,16 @@ public class UserController {
     @RequestMapping(value = "/book" + "/isbn={isbn}", method = RequestMethod.POST)
     public Book addBookToReadingListByPrincipal(@PathVariable String isbn, Principal principal){
         return bookDao.addBookToReadingListByPrincipal(bookDao.searchBookByIsbn(isbn), principal);
+    }
+
+    @RequestMapping(value = ENDPOINT + "/{username}/completed", method = RequestMethod.GET)
+    public int getNumberOfBooksFinished(@PathVariable String username) {
+        return bookDao.getNumberOfBooksFinished(username);
+    }
+
+    @RequestMapping(value = ENDPOINT + "/{username}", method = RequestMethod.PUT)
+    public void markBookAsFinished(String isbn) {
+        bookDao.markBookAsFinished(isbn);
     }
 
 

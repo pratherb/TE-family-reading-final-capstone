@@ -20,7 +20,8 @@ export default new Vuex.Store({
   state: {
     token: currentToken || '',
     user: currentUser || {},
-    bookResults: []
+    bookResults: [],
+    memberResults: []
   },
   mutations: {
     SET_AUTH_TOKEN(state, token) {
@@ -41,6 +42,12 @@ export default new Vuex.Store({
     },
     ADD_BOOK_RESULTS(state, results) {
       state.bookResults = results;
+    },
+    ADD_MEMBERS(state, results) {
+      state.memberResults = results;
+    },
+    CLEAR_MEMBER_RESULTS(state) {
+      state.memberResults = [];
     }
   }
 })

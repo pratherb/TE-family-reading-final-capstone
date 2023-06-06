@@ -79,10 +79,9 @@ export default {
             .then((response)=>{
                 if (response.status == 200){
                     this.clearNewActivity();
-                    this.$router.push({ name: 'user-profile', params: {username:username} });
+                    this.reloadPage();
                 }
             })
-            this.$router.push({ name: 'user-profile', params: {username:username} });
       },
       clearNewActivity() {
           this.newActivity.username = "";
@@ -90,7 +89,10 @@ export default {
           this.newActivity.minutesRead = 0;
           this.newActivity.format = "";
           this.newActivity.notes = "";
-      }
+      },
+      reloadPage() {
+      window.location.reload();
+    }
   }
 }
 </script>
