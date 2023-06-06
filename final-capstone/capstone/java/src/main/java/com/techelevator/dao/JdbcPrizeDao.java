@@ -18,10 +18,12 @@ public class JdbcPrizeDao implements PrizeDao {
 
     private final JdbcTemplate jdbcTemplate;
     private FamilyDao familyDao;
+    private UserDao userDao;
 
-    public JdbcPrizeDao(JdbcTemplate jdbcTemplate, FamilyDao familyDao) {
+    public JdbcPrizeDao(JdbcTemplate jdbcTemplate, FamilyDao familyDao, UserDao userDao) {
         this.jdbcTemplate = jdbcTemplate;
         this.familyDao = familyDao;
+        this.userDao = userDao;
     }
 
     //For quick testing
@@ -90,7 +92,7 @@ public class JdbcPrizeDao implements PrizeDao {
     }
 
     @Override
-    public List<Prize> getUserPrizesByUserId(int userId) {
+    public List<Prize> getTrackedUserPrizesByUserId(int userId) {
         List<Prize> prizeList = new ArrayList<>();
         String sql = "SELECT * FROM prize\n" +
                 "WHERE user_id = ?";
@@ -108,7 +110,7 @@ public class JdbcPrizeDao implements PrizeDao {
     }
 
     @Override
-    public List<Prize> getUserPrizesByUsername(String username) {
+    public List<Prize> getTrackedUserPrizeByUsername(String username) {
         List<Prize> prizeList = new ArrayList<>();
         String sql = "SELECT * FROM prize p\n" +
                 "JOIN users u ON u.user_id = p.user_id\n" +
@@ -131,7 +133,7 @@ public class JdbcPrizeDao implements PrizeDao {
     public List<Prize> getPrizesByUserGroup(String userGroup, Principal principal) {
         List<Prize> prizeList = new ArrayList<>();
         String sql = "SELECT * FROM prize\n" +
-                "WHERE user_group = ?\n" +
+                "WHERE user_group ILIKE ?\n" +
                 "AND family_id = ?";
         try {
             int familyId = familyDao.getFamilyIdByUsername(principal.getName());
@@ -183,22 +185,19 @@ public class JdbcPrizeDao implements PrizeDao {
     @Override
     public Prize create(Prize prize) {
         Prize newPrize;
+        //Inserts NULL into user_id initially - this gets filled when a user is "tracking" it
         String sql = "INSERT INTO prize\n" +
-                "(user_id, family_id, name, description, milestone, user_group, start_date, end_date)\n" +
-                "VALUES(?,?,?,?,?,?,?,?)\n" +
+                "(family_id, name, description, milestone, user_group, start_date, end_date)\n" +
+                "VALUES(?,?,?,?,?,?,?)\n" +
                 "RETURNING prize_id";
-        int id = 0;
         try {
             //User id is optional, right now
-            int userId = prize.getUserId();
-            if(userId <= 0) userId = 0;
-            id = jdbcTemplate.queryForObject(sql, Integer.class,
-                    prize.getUserId(), prize.getFamilyId(), prize.getName(), prize.getDescription(), prize.getMilestone(),
+            int id = jdbcTemplate.queryForObject(sql, Integer.class,
+                    prize.getFamilyId(), prize.getName(), prize.getDescription(), prize.getMilestone(),
                     prize.getUserGroup(), prize.getStartDate(), prize.getEndDate());
             return getById(id);
 
         } catch (DataAccessException e) {
-            System.out.println(id);
             System.out.println("Error creating prize.");
             System.out.println(e.getMessage());
         }
@@ -228,23 +227,18 @@ public class JdbcPrizeDao implements PrizeDao {
     }
 
     @Override
-    public void delete(Prize prize) {
-        int prizeId = getIdByName(prize.getName());
+    public void deleteByName(String prizeName) {
         String sql = "DELETE FROM prize\n"+
-                "WHERE prize_id = ?";
+                "WHERE name = ?";
         try{
-            jdbcTemplate.update(sql, prizeId);
+            jdbcTemplate.update(sql, prizeName);
         } catch (DataAccessException e){
-            System.out.println("Error deleting prize of id + " + prizeId);
+            System.out.println("Error deleting prize " + prizeName);
         }
     }
 
     private Prize mapRowToPrize(SqlRowSet rs) {
         Prize prize = new Prize();
-        String defaultDate = "1-1-1900";
-        //Set 2 default values here, in case DB doesn't specify dates
-        prize.setStartDate(LocalDate.parse(defaultDate));
-        prize.setEndDate(LocalDate.parse(defaultDate));
         try {
             prize.setEndDate(null);
             prize.setUserId(rs.getInt("user_id"));
@@ -252,12 +246,48 @@ public class JdbcPrizeDao implements PrizeDao {
             prize.setName(rs.getString("name"));
             prize.setDescription(rs.getString("description"));
             prize.setMilestone(rs.getInt("milestone"));
-            prize.setUserGroup(rs.getString("user_group"));
+            prize.setUserGroup(rs.getString("user_group").toLowerCase());
             prize.setStartDate(rs.getDate("start_date").toLocalDate());
             prize.setEndDate(rs.getDate("end_date").toLocalDate());
         } catch (NullPointerException e) {
             System.out.println("Couldn't get date from prize.");
         }
         return prize;
+    }
+
+    //Returns a user_prize in JSON data, for testing - doesn't need to actually return anything otherwise
+    public void awardPrizeByUser(String prizeName, String username) {
+        String sql = "INSERT INTO user_prize\n"+
+                "(user_id, prize_id, won_date)\n"+
+                "VALUES(?,?,?)\n";
+        try{
+            int prizeId = getIdByName(prizeName);
+            int userId = userDao.findByUsername(username).getId();
+            int result = jdbcTemplate.update(sql,
+                    userId, prizeId, LocalDate.now());
+        } catch (DataAccessException e){
+            System.out.println("Error awarding a prize to " + username);
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Override
+    public List<Prize> getPrizesWonByUser(String username) {
+        List<Prize> prizeList = new ArrayList<>();
+        String sql = "SELECT * from prize p\n" +
+                "JOIN user_prize up ON up.prize_id = p.prize_id\n" +
+                "WHERE up.user_id = ?";
+        try{
+            int userId = userDao.findByUsername(username).getId();
+            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
+            while(results.next()){
+                Prize prize = mapRowToPrize(results);
+                prizeList.add(prize);
+            }
+            return prizeList;
+        } catch (DataAccessException e){
+            System.out.println("Error getting prizes awarded to user " + username);
+        }
+        return null;
     }
 }

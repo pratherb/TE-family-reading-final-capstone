@@ -15,8 +15,8 @@ public interface PrizeDao {
 
     Prize getByName(String name);
     int getIdByName(String name);
-    List<Prize> getUserPrizesByUserId(int userId);
-    List<Prize> getUserPrizesByUsername(String username);
+    List<Prize> getTrackedUserPrizesByUserId(int userId);
+    List<Prize> getTrackedUserPrizeByUsername(String username);
     List<Prize> getPrizesByUserGroup(String userGroup, Principal principal);
     List<Prize> getPrizesBetweenDates(LocalDate date1, LocalDate date2);
     List<Prize> getPrizesByFamilyId(int familyId);
@@ -24,6 +24,9 @@ public interface PrizeDao {
 
     Prize create(Prize prize);
     Prize update(Prize prize);
-    void delete(Prize prize);
+    void deleteByName(String prizeName);
 
+    //Returns a user_prize in JSON data, for testing - doesn't need to actually return anything otherwise
+    void awardPrizeByUser(String prizeName, String username);
+    List<Prize> getPrizesWonByUser(String username);
 }

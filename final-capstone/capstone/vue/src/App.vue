@@ -16,7 +16,7 @@
           ><br />
           <router-link v-bind:to="{ name: 'login' }" v-if="!$store.state.token"
             >Login</router-link
-          ><br />
+          >
           <router-link
             v-bind:to="{ name: 'logout' }"
             v-if="$store.state.token != ''"

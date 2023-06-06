@@ -4,13 +4,15 @@
       <h1 id="member-heading">Your Family Members</h1>
       <img src="../images/sharpened-transparent-logo.png" >
     </div>
-    <!-- <div class="loading" v-if="isLoading">
-      <img src="../assets/book_pages_opening.gif" />
-    </div> -->
-  <table>
-    <tr v-for="member in members" v-bind:key="member.id">
-      <td>
-        <router-link class="username"
+    <h3 id="member-heading">Your Family Members</h3>
+    <div class="button">
+      <router-link to="/addmember">
+        <button>Add Family Member</button>
+      </router-link>
+    </div>
+    <ul v-for="member in memberResults" v-bind:key="member.id">
+      <li>
+        <router-link
           v-bind:to="{
             name: 'user-profile',
             params: { username: member.username },
@@ -44,21 +46,16 @@ export default {
       isLoading: true,
       errorMsg: "",
       filterText: "",
-      members: [],
+      memberResults: []
     };
   },
-  /* computed: {
-        filteredMembers() {
-            return this.members.filter((member) => {
-                return member.name.includes(this.filterText);
-            })
-        }
-    }, */
   created() {
     docsService.list().then((response) => {
-      this.members = response.data;
+      this.memberResults = response.data;
+      this.$store.commit('ADD_MEMBERS', this.memberResults);
+      this.isLoading = false;
     });
-  },
+  }
 };
 </script>
 
