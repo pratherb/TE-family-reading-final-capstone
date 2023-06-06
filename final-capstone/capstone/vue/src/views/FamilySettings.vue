@@ -1,7 +1,7 @@
 <template>
   <div class="family-settings">
-    <h2 name='image'>BookBound Image Here</h2>
-    <h3 name='head'>Family Settings</h3>
+    <h2 class="image" name='image'>BookBound Image Here</h2>
+    <h3 class="head" name='head'>Family Settings</h3>
   </div>
 </template>
 
@@ -22,22 +22,18 @@ export default {
     text-align: center;
 }
 
-h2 {
+.image {
     text-align: center;
     font-size: 48px;
 }
 
-h3 {    
+.head{    
     font-size: 36px;
 }
 
-li {
+/* li {
     list-style-type: none;
     text-align: center;
-}
-
-.nav {
-    
-}
+} */
 
 </style>

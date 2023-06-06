@@ -7,9 +7,9 @@
     <div class="loading" v-if="isLoading">
       <img src="../assets/book_pages_opening.gif" />
     </div>
-    <table>
-      <tr v-for="member in memberResults" v-bind:key="member.id">
-        <td>
+    <table class="members-table">
+      <tr class="members-row" v-for="member in memberResults" v-bind:key="member.id">
+        <td class="members-table-data">
           <router-link
             class="username"
             v-bind:to="{
@@ -103,13 +103,16 @@ h2 {
   color: rgb(88, 85, 91);
   text-decoration: none;
 }
-table {
+.members-table {
   border: 1px solid;
   margin: 20px auto 20px auto;
   /* top, right, bottom, left */
   background: white;
 }
-td {
+.members-row{
+  background: white;
+}
+.members-data {
   border-bottom: solid;
   width: 200px;
 }
