@@ -23,11 +23,19 @@
         </div>
         <div class="form-input-group" v-if="selectedOption === 'title'">
           <label for="title-input">Title</label>
-          <input type="text" id="title-input" v-model="bookToSearch.searchTerm" />
+          <input
+            type="text"
+            id="title-input"
+            v-model="bookToSearch.searchTerm"
+          />
         </div>
         <div class="form-input-group" v-if="selectedOption === 'isbn'">
           <label for="isbn-input">ISBN</label>
-          <input type="text" id="isbn-input" v-model="bookToSearch.searchTerm" />
+          <input
+            type="text"
+            id="isbn-input"
+            v-model="bookToSearch.searchTerm"
+          />
         </div>
         <button type="submit" v-on:click="makeVisible">Find Book</button>
       </form>
@@ -35,7 +43,12 @@
     <div v-show="showResults">
       <ul>
         <li>
-          <book-detail v-for="book in this.$store.state.bookResults" v-bind:key="book.isbn" v-bind:book="book"/>
+          <book-detail
+            v-for="book in this.$store.state.bookResults"
+            v-bind:showButton="true"
+            v-bind:key="book.isbn"
+            v-bind:book="book"
+          />
         </li>
       </ul>
     </div>
@@ -44,7 +57,8 @@
 
 <script>
 import bookService from "../services/BookService";
-import BookDetail from './BookDetail.vue';
+import BookDetail from "./BookDetail.vue";
+
 
 export default {
   components: { BookDetail },
@@ -67,7 +81,7 @@ export default {
         bookService.get(searchTerm).then((response) => {
           if (response.status === 200) {
             this.bookResults = [response.data];
-            this.$store.commit('ADD_BOOK_RESULTS', this.bookResults);
+            this.$store.commit("ADD_BOOK_RESULTS", this.bookResults);
             this.resetBookResults();
           }
         });
@@ -75,22 +89,29 @@ export default {
         bookService.listBooksByTitle(searchTerm).then((response) => {
           if (response.status === 200) {
             this.bookResults = response.data;
-            this.$store.commit('ADD_BOOK_RESULTS', this.bookResults);
+            this.$store.commit("ADD_BOOK_RESULTS", this.bookResults);
             this.resetBookResults();
           }
         });
       }
     },
     resetBookResults() {
-      this.bookResults = []
+      this.bookResults = [];
     },
     makeVisible() {
       this.showResults = true;
+    },
+    addToReading(isbn) {
+      bookService.addToReadingList(isbn).then((response) => {
+        if (response.status === 200) {
+          const username = this.$store.state.user.username;
+          this.$router.push({ name: "user-profile", params: { username } });
+        }
+      });
     },
   },
 };
 </script>
 
 <style scoped>
-
 </style>

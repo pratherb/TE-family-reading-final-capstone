@@ -31,13 +31,14 @@
   <!-- Nav bar from VitorLuizC -->
 </template>
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap');
 body {
   margin: 0;
   padding: 0;
 
   background: #232323;
   color: #cdcdcd;
-  font-family: "Avenir Next", "Avenir", sans-serif;
+ font-family: 'Montserrat', sans-serif;
 }
 
 #menuToggle {
