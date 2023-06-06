@@ -25,5 +25,5 @@ public interface BookDao {
     Book updateReadingListEntryByIsbn(Book book, String isbn);
     void deleteReadingListEntryByIsbn(String isbn);
     int getNumberOfBooksFinished(String username);
-    void markBookAsFinished(String isbn);
+    void markBookAsFinished(String username, String isbn);
 }

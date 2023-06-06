@@ -1,39 +1,45 @@
 <template>
   <div>
     <div id="add" class="text-center">
-      <form v-on:submit.prevent="addForm">
+      <form class="members_form" v-on:submit.prevent="addForm">
         <div class="behind_form_text">
-        <div class="form-input-group">
-          <label for="username">Username: </label>
-          <input type="text" id="username" v-model="user.username" required />
-        </div>
-        <div class="form-input-group">
-          <label for="password">Password: </label>
-          <input
-            type="password"
-            id="password"
-            v-model="user.password"
-            required
-          />
-        </div>
-        <div class="form-input-group">
-          <label for="firstname">First Name: </label>
-          <input type="text" id="firstname" v-model="user.firstName" required />
-        </div>
-        <div class="form-input-group">
-          <label for="lastname">Last Name: </label>
-          <input type="text" id="lastname" v-model="user.lastName" required />
-        </div>
-        <div class="form-input-group">
-          <label for="role">Role: </label>
-          <select id="role" v-model="user.role" required>
-            <option value="parent">Parent 🐓</option>
-            <option value="child">Child 🐥</option>
-          </select>
+          <div class="form-input-group">
+            <label class="add_label" for="username">Username: </label>
+            <input type="text" id="username" v-model="user.username" required />
           </div>
-          <br>
+          <div class="form-input-group">
+            <label class="add_label" for="password">Password: </label>
+            <input
+              type="password"
+              id="password"
+              v-model="user.password"
+              required
+            />
+          </div>
+          <div class="form-input-group">
+            <label class="add_label" for="firstname">First Name: </label>
+            <input
+              class="add_label"
+              type="text"
+              id="firstname"
+              v-model="user.firstName"
+              required
+            />
+          </div>
+          <div class="form-input-group">
+            <label class="add_label" for="lastname">Last Name: </label>
+            <input type="text" id="lastname" v-model="user.lastName" required />
+          </div>
+          <div class="form-input-group">
+            <label class="add_label" for="role">Role: </label>
+            <select id="role" v-model="user.role" required>
+              <option value="parent">Parent 🐓</option>
+              <option value="child">Child 🐥</option>
+            </select>
+          </div>
+          <br />
         </div>
-        <br>
+        <br />
         <button type="submit">Create Family Member</button>
       </form>
     </div>
@@ -65,7 +71,7 @@ export default {
         password: this.user.password,
         firstName: this.user.firstName,
         lastName: this.user.lastName,
-        role: this.user.role
+        role: this.user.role,
       };
       if (this.username != "") {
         userService.add(newMember).then((response) => {
@@ -77,7 +83,7 @@ export default {
               lastName: "",
               role: "",
             };
-            this.$router.push({path: "/members"});
+            this.$router.push({ path: "/members" });
           }
         });
       }
@@ -87,13 +93,11 @@ export default {
 </script>
 
 <style>
-
-label{
+label {
   margin-right: 15px;
   margin-left: 15px;
 }
-button{
-  margin-bottom:20px ;
-  
+button {
+  margin-bottom: 20px;
 }
 </style>

@@ -81,8 +81,8 @@ public class UserController {
     }
 
     @RequestMapping(value = ENDPOINT + "/{username}", method = RequestMethod.PUT)
-    public void markBookAsFinished(String isbn) {
-        bookDao.markBookAsFinished(isbn);
+    public void markBookAsFinished(@PathVariable String username, @RequestParam String isbn) {
+        bookDao.markBookAsFinished(username, isbn);
     }
 
 
