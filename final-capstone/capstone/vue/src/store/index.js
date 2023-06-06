@@ -21,7 +21,8 @@ export default new Vuex.Store({
     token: currentToken || '',
     user: currentUser || {},
     bookResults: [],
-    memberResults: []
+    memberResults: [],
+    prizeList: []
   },
   mutations: {
     SET_AUTH_TOKEN(state, token) {
@@ -48,6 +49,10 @@ export default new Vuex.Store({
     },
     CLEAR_MEMBER_RESULTS(state) {
       state.memberResults = [];
+    },
+    ADD_PRIZE(state, prize){
+      //Push new prize to the list of prizes
+      state.prizeList.push(prize);
     }
   }
 })
