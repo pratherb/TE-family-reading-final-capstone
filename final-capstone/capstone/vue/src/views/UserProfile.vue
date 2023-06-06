@@ -2,6 +2,8 @@
   <div>
     <h1>BookBound Dragon Here</h1>
     <h2>{{$route.params.username}}</h2><!-- Changes with each user -->
+
+    <reading-totals/>    
     <h3 id="reading-list">Currently Reading</h3>
 
     <div class="loading" v-if="isLoading">
@@ -32,8 +34,9 @@
 import ReadingActivity from '../components/ReadingActivity.vue';
 import ReadingListService from '../services/ReadingListService';
 import BookDetail from '../components/BookDetail.vue'
+import ReadingTotals from '../components/ReadingTotals.vue';
 export default {
-  components: { ReadingActivity, BookDetail },
+  components: { ReadingActivity, BookDetail, ReadingTotals },
   name: "user-profile",
   data() {
     return {
