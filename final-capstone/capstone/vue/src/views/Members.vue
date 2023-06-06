@@ -5,27 +5,29 @@
     </div>
     <h2>BookBound Image Here</h2>
     <div id="nav">
-      <router-link v-bind:to="{ name: 'reading' }"> Reading | </router-link>
-      <router-link v-bind:to="{ name: 'prizes' }"> Prizes | </router-link>
-      <router-link v-bind:to="{ name: 'settings' }"> Settings </router-link>
+     <button class="selections"> <router-link v-bind:to="{ name: 'reading' }"> Reading</router-link> </button>
+       <button class="selections"><router-link v-bind:to="{ name: 'prizes' }"> Prizes </router-link></button>
+       <button class="selections"><router-link v-bind:to="{ name: 'settings' }"> Settings </router-link></button>
     </div>
     <h3 id="member-heading">Your Family Members</h3>
-    <div class="button">
-      <router-link to="/addmember">
-        <button>Add Family Member</button>
-      </router-link>
-    </div>
-    <ul v-for="member in members" v-bind:key="member.id">
-      <li>
-        <router-link
+  <table>
+    <tr v-for="member in members" v-bind:key="member.id">
+      <td>
+        <router-link class="username"
           v-bind:to="{
             name: 'user-profile',
             params: { username: member.username },
           }"
           >{{ member.username }}</router-link
         >
-      </li>
-    </ul>
+      </td>
+    </tr>
+    </table>
+    <div class="addButton">
+      <router-link to="/addmember">
+        <button>Add Family Member</button>
+      </router-link>
+    </div>
   </div>
 </template>
 
@@ -58,21 +60,30 @@ export default {
 };
 </script>
 
-<style>
-@import url("https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap%27");
+<style scoped>
+@import url("https://fonts.cdnfonts.com/css/socake");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap");
 
+#member-heading{
+  font-family: "Socake", sans-serif;
+  color: rgb(88, 85, 91);
+}
+
+.addButton{
+  margin-top: 12px;
+}
+.selections {
+  transition-duration: 0.4s;
+  padding: 12px 28px;
+  border: 1px solid rgb(0, 0, 0);
+  margin: 10px;
+  background: rgb(231, 247, 217);
+}
+
+.selections:hover {
+  background-color: rgb(115, 147, 126);
+}
 .members {
-  background: linear-gradient(
-    to right,
-    rgba(122, 85, 85, 0.3),
-    rgba(255, 165, 0, 0.3),
-    rgba(255, 255, 0, 0.3),
-    rgba(50, 205, 50, 0.3),
-    rgba(0, 191, 255, 0.3),
-    rgba(148, 0, 211, 0.3)
-  );
-  color: rgb(88, 85, 99);
-  font-family: "Libre Baskerville";
   text-align: center;
 }
 
@@ -93,5 +104,17 @@ li {
 #nav a{
   color: black;
   text-decoration: none;
+}
+table{
+  border: 1px solid;
+}
+table, th, td {
+  margin: 0 auto;
+}
+.username{
+  font-family: "Montserrat", sans-serif;
+  text-decoration: underline;
+  color: black;
+  font-size: 20px;
 }
 </style>

@@ -7,7 +7,7 @@
       </div>
     </h1>
     <form @submit.prevent="login">
-      <div role="alert" v-if="invalidCredentials">
+      <div class= "alert" role="alert" v-if="invalidCredentials">
         Invalid username and password!
       </div>
       <div role="alert" v-if="this.$route.query.registration">
@@ -36,7 +36,7 @@
           </div>
           <button type="submit">Sign in</button>
           <p>
-            <router-link :to="{ name: 'register' }"
+            <router-link class="signup" :to="{ name: 'register' }"
               >Need an account? Sign up.</router-link
             >
           </p>
@@ -160,5 +160,14 @@ img {
   font-size: 60px;
   font-family: "Socake", sans-serif;
   color: rgb(88, 85, 99);
+}
+.alert{
+  text-decoration: none;
+  color: black;
+  text-align: center;
+}
+.signup{
+  text-decoration: underline;
+  color:black;
 }
 </style>
