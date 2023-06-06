@@ -9,7 +9,7 @@
       <router-link v-bind:to="{ name: 'prizes' }"> Prizes </router-link>
       <router-link v-bind:to="{ name: 'settings' }"> Settings </router-link>
     </div>
-    <h3 id="member-heading">Family Members</h3>
+    <h3 id="member-heading">Your Family Members</h3>
     <div class="button">
       <router-link to="/addmember">
         <button>Add Family Member</button>
@@ -22,7 +22,8 @@
             name: 'user-profile',
             params: { username: member.username },
           }"
-          >{{ member.username }}</router-link>
+          >{{ member.username }}</router-link
+        >
       </li>
     </ul>
   </div>
