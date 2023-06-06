@@ -80,10 +80,9 @@ export default {
             .then((response)=>{
                 if (response.status == 200){
                     this.clearNewActivity();
-                    this.$router.push({ name: 'user-profile', params: {username:username} });
+                    this.reloadPage();
                 }
             })
-            this.$router.push({ name: 'user-profile', params: {username:username} });
       },
       clearNewActivity() {
           this.newActivity.username = "";
@@ -92,15 +91,9 @@ export default {
           this.newActivity.format = "";
           this.newActivity.notes = "";
       },
-      deleteBook(isbn) {
-          BookService
-            .delete(isbn)
-            .then(response => {
-                if (response.status === 200) {
-                    this.getUserReadingActivity
-                }
-            })
-      }
+      reloadPage() {
+      window.location.reload();
+    }
   }
 }
 </script>

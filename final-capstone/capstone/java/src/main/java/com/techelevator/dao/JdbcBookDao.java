@@ -11,6 +11,7 @@ import org.springframework.http.*;
 import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.SqlOutParameter;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -19,6 +20,7 @@ import org.springframework.web.client.RestTemplate;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.SortedMap;
 
 
 @Component
@@ -225,17 +227,11 @@ public class JdbcBookDao implements BookDao {
     }
 
     @Override
-    public List<Book> getUserReadingList(String username, boolean finished) {
+    public List<Book> getUserCurrentlyReading(String username) {
         List<Book> bookList = new ArrayList<>();
         int userId = userDao.findByUsername(username).getId();
-        String sql ="";
-        if (finished){
-            sql = "SELECT * from book JOIN user_book ON user_book.book_isbn = book.book_isbn " +
-                    "WHERE user_id =? AND finished=true";
-        } else {
-            sql = "SELECT * from book JOIN user_book ON user_book.book_isbn = book.book_isbn " +
-                    "WHERE user_id =?";
-        }
+        String sql = "SELECT * from book JOIN user_book ON user_book.book_isbn = book.book_isbn " +
+                    "WHERE user_id =? AND finished=false";
         try {
             SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
             while (results.next()) {
@@ -247,6 +243,33 @@ public class JdbcBookDao implements BookDao {
             System.out.println("Error retrieving reading list of user with id " + userId);
         }
         return null;
+    }
+
+    @Override
+    public int getNumberOfBooksFinished(String username) {
+        int numBooks = 0;
+        int userId = userDao.findByUsername(username).getId();
+        String sql = "SELECT COUNT(*) AS book_total FROM user_book WHERE user_id = ? AND finished = true";
+        try {
+            SqlRowSet result = jdbcTemplate.queryForRowSet(sql, userId);
+            if (result.next()) {
+                numBooks = result.getInt("book_total");
+            }
+            return numBooks;
+        } catch (DataAccessException e) {
+            System.out.println("Error retrieving read books total for user " + username);
+        }
+        return -1;
+    }
+
+    @Override
+    public void markBookAsFinished(String isbn) {
+        String sql = "UPDATE user_book SET finished = true WHERE book_isbn = ?";
+        try {
+            jdbcTemplate.update(sql, isbn);
+        } catch (DataIntegrityViolationException e) {
+            System.out.println("Data integrity violation encountered");
+        }
     }
 
 //    @Override

@@ -15,7 +15,7 @@
         <button>Add Family Member</button>
       </router-link>
     </div>
-    <ul v-for="member in members" v-bind:key="member.id">
+    <ul v-for="member in memberResults" v-bind:key="member.id">
       <li>
         <router-link
           v-bind:to="{
@@ -39,21 +39,16 @@ export default {
       isLoading: true,
       errorMsg: "",
       filterText: "",
-      members: [],
+      memberResults: []
     };
   },
-  /* computed: {
-        filteredMembers() {
-            return this.members.filter((member) => {
-                return member.name.includes(this.filterText);
-            })
-        }
-    }, */
   created() {
     docsService.list().then((response) => {
-      this.members = response.data;
+      this.memberResults = response.data;
+      this.$store.commit('ADD_MEMBERS', this.memberResults);
+      this.isLoading = false;
     });
-  },
+  }
 };
 </script>
 

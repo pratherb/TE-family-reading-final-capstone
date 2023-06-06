@@ -5,6 +5,7 @@
 <script>
 export default {
   created() {
+    this.$store.commit('CLEAR_MEMBER_RESULTS', this.$store.state.memberResults);
     this.$store.commit("LOGOUT");
     this.$router.push("/login");
     /* setTimeout(function () { this.fetchHole() }.bind(this), 1000) */ /* Possible timeout code? */
