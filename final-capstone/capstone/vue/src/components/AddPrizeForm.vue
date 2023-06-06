@@ -9,7 +9,7 @@
         </div>
         <div class="form-input-group">
           <label for="prize-description">Prize Description</label>
-          <input type="text" id="prize-desription" v-model="prizes.description" required/>
+          <input type="text" id="prize-description" v-model="prizes.description" required/>
         </div>
         <div class="form-input-group">
           <label for="milestone">Milestone</label>
