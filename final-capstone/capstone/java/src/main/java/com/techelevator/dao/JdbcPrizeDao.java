@@ -2,6 +2,7 @@ package com.techelevator.dao;
 
 import com.techelevator.model.Prize;
 import org.springframework.dao.DataAccessException;
+import org.springframework.format.datetime.joda.LocalDateParser;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
@@ -183,7 +184,7 @@ public class JdbcPrizeDao implements PrizeDao {
     }
 
     @Override
-    public Prize create(Prize prize) {
+    public Prize create(Prize prize, Principal principal) {
         Prize newPrize;
         //Inserts NULL into user_id initially - this gets filled when a user is "tracking" it
         String sql = "INSERT INTO prize\n" +
@@ -191,10 +192,13 @@ public class JdbcPrizeDao implements PrizeDao {
                 "VALUES(?,?,?,?,?,?,?)\n" +
                 "RETURNING prize_id";
         try {
-            //User id is optional, right now
+            int familyId;
+            LocalDate startDate = LocalDate.now();
+            LocalDate endDate = startDate.plusYears(1);
+            familyId = familyDao.getFamilyIdByUsername(principal.getName());
             int id = jdbcTemplate.queryForObject(sql, Integer.class,
-                    prize.getFamilyId(), prize.getName(), prize.getDescription(), prize.getMilestone(),
-                    prize.getUserGroup(), prize.getStartDate(), prize.getEndDate());
+                    familyId, prize.getName(), prize.getDescription(), prize.getMilestone(),
+                    prize.getUserGroup(), startDate, endDate);
             return getById(id);
 
         } catch (DataAccessException e) {

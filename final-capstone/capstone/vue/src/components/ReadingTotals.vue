@@ -4,10 +4,10 @@
       <img src="../assets/book_pages_opening.gif" />
     </div>
     <div v-else>
-      <h4>Total Books Read:</h4>
-      <h4>{{bookTotal}}</h4>
-      <h4>Total Minutes of Reading:</h4>
-      <h4>{{minuteTotal}}</h4>
+      <h4 class="total-books-read">Total Books Read:</h4>
+      <h4 class="book-total">{{bookTotal}}</h4>
+      <h4 class="total-minutes-read">Total Minutes of Reading:</h4>
+      <h4 class="minute-total">{{minuteTotal}}</h4>
     </div>
   </div>
 </template>
@@ -40,7 +40,3 @@ export default {
 
 }
 </script>
-
-<style>
-
-</style>

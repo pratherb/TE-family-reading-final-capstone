@@ -196,7 +196,7 @@ logo-slider {
   overflow: hidden;
   max-width: 1300px;
   width: 90%;
-  margin: 0 auto;
+  margin: 0 auto ;
   position: relative;
   display: flex;
 }

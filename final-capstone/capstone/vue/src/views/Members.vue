@@ -7,9 +7,9 @@
     <div class="loading" v-if="isLoading">
       <img src="../assets/book_pages_opening.gif" />
     </div>
-    <table>
-      <tr v-for="member in memberResults" v-bind:key="member.id">
-        <td>
+    <table class="members-table">
+      <tr class="members-row" v-for="member in memberResults" v-bind:key="member.id">
+        <td class="members-table-data">
           <router-link
             class="username"
             v-bind:to="{
@@ -21,15 +21,21 @@
         </td>
       </tr>
     </table>
-     <div id="nav">
-     <button class="selections"> <router-link v-bind:to="{ name: 'reading' }"> Reading</router-link> </button>
-       <button class="selections"><router-link v-bind:to="{ name: 'prizes' }"> Prizes </router-link></button>
-       <button class="selections"><router-link v-bind:to="{ name: 'addmember' }"> Add Family </router-link></button>
+    <div id="nav">
+      <button class="selections">
+        <router-link v-bind:to="{ name: 'reading' }"> Reading</router-link>
+      </button>
+      <button class="selections">
+        <router-link v-bind:to="{ name: 'prizes' }"> Prizes </router-link>
+      </button>
+      <button class="selections">
+        <router-link v-bind:to="{ name: 'addmember' }">Add User</router-link>
+      </button>
+      </div>
     </div>
-  </div>
 </template>
 
-<script>
+<script scoped>
 import docsService from "../services/DocsService";
 
 export default {
@@ -95,13 +101,17 @@ h2 {
   color: rgb(88, 85, 91);
   text-decoration: none;
 }
-table {
+.members-table {
+  background: none;
   border: 1px solid;
   margin: 20px auto 20px auto;
   /* top, right, bottom, left */
   background: white;
 }
-td {
+.members-row{
+  background: white;
+}
+.members-data {
   border-bottom: solid;
   width: 200px;
 }
