@@ -263,12 +263,13 @@ public class JdbcBookDao implements BookDao {
     }
 
     @Override
-    public void markBookAsFinished(String isbn) {
-        String sql = "UPDATE user_book SET finished = true WHERE book_isbn = ?";
+    public void markBookAsFinished(String username, String isbn) {
+        int userId = userDao.findIdByUsername(username);
+        String sql = "UPDATE user_book SET finished = true WHERE user_id = ? AND book_isbn = ?";
         try {
-            jdbcTemplate.update(sql, isbn);
-        } catch (DataIntegrityViolationException e) {
-            System.out.println("Data integrity violation encountered");
+            jdbcTemplate.update(sql, userId, isbn);
+        } catch (DataAccessException e) {
+            System.out.println(e.getLocalizedMessage());
         }
     }
 

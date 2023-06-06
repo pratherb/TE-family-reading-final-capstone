@@ -15,7 +15,7 @@ export default {
   },
 
   markBookAsFinished(username, isbn) {
-    return http.put(`/user/${username}`, isbn);
+    return http.put(`/user/${username}?isbn=${isbn}`);
   },
 
   getNumBooksFinishedPerUser(username) {

@@ -139,11 +139,11 @@ public class JdbcReadingActivityDao implements ReadingActivityDao {
     @Override
     public int getTotalMinutesPerUser(String username) {
         int numMinutes = 0;
-        String sql = "SELECT COUNT(*) AS minutes_read FROM reading_activity WHERE username = ?";
+        String sql = "SELECT SUM(minutes_read) AS total_minutes FROM reading_activity WHERE username = ?";
         try {
             SqlRowSet result = jdbcTemplate.queryForRowSet(sql, username);
             if (result.next()) {
-                numMinutes = result.getInt("minutes_read");
+                numMinutes = result.getInt("total_minutes");
             }
             return numMinutes;
         } catch (DataAccessException e) {

@@ -21,15 +21,10 @@
       </td>
     </tr>
     </table>
-    <div class="addButton">
-      <router-link to="/addmember">
-        <button>Add Family Member</button>
-      </router-link>
-    </div>
      <div id="nav">
      <button class="selections"> <router-link v-bind:to="{ name: 'reading' }"> Reading</router-link> </button>
        <button class="selections"><router-link v-bind:to="{ name: 'prizes' }"> Prizes </router-link></button>
-       <button class="selections"><router-link v-bind:to="{ name: 'settings' }"> Settings </router-link></button>
+       <button class="selections"><router-link v-bind:to="{ name: 'addmember' }"> Add Family </router-link></button>
     </div>
   </div>
 </template>
@@ -70,9 +65,6 @@ export default {
   color: rgb(88, 85, 91);
 }
 
-.addButton{
-  margin-top: 12px;
-}
 .selections {
   transition-duration: 0.4s;
   padding: 12px 28px;
