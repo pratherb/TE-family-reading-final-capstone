@@ -28,7 +28,7 @@
     </div>
      <div id="nav">
      <button class="selections"> <router-link v-bind:to="{ name: 'reading' }"> Reading</router-link> </button>
-       <button class="selections"><router-link v-bind:to="{ name: 'prizes' }"> Prizes </router-link></button>
+       <button class="selections"><router-link v-bind:to="{ name: 'prize' }"> Prizes </router-link></button>
        <button class="selections"><router-link v-bind:to="{ name: 'settings' }"> Settings </router-link></button>
     </div>
   </div>
