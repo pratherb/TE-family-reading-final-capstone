@@ -1,14 +1,19 @@
 <template>
   <div class="members">
-    <!-- <div class="logo_heading">
-      <h1 id="member-heading">Your Family Members</h1>
-      <img src="../images/sharpened-transparent-logo.png" >
-    </div> -->
     <div class="logo_header">
-    <h3 id="member-heading">Your Family Members</h3>
-    <img src="../images/sharpened-transparent-logo.png">
-  </div>
-    <table>
+      <h3 id="member-heading">Your Family Members</h3>
+      <img src="../images/sharpened-transparent-logo.png">
+      </div>
+    <div class="loading" v-if="isLoading">
+      <img src="../assets/book_pages_opening.gif" />
+    </div>
+    <h2>BookBound Image Here</h2>
+    <div id="nav">
+      <button class="selections"><router-link v-bind:to="{ name: 'reading' }"> Reading</router-link></button>
+      <button class="selections"><router-link v-bind:to="{ name: 'prizes' }"> Prizes</router-link></button>
+      <button class="selections"><router-link v-bind:to="{ name: 'settings' }"> Settings</router-link></button>
+    </div>
+     <table>
     <tr v-for="member in memberResults" v-bind:key="member.id">
       <td>
         <router-link  class="username"
@@ -25,6 +30,10 @@
      <button class="selections"> <router-link v-bind:to="{ name: 'reading' }"> Reading</router-link> </button>
        <button class="selections"><router-link v-bind:to="{ name: 'prizes' }"> Prizes </router-link></button>
        <button class="selections"><router-link v-bind:to="{ name: 'addmember' }"> Add Family </router-link></button>
+    <div class="addButton">
+      <router-link to="/addmember">
+        <button>Add Family Member</button>
+      </router-link>
     </div>
   </div>
 </template>
@@ -123,8 +132,8 @@ td{
   width: 250px;
   height: 350px;
 }
-/* .loading{
+.loading{
  flex-direction: column;
     width: 200px;
-} */
+}
 </style>

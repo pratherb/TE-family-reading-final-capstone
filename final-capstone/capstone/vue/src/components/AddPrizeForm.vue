@@ -78,7 +78,7 @@ export default {
               startDate: "",
               endDate: ""
             };
-            this.$router.push({path: "/prizes"});
+            this.$router.push({path: "/prize"});
           }
         });
       }

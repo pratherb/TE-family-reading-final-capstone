@@ -2,13 +2,13 @@
   <div>
     <div id="add" class="text-center">
       <form v-on:submit.prevent="addForm">
-        <h1>Add Family Member</h1>
+        <div class="behind_form_text">
         <div class="form-input-group">
-          <label for="username">Username</label>
+          <label for="username">Username: </label>
           <input type="text" id="username" v-model="user.username" required />
         </div>
         <div class="form-input-group">
-          <label for="password">Password</label>
+          <label for="password">Password: </label>
           <input
             type="password"
             id="password"
@@ -17,19 +17,20 @@
           />
         </div>
         <div class="form-input-group">
-          <label for="firstname">First Name</label>
+          <label for="firstname">First Name: </label>
           <input type="text" id="firstname" v-model="user.firstName" required />
         </div>
         <div class="form-input-group">
-          <label for="lastname">Last Name</label>
+          <label for="lastname">Last Name: </label>
           <input type="text" id="lastname" v-model="user.lastName" required />
         </div>
         <div class="form-input-group">
-          <label for="role">Role</label>
+          <label for="role">Role: </label>
           <select id="role" v-model="user.role" required>
-            <option value="parent">Parent</option>
-            <option value="child">Child</option>
+            <option value="parent">Parent 🐓</option>
+            <option value="child">Child 🐥</option>
           </select>
+          </div>
           <br>
         </div>
         <br>
@@ -86,4 +87,13 @@ export default {
 </script>
 
 <style>
+
+label{
+  margin-right: 15px;
+  margin-left: 15px;
+}
+button{
+  margin-bottom:20px ;
+  
+}
 </style>
