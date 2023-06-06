@@ -10,8 +10,8 @@ export default {
     return http.get(`/all`, finished);
   },
 
-  getUserReadingList(username, finished) {
-    return http.get(`/user/${username}`, finished);
+  getUserReadingList(username) {
+    return http.get(`/user/${username}`);
   },
 
   markBookAsFinished(username, isbn) {

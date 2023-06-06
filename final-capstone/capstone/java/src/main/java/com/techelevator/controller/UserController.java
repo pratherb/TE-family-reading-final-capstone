@@ -61,8 +61,8 @@ public class UserController {
     }
 
     @RequestMapping(value = ENDPOINT + "/{username}", method = RequestMethod.GET)
-    public List<Book> getUserReadingList(@PathVariable String username, boolean finished) {
-        return bookDao.getUserReadingList(username, finished);
+    public List<Book> getUserCurrentlyReading(@PathVariable String username) {
+        return bookDao.getUserCurrentlyReading(username);
     }
 
 //    @RequestMapping(value = ENDPOINT + "/reading/isbn={isbn}", method = RequestMethod.POST)

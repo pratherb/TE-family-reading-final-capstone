@@ -227,17 +227,11 @@ public class JdbcBookDao implements BookDao {
     }
 
     @Override
-    public List<Book> getUserReadingList(String username, boolean finished) {
+    public List<Book> getUserCurrentlyReading(String username) {
         List<Book> bookList = new ArrayList<>();
         int userId = userDao.findByUsername(username).getId();
-        String sql ="";
-        if (finished){
-            sql = "SELECT * from book JOIN user_book ON user_book.book_isbn = book.book_isbn " +
-                    "WHERE user_id =? AND finished=true";
-        } else {
-            sql = "SELECT * from book JOIN user_book ON user_book.book_isbn = book.book_isbn " +
-                    "WHERE user_id =?";
-        }
+        String sql = "SELECT * from book JOIN user_book ON user_book.book_isbn = book.book_isbn " +
+                    "WHERE user_id =? AND finished=false";
         try {
             SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
             while (results.next()) {
