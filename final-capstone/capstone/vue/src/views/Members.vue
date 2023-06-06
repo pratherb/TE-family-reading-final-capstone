@@ -1,18 +1,17 @@
 <template>
   <div class="members">
-    <div class="logo_heading">
+    <!-- <div class="logo_heading">
       <h1 id="member-heading">Your Family Members</h1>
       <img src="../images/sharpened-transparent-logo.png" >
-    </div>
+    </div> -->
+    <div class="logo_header">
     <h3 id="member-heading">Your Family Members</h3>
-    <div class="button">
-      <router-link to="/addmember">
-        <button>Add Family Member</button>
-      </router-link>
-    </div>
-    <ul v-for="member in memberResults" v-bind:key="member.id">
-      <li>
-        <router-link
+    <img src="../images/sharpened-transparent-logo.png">
+  </div>
+    <table>
+    <tr v-for="member in memberResults" v-bind:key="member.id">
+      <td>
+        <router-link  class="username"
           v-bind:to="{
             name: 'user-profile',
             params: { username: member.username },
@@ -99,10 +98,6 @@ h2 {
   font-size: 50px;
 }
 
-li {
-  list-style-type: none;
-  text-align: center;
-}
 
 #nav a{
    color: rgb(88, 85, 91);
@@ -124,7 +119,7 @@ td{
   font-size: 30px;
   text-decoration: none;
 }
-.logo_heading{
+.logo_header{
   border: solid 5px;
     display: flex;
     flex-direction: row;
@@ -132,7 +127,7 @@ td{
     align-items: center;
     height: 250px;
 }
-.logo_heading img{
+.logo_header img{
   width: 250px;
   height: 350px;
 }
