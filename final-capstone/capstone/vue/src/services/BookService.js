@@ -10,6 +10,10 @@ export default {
     return http.get(`/title=${title}`);
   },
 
+  listBooksByPublisher(publisher) {
+    return http.get(`/publisher=${publisher}`);
+  },
+
   get(isbn) {
     console.log("reached the get method");
     return http.get(`/isbn=${isbn}`);
@@ -20,7 +24,7 @@ export default {
   },
 
   delete(isbn){
-    return http.delete(isbn);
+    return http.delete(`/books/${isbn}`);
   }
 
 }

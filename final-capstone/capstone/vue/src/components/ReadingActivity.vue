@@ -48,6 +48,7 @@
 
 <script>
 import activityService from '../services/ActivityService';
+import BookService from '../services/BookService';
 export default {
     name: "activity",
     data() {
@@ -90,6 +91,15 @@ export default {
           this.newActivity.minutesRead = 0;
           this.newActivity.format = "";
           this.newActivity.notes = "";
+      },
+      deleteBook(isbn) {
+          BookService
+            .delete(isbn)
+            .then(response => {
+                if (response.status === 200) {
+                    this.getUserReadingActivity
+                }
+            })
       }
   }
 }
