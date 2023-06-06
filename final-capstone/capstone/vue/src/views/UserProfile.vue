@@ -22,7 +22,12 @@
       </ul>
     </div>
     </div>
+    <div class="loading" v-if="isLoading">
+      <img src="../assets/book_pages_opening.gif" />
+    </div>
+    <div>
     <reading-activity/>
+    </div>
 
   </div>
 </template>

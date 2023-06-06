@@ -1,8 +1,5 @@
 <template>
   <div class="members">
-    <div class="loading" v-if="isLoading">
-      <img src="../assets/book_pages_opening.gif" />
-    </div>
     <h2>BookBound Image Here</h2>
     <div id="nav">
       <router-link v-bind:to="{ name: 'reading' }"> Reading </router-link>
@@ -15,7 +12,11 @@
         <button>Add Family Member</button>
       </router-link>
     </div>
-    <ul v-for="member in members" v-bind:key="member.id">
+    <div class="loading" v-if="isLoading">
+      <img src="../assets/book_pages_opening.gif" />
+    </div>
+    <div v-else>
+    <ul v-for="member in memberResults" v-bind:key="member.id">
       <li>
         <router-link
           v-bind:to="{
@@ -25,6 +26,7 @@
           >{{ member.username }}</router-link>
       </li>
     </ul>
+    </div>
   </div>
 </template>
 
@@ -39,15 +41,16 @@ export default {
       isLoading: true,
       errorMsg: "",
       filterText: "",
-      members: [],
+      memberResults: []
     };
   },
   created() {
     docsService.list().then((response) => {
-      this.members = response.data;
+      this.memberResults = response.data;
+      this.$store.commit('ADD_MEMBERS', this.memberResults);
       this.isLoading = false;
     });
-  },
+  }
 };
 </script>
 
