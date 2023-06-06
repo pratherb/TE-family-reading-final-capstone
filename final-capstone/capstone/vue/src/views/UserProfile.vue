@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1 class="logo">BookBound Dragon Here</h1>
-    <h2 class="username">{{$route.params.username}}</h2><!-- Changes with each user -->
+    <h2 class="usersname">{{$route.params.username}}</h2><!-- Changes with each user -->
 
     <reading-totals/>    
     <h3 id="reading-list">Currently Reading</h3>
@@ -96,7 +96,7 @@ background: rgb(149, 151, 149);
 .logo{
   background:rgb(115, 147, 126);
 }
-.username{
+.usersname{
  background: rgb(115, 147, 126);
 }
 </style>

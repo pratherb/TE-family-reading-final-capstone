@@ -35,7 +35,7 @@
     </div>
 </template>
 
-<script>
+<script scoped>
 import docsService from "../services/DocsService";
 
 export default {
@@ -104,6 +104,7 @@ h2 {
   text-decoration: none;
 }
 .members-table {
+  background: none;
   border: 1px solid;
   margin: 20px auto 20px auto;
   /* top, right, bottom, left */
