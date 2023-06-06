@@ -24,4 +24,6 @@ public interface BookDao {
     List<Book> getFamilyReadingListByCompletion(int familyId, Boolean completed);
     Book updateReadingListEntryByIsbn(Book book, String isbn);
     void deleteReadingListEntryByIsbn(String isbn);
+    int getNumberOfBooksFinished(String username);
+    void markBookAsFinished(String isbn);
 }

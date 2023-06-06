@@ -9,8 +9,6 @@
     </div>
 
     <div v-else>
-    <label for="finished">Show finished books only</label><br>
-    <input type="checkbox" id="finished" name="finished" v-on:change="flipFinishedAndReload">
     <div>
       <ul>
         <li>
@@ -22,9 +20,6 @@
         </li>
       </ul>
     </div>
-    </div>
-    <div class="loading" v-if="isLoading">
-      <img src="../assets/book_pages_opening.gif" />
     </div>
     <div>
     <reading-activity/>
@@ -58,14 +53,6 @@ export default {
         this.readingList = response.data;
         this.isLoading = false;
       })
-    },
-    flipFinishedAndReload() {
-      if (this.finished == false){
-        this.finished = true;
-      } else {
-        this.finished = false;
-      }
-      this.addReading();
     }
   }
 };

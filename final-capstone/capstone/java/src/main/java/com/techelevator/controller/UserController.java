@@ -75,5 +75,15 @@ public class UserController {
         return bookDao.addBookToReadingListByPrincipal(bookDao.searchBookByIsbn(isbn), principal);
     }
 
+    @RequestMapping(value = ENDPOINT + "/{username}/completed", method = RequestMethod.GET)
+    public int getNumberOfBooksFinished(@PathVariable String username) {
+        return bookDao.getNumberOfBooksFinished(username);
+    }
+
+    @RequestMapping(value = ENDPOINT + "/{username}", method = RequestMethod.PUT)
+    public void markBookAsFinished(String isbn) {
+        bookDao.markBookAsFinished(isbn);
+    }
+
 
 }
