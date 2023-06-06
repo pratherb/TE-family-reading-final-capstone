@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h1>BookBound Dragon Here</h1>
-    <h2>{{$route.params.username}}</h2><!-- Changes with each user -->
+    <h1 class="logo">BookBound Dragon Here</h1>
+    <h2 class="username">{{$route.params.username}}</h2><!-- Changes with each user -->
 
     <reading-totals/>    
     <h3 id="reading-list">Currently Reading</h3>
@@ -60,23 +60,43 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 @import url("https://fonts.cdnfonts.com/css/socake");
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap");
-
-.members {
-
-  color: rgb(88, 85, 99);
-  font-family: "Libre Baskerville";
-  text-align: center;
+.addReadingActivity{
+  background: rgb(115, 147, 126);
 }
-
-h2 {
-  text-align: center;
-  font-size: 48px;
+.form-input-group-reading{
+background: rgb(149, 151, 149);
 }
-
-h3 {
-  font-size: 36px;
+.headerForActivity{
+  background: rgb(115, 147, 126);
+}
+.total-books-read{
+  background: rgb(115, 147, 126);
+}
+.total-minutes-read{
+   background: rgb(115, 147, 126);
+}
+.minute-total{
+  background: rgb(149, 151, 149);
+}
+.book-total{
+   background: rgb(149, 151, 149);
+}
+.reading-activity{
+   background: rgb(115, 147, 126);
+}
+.activity-list{
+   background: rgb(149, 151, 149);
+}
+#reading-list{
+  background: rgb(149, 151, 149);
+}
+.logo{
+  background:rgb(115, 147, 126);
+}
+.username{
+ background: rgb(115, 147, 126);
 }
 </style>

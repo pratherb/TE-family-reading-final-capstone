@@ -3,8 +3,8 @@
     <div>
       <br />
       <br />
-      <h3>Reading Activity</h3>
-      <ul v-for="activity in activityList" v-bind:key="activity.id">
+      <h3 class="reading-activity">Reading Activity</h3>
+      <ul class="activity-list" v-for="activity in activityList" v-bind:key="activity.id">
         <li>
           <p>User: {{ $route.params.username }}</p>
           <p>ISBN: {{ activity.bookIsbn }}</p>
@@ -18,9 +18,9 @@
     <br />
     <br />
     <div>
-      <form v-on:submit.prevent="addActivity">
-        <h1>Add Reading Activity</h1>
-        <div class="form-input-group">
+      <form class="addReadingActivity" v-on:submit.prevent="addActivity">
+        <h1 class="headerForActivity">Add Reading Activity</h1>
+        <div class="form-input-group-reading">
           <label for="username">Username</label>
           <input
             type="text"
@@ -29,7 +29,7 @@
             required
           />
         </div>
-        <div class="form-input-group">
+        <div class="form-input-group-reading">
           <label for="bookIsbn">Book ISBN</label>
           <input
             type="text"
@@ -38,7 +38,7 @@
             required
           />
         </div>
-        <div class="form-input-group">
+        <div class="form-input-group-reading">
           <label for="minutesRead">Minutes Read</label>
           <input
             type="number"
@@ -47,7 +47,7 @@
             required
           />
         </div>
-        <div class="form-input-group">
+        <div class="form-input-group-reading">
           <label for="format">Format</label>
           <input
             type="text"
@@ -56,7 +56,7 @@
             required
           />
         </div>
-        <div class="form-input-group">
+        <div class="form-input-group-reading">
           <label for="notes">Notes</label>
           <input type="text" id="notes" v-model="newActivity.notes" />
         </div>
