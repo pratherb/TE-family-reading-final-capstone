@@ -8,6 +8,7 @@ import com.techelevator.model.Family;
 import com.techelevator.model.User;
 import com.techelevator.service.EmailService;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -45,9 +46,9 @@ public class UserController {
         return userDao.getUserById(newUserId);
     }
 
-    @RequestMapping(value = ENDPOINT, method = RequestMethod.GET)
-    public List<User> getUsersByFamilyId(Principal principal){
-        int id = familyDao.getFamilyIdByUsername(principal.getName());
+    @RequestMapping(value = "family/{id}", method = RequestMethod.GET)
+    @PreAuthorize("isAuthenticated()")
+    public List<User> getUsersByFamilyId(@PathVariable int id){
         return userDao.getUsersByFamilyId(id);
     }
 

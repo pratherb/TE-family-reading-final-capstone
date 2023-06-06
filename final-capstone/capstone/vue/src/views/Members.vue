@@ -7,18 +7,6 @@
     <div class="loading" v-if="isLoading">
       <img src="../assets/book_pages_opening.gif" />
     </div>
-    <h2>BookBound Image Here</h2>
-    <div id="nav">
-      <button class="selections">
-        <router-link v-bind:to="{ name: 'reading' }"> Reading</router-link>
-      </button>
-      <button class="selections">
-        <router-link v-bind:to="{ name: 'prizes' }"> Prizes</router-link>
-      </button>
-      <button class="selections">
-        <router-link v-bind:to="{ name: 'settings' }"> Settings</router-link>
-      </button>
-    </div>
     <table>
       <tr v-for="member in memberResults" v-bind:key="member.id">
         <td>
@@ -37,10 +25,6 @@
      <button class="selections"> <router-link v-bind:to="{ name: 'reading' }"> Reading</router-link> </button>
        <button class="selections"><router-link v-bind:to="{ name: 'prizes' }"> Prizes </router-link></button>
        <button class="selections"><router-link v-bind:to="{ name: 'addmember' }"> Add Family </router-link></button>
-    <div class="addButton">
-      <router-link to="/addmember">
-        <button>Add Family Member</button>
-      </router-link>
     </div>
   </div>
 </template>
@@ -60,10 +44,8 @@ export default {
     };
   },
   created() {
-    docsService.list().then((response) => {
+    docsService.list(this.$store.state.user.familyId).then((response) => {
       this.memberResults = response.data;
-      this.$store.commit("ADD_MEMBERS", this.memberResults);
-      this.isLoading = false;
     });
   },
 };

@@ -6,8 +6,8 @@ const http = axios.create({
 
 export default {
 
-  list() {
-    return http.get('/user');
+  list(id) {
+    return http.get(`/family/${id}`);
   },
 
   get(id) {
