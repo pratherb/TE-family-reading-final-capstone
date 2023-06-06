@@ -1,31 +1,31 @@
 <template>
-  <div class="prizes">
-    <h2 name='image'>BookBound Image Here</h2>
-      <h3>Prizes</h3>
-      <h4>{{ prize.prizeName }}</h4>
-      <p>{{ prize.description }}</p>
-      <p>{{ prize.milestone }}</p>
-      <p>{{ prize.userGroup }}</p>
-      <p>{{ prize.maxPrizes }}</p>
-      <p>{{ prize.startDate }}</p>
-      <p>{{ prize.endDate }}</p>
+  <div class="prize">
+      <prize-detail  v-for="prize in prizeList"
+        :key="prize.name"
+        :prize="prize"
+        :showButton="true"/>
   </div>
 </template>
 
 <script>
 import PrizeService from '../services/PrizeService';
+import PrizeDetail from '../components/PrizeDetail.vue';
 
 export default {
-  name: 'prizes',
+  name: 'prize',
+  components: {
+    PrizeDetail
+  },
   data() {
     return {
       isLoading: true,
-      prizeList: []
+      prizeList: [],
+      groupType: 'both'
     }
   },
   created() {
     PrizeService
-      .listPrizes(this.$route.params.prizeName)
+      .listPrizes(this.groupType)
       .then((response) => {
         console.log(response.data)
         this.prizeList = response.data;

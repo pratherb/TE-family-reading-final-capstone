@@ -1,75 +1,99 @@
 <template>
   <div>
-      <div>
-      <br>
-      <br>
+    <div>
+      <br />
+      <br />
       <h3>Reading Activity</h3>
       <ul v-for="activity in activityList" v-bind:key="activity.id">
-          <li>
-              <p>User: {{$route.params.username}}</p>
-              <p>ISBN: {{activity.bookIsbn}}</p>
-              <p>Minutes of reading: {{activity.minutesRead}}</p>
-              <p>Format: {{activity.format}}</p>
-              <p>Notes: {{activity.notes}}</p>
-              <br>
-          </li>
+        <li>
+          <p>User: {{ $route.params.username }}</p>
+          <p>ISBN: {{ activity.bookIsbn }}</p>
+          <p>Minutes of reading: {{ activity.minutesRead }}</p>
+          <p>Format: {{ activity.format }}</p>
+          <p>Notes: {{ activity.notes }}</p>
+          <br />
+        </li>
       </ul>
-      </div>
-      <br>
-      <br>
-      <div>
-          <form v-on:submit.prevent="addActivity">
-            <h1>Add Reading Activity</h1>
-            <div class="form-input-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" v-model="newActivity.username" required />
-            </div>
-            <div class="form-input-group">
-                <label for="bookIsbn">Book ISBN</label>
-                <input type="text" id="bookIsbn" v-model="newActivity.bookIsbn" required />
-            </div>
-            <div class="form-input-group">
-                <label for="minutesRead">Minutes Read</label>
-                <input type="number" id="minutesRead" v-model="newActivity.minutesRead" required />
-            </div>
-            <div class="form-input-group">
-                <label for="format">Format</label>
-                <input type="text" id="format" v-model="newActivity.format" required />
-            </div>
-            <div class="form-input-group">
-                <label for="notes">Notes</label>
-                <input type="text" id="notes" v-model="newActivity.notes"/>
-            </div>
-            <button type="submit">Add Activity</button>
-          </form>
-        </div>
     </div>
+    <br />
+    <br />
+    <div>
+      <form v-on:submit.prevent="addActivity">
+        <h1>Add Reading Activity</h1>
+        <div class="form-input-group">
+          <label for="username">Username</label>
+          <input
+            type="text"
+            id="username"
+            v-model="newActivity.username"
+            required
+          />
+        </div>
+        <div class="form-input-group">
+          <label for="bookIsbn">Book ISBN</label>
+          <input
+            type="text"
+            id="bookIsbn"
+            v-model="newActivity.bookIsbn"
+            required
+          />
+        </div>
+        <div class="form-input-group">
+          <label for="minutesRead">Minutes Read</label>
+          <input
+            type="number"
+            id="minutesRead"
+            v-model="newActivity.minutesRead"
+            required
+          />
+        </div>
+        <div class="form-input-group">
+          <label for="format">Format</label>
+          <input
+            type="text"
+            id="format"
+            v-model="newActivity.format"
+            required
+          />
+        </div>
+        <div class="form-input-group">
+          <label for="notes">Notes</label>
+          <input type="text" id="notes" v-model="newActivity.notes" />
+        </div>
+        <button type="submit">Add Activity</button>
+      </form>
+    </div>
+  </div>
 </template>
 
 <script>
+<<<<<<< HEAD
 import activityService from '../services/ActivityService';
+=======
+import activityService from "../services/ActivityService";
+>>>>>>> 4be896ce147c95ae47bf0d2bac4a97a9eff7513a
 export default {
-    name: "activity",
-    data() {
-       return {
-        isLoading: true,
-        activityList: [],
-        newActivity: {
-            username: "",
-            bookIsbn: "",
-            minutesRead: 0,
-            format: "",
-            notes: ""
-        } 
-    }
+  name: "activity",
+  data() {
+    return {
+      isLoading: true,
+      activityList: [],
+      newActivity: {
+        username: "",
+        bookIsbn: "",
+        minutesRead: 0,
+        format: "",
+        notes: "",
+      },
+    };
   },
   created() {
-      activityService
-        .getUserReadingActivity(this.$route.params.username)
-        .then((response)=>{
-            this.activityList = response.data;
-            this.isLoading = false;
-        })
+    activityService
+      .getUserReadingActivity(this.$route.params.username)
+      .then((response) => {
+        this.activityList = response.data;
+        this.isLoading = false;
+      });
   },
   methods: {
       addActivity(){
@@ -98,5 +122,4 @@ export default {
 </script>
 
 <style>
-
 </style>
