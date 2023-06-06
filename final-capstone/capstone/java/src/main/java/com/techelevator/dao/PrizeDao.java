@@ -22,7 +22,7 @@ public interface PrizeDao {
     List<Prize> getPrizesByFamilyId(int familyId);
     List<Prize> getPrizesByEmailAddress(String emailAddress);
 
-    Prize create(Prize prize);
+    Prize create(Prize prize, Principal principal);
     Prize update(Prize prize);
     void deleteByName(String prizeName);
 
