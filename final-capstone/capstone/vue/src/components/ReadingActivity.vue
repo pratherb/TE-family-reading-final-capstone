@@ -48,7 +48,6 @@
 
 <script>
 import activityService from '../services/ActivityService';
-import BookService from '../services/BookService';
 export default {
     name: "activity",
     data() {

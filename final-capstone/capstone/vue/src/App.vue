@@ -87,7 +87,7 @@ body {
   margin-bottom: 5px;
   position: relative;
 
-  background: #cdcdcd;
+  background: rgb(88, 85, 91);
   border-radius: 3px;
 
   z-index: 1;
