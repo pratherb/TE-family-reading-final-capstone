@@ -141,6 +141,7 @@ label {
   color: rgb(88, 85, 99);
 }
 .logo {
+  background:none;
   display: flex;
   align-items: center;
 }
