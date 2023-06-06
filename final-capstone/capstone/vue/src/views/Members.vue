@@ -1,15 +1,12 @@
 <template>
   <div class="members">
-    <div class="loading" v-if="isLoading">
+    <div class="logo_heading">
+      <h1 id="member-heading">Your Family Members</h1>
+      <img src="../images/sharpened-transparent-logo.png" >
+    </div>
+    <!-- <div class="loading" v-if="isLoading">
       <img src="../assets/book_pages_opening.gif" />
-    </div>
-    <h2>BookBound Image Here</h2>
-    <div id="nav">
-     <button class="selections"> <router-link v-bind:to="{ name: 'reading' }"> Reading</router-link> </button>
-       <button class="selections"><router-link v-bind:to="{ name: 'prizes' }"> Prizes </router-link></button>
-       <button class="selections"><router-link v-bind:to="{ name: 'settings' }"> Settings </router-link></button>
-    </div>
-    <h3 id="member-heading">Your Family Members</h3>
+    </div> -->
   <table>
     <tr v-for="member in members" v-bind:key="member.id">
       <td>
@@ -27,6 +24,11 @@
       <router-link to="/addmember">
         <button>Add Family Member</button>
       </router-link>
+    </div>
+     <div id="nav">
+     <button class="selections"> <router-link v-bind:to="{ name: 'reading' }"> Reading</router-link> </button>
+       <button class="selections"><router-link v-bind:to="{ name: 'prizes' }"> Prizes </router-link></button>
+       <button class="selections"><router-link v-bind:to="{ name: 'settings' }"> Settings </router-link></button>
     </div>
   </div>
 </template>
@@ -64,6 +66,9 @@ export default {
 @import url("https://fonts.cdnfonts.com/css/socake");
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap");
 
+.members{
+ background: rgba(254, 209, 113, 0.5);
+}
 #member-heading{
   font-family: "Socake", sans-serif;
   color: rgb(88, 85, 91);
@@ -77,7 +82,7 @@ export default {
   padding: 12px 28px;
   border: 1px solid rgb(0, 0, 0);
   margin: 10px;
-  background: rgb(231, 247, 217);
+  background-color: rgb(231, 247, 217);
 }
 
 .selections:hover {
@@ -92,8 +97,9 @@ h2 {
   font-size: 48px;
 }
 
-h3 {
-  font-size: 36px;
+#member-heading{
+  color: rgb(88, 85, 91);
+  font-size: 50px;
 }
 
 li {
@@ -102,19 +108,39 @@ li {
 }
 
 #nav a{
-  color: black;
+   color: rgb(88, 85, 91);
   text-decoration: none;
 }
 table{
   border: 1px solid;
+  margin: 20px auto 20px auto;
+  /* top, right, bottom, left */
+  background: white;
 }
-table, th, td {
-  margin: 0 auto;
+td{
+  border-bottom:solid;
+  width: 200PX;
 }
 .username{
   font-family: "Montserrat", sans-serif;
-  text-decoration: underline;
-  color: black;
-  font-size: 20px;
+   color: rgb(88, 85, 91);
+  font-size: 30px;
+  text-decoration: none;
 }
+.logo_heading{
+  border: solid 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 250px;
+}
+.logo_heading img{
+  width: 250px;
+  height: 350px;
+}
+/* .loading{
+ flex-direction: column;
+    width: 200px;
+} */
 </style>
