@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const http = axios.create({
-  baseURL: "http://localhost:9000/prize"
+  baseURL: "http://localhost:9000/prize/"
 });
 
 export default {
@@ -16,7 +16,7 @@ export default {
   },
 
   getPrizesEarned(username, finished){
-    return http.get(`/prizes/${username}`, finished);
+    return http.get(`/prize/${username}`, finished);
   },
 
   delete(prizes){
