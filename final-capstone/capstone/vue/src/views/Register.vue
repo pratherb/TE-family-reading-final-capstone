@@ -126,7 +126,7 @@ export default {
 </script>
 
 <style scoped>
-@import url("https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap");
 
 form {
   display: flex;
@@ -137,7 +137,7 @@ form {
 }
 .form-input-group {
   display: flex;
-  font-family: "Libre Baskerville", serif;
+ font-family: "Montserrat", sans-serif;
   border: solid, 1px, black;
   margin-bottom: 1rem;
   color: rgb(88, 85, 99);

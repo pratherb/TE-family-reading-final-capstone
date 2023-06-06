@@ -67,7 +67,11 @@
 </template>
 
 <script>
+<<<<<<< HEAD
+import activityService from '../services/ActivityService';
+=======
 import activityService from "../services/ActivityService";
+>>>>>>> 4be896ce147c95ae47bf0d2bac4a97a9eff7513a
 export default {
   name: "activity",
   data() {
