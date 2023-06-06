@@ -5,8 +5,8 @@
     </div>
     <h2>BookBound Image Here</h2>
     <div id="nav">
-      <router-link v-bind:to="{ name: 'reading' }"> Reading </router-link>
-      <router-link v-bind:to="{ name: 'prizes' }"> Prizes </router-link>
+      <router-link v-bind:to="{ name: 'reading' }"> Reading | </router-link>
+      <router-link v-bind:to="{ name: 'prizes' }"> Prizes | </router-link>
       <router-link v-bind:to="{ name: 'settings' }"> Settings </router-link>
     </div>
     <h3 id="member-heading">Your Family Members</h3>
@@ -90,6 +90,8 @@ li {
   text-align: center;
 }
 
-.nav {
+#nav a{
+  color: black;
+  text-decoration: none;
 }
 </style>

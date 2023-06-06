@@ -261,6 +261,7 @@ after {
   font-size: 20px;
 }
 .home {
+  padding:25px;
   background: rgba(254, 209, 113, 0.5);
 }
 </style>
