@@ -1,5 +1,5 @@
 <template>
-  <div class="prize">
+  <div class="prizes">
       <prize-detail  v-for="prize in prizeList"
         :key="prize.name"
         :prize="prize"

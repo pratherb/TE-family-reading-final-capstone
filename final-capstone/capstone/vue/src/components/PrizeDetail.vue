@@ -2,16 +2,13 @@
   <div>
     <!-- <img :src="prize.itemUrl"> -->
     <h4>Prizes & Requirements</h4>
-    <p>Prize: {{ prizes.prizeName }}</p>
-    <p>Description: {{ prizes.description }}</p>
-    <p>Milestone: {{ prizes.milestone }}</p>
-    <p>User Group: {{ prizes.userGroup }}</p>
-    <p>Max Prizes: {{ prizes.maxPrizes }}</p>
-    <p>Start Date: {{ prizes.startDate }}</p>
-    <p>End Date: {{ prizes.endDate }}</p>
-    <button v-if="showButton" v-on:click="addToPrizes(prize.prizeName)">
-      Add to Prize List
-    </button>
+    <p>Prize: {{ prize.prizeName }}</p>
+    <p>Description: {{ prize.description }}</p>
+    <p>Milestone: {{ prize.milestone }}</p>
+    <p>User Group: {{ prize.userGroup }}</p>
+    <p>Max Prizes: {{ prize.maxPrizes }}</p>
+    <p>Start Date: {{ prize.startDate }}</p>
+    <p>End Date: {{ prize.endDate }}</p>
   </div>
 </template>
 
@@ -21,10 +18,6 @@ export default {
   name: "prize-detail",
   props: {
     prize: Object,
-    showButton: {
-      type: Boolean,
-      default: false,
-    },
   },
   methods: {
     addToPrizes(prize) {
