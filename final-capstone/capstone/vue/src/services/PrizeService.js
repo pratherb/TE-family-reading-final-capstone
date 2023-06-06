@@ -1,17 +1,18 @@
 import axios from 'axios';
 
 const http = axios.create({
-  baseURL: "http://localhost:9000/prizes"
+  baseURL: "http://localhost:9000/prize"
 });
 
 export default {
 
-  listPrizes(prize) {
-    return http.get(`/prizes=${prize}`);
+  //List prizes for group type - both/child/parent
+  listPrizes(groupType) {
+    return http.get(`/${groupType}`);
   },
 
   addToPrizeList(prize){
-    return http.post(`/prizes=${prize}`);
+    return http.post(`/`, prize);
   },
 
   getPrizesEarned(username, finished){
