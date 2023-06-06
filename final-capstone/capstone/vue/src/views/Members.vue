@@ -1,30 +1,36 @@
 <template>
   <div class="members">
-    <div class="loading" v-if="isLoading">
-      <img src="../assets/book_pages_opening.gif" />
-    </div>
-    <h2>BookBound Image Here</h2>
-    <div id="nav">
-      <router-link v-bind:to="{ name: 'reading' }"> Reading </router-link>
-      <router-link v-bind:to="{ name: 'prizes' }"> Prizes </router-link>
-      <router-link v-bind:to="{ name: 'settings' }"> Settings </router-link>
-    </div>
-    <h3 id="member-heading">Family Members</h3>
-    <div class="button">
-      <router-link to="/addmember">
-        <button>Add Family Member</button>
-      </router-link>
-    </div>
-    <ul v-for="member in memberResults" v-bind:key="member.id">
-      <li>
-        <router-link
+    <!-- <div class="logo_heading">
+      <h1 id="member-heading">Your Family Members</h1>
+      <img src="../images/sharpened-transparent-logo.png" >
+    </div> -->
+    <div class="logo_header">
+    <h3 id="member-heading">Your Family Members</h3>
+    <img src="../images/sharpened-transparent-logo.png">
+  </div>
+    <table>
+    <tr v-for="member in memberResults" v-bind:key="member.id">
+      <td>
+        <router-link  class="username"
           v-bind:to="{
             name: 'user-profile',
             params: { username: member.username },
           }"
-          >{{ member.username }}</router-link>
-      </li>
-    </ul>
+          >{{ member.username }}</router-link
+        >
+      </td>
+    </tr>
+    </table>
+    <div class="addButton">
+      <router-link to="/addmember">
+        <button>Add Family Member</button>
+      </router-link>
+    </div>
+     <div id="nav">
+     <button class="selections"> <router-link v-bind:to="{ name: 'reading' }"> Reading</router-link> </button>
+       <button class="selections"><router-link v-bind:to="{ name: 'prizes' }"> Prizes </router-link></button>
+       <button class="selections"><router-link v-bind:to="{ name: 'settings' }"> Settings </router-link></button>
+    </div>
   </div>
 </template>
 
@@ -52,21 +58,33 @@ export default {
 };
 </script>
 
-<style>
-@import url("https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap%27");
+<style scoped>
+@import url("https://fonts.cdnfonts.com/css/socake");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap");
 
+.members{
+ background: rgba(254, 209, 113, 0.5);
+}
+#member-heading{
+  font-family: "Socake", sans-serif;
+  color: rgb(88, 85, 91);
+}
+
+.addButton{
+  margin-top: 12px;
+}
+.selections {
+  transition-duration: 0.4s;
+  padding: 12px 28px;
+  border: 1px solid rgb(0, 0, 0);
+  margin: 10px;
+  background-color: rgb(231, 247, 217);
+}
+
+.selections:hover {
+  background-color: rgb(115, 147, 126);
+}
 .members {
-  background: linear-gradient(
-    to right,
-    rgba(122, 85, 85, 0.3),
-    rgba(255, 165, 0, 0.3),
-    rgba(255, 255, 0, 0.3),
-    rgba(50, 205, 50, 0.3),
-    rgba(0, 191, 255, 0.3),
-    rgba(148, 0, 211, 0.3)
-  );
-  color: rgb(88, 85, 99);
-  font-family: "Libre Baskerville";
   text-align: center;
 }
 
@@ -75,15 +93,46 @@ h2 {
   font-size: 48px;
 }
 
-h3 {
-  font-size: 36px;
+#member-heading{
+  color: rgb(88, 85, 91);
+  font-size: 50px;
 }
 
-li {
-  list-style-type: none;
-  text-align: center;
-}
 
-.nav {
+#nav a{
+   color: rgb(88, 85, 91);
+  text-decoration: none;
 }
+table{
+  border: 1px solid;
+  margin: 20px auto 20px auto;
+  /* top, right, bottom, left */
+  background: white;
+}
+td{
+  border-bottom:solid;
+  width: 200PX;
+}
+.username{
+  font-family: "Montserrat", sans-serif;
+   color: rgb(88, 85, 91);
+  font-size: 30px;
+  text-decoration: none;
+}
+.logo_header{
+  border: solid 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 250px;
+}
+.logo_header img{
+  width: 250px;
+  height: 350px;
+}
+/* .loading{
+ flex-direction: column;
+    width: 200px;
+} */
 </style>
