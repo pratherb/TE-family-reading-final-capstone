@@ -39,8 +39,8 @@ public class PrizeController {
     }
 
     @RequestMapping(value = ENDPOINT, method = RequestMethod.POST)
-    public Prize create(@RequestBody Prize prize) {
-        return prizeDao.create(prize);
+    public Prize create(@RequestBody Prize prize, Principal principal) {
+        return prizeDao.create(prize, principal);
     }
 
     //Find a prize by its name
