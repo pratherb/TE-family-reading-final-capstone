@@ -34,4 +34,9 @@ public class ReadingActivityController {
     public ReadingActivity create(@RequestBody ReadingActivity readingActivity){
         return readingActivityDao.create(readingActivity);
     }
+
+    @RequestMapping(value = ENDPOINT + "{username}/activity/total", method = RequestMethod.GET)
+    public int getTotalMinutesReadPerUser(@PathVariable String username) {
+        return readingActivityDao.getTotalMinutesPerUser(username);
+    }
 }

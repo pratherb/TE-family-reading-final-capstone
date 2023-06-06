@@ -63,8 +63,8 @@ CREATE TABLE prize (
     description VARCHAR(250),
     milestone INT,
     user_group VARCHAR(50),
-    start_date DATE,
-    end_date DATE,
+    start_date DATE DEFAULT CURRENT_DATE,
+    end_date DATE DEFAULT '9999-12-31',
     CONSTRAINT fk_prize_user_id FOREIGN KEY (user_id) REFERENCES users (user_id),
     CONSTRAINT fk_prize_family_id FOREIGN KEY (family_id) REFERENCES family (family_id)
 );

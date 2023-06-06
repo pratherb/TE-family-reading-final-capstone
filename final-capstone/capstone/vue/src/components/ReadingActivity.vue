@@ -92,30 +92,29 @@ export default {
       });
   },
   methods: {
-    addActivity() {
-      const username = this.$route.params.username;
-      activityService.create(this.newActivity, username).then((response) => {
-        if (response.status == 200) {
-          this.clearNewActivity();
-          this.$router.push({
-            name: "user-profile",
-            params: { username: username },
-          });
-        }
-      });
-      this.$router.push({
-        name: "user-profile",
-        params: { username: username },
-      });
-    },
-    clearNewActivity() {
-      this.newActivity.username = "";
-      (this.newActivity.bookIsbn = ""), (this.newActivity.minutesRead = 0);
-      this.newActivity.format = "";
-      this.newActivity.notes = "";
-    },
-  },
-};
+      addActivity(){
+          const username = this.$route.params.username;
+          activityService
+            .create(this.newActivity, username)
+            .then((response)=>{
+                if (response.status == 200){
+                    this.clearNewActivity();
+                    this.reloadPage();
+                }
+            })
+      },
+      clearNewActivity() {
+          this.newActivity.username = "";
+          this.newActivity.bookIsbn = "",
+          this.newActivity.minutesRead = 0;
+          this.newActivity.format = "";
+          this.newActivity.notes = "";
+      },
+      reloadPage() {
+      window.location.reload();
+    }
+  }
+}
 </script>
 
 <style>

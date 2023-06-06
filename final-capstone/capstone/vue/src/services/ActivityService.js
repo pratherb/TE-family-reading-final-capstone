@@ -5,12 +5,16 @@ const http = axios.create({
 });
 
 export default {
-    getUserReadingActivity(username){
-        return http.get(`/${username}/activity`)
+    getUserReadingActivity(username) {
+        return http.get(`/${username}/activity`);
     },
 
-    create(activity, username){
-        return http.post(`/${username}/activity`, activity)
+    create(activity, username) {
+        return http.post(`/${username}/activity`, activity);
+    },
+
+    getTotalMinutesReadPerUser(username) {
+        return http.get(`/${username}/activity/total`);
     }
   
   }

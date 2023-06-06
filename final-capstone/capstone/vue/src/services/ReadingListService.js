@@ -6,12 +6,19 @@ const http = axios.create({
 
 export default {
     
-  getFamilyReadingList(finished){
+  getFamilyReadingList(finished) {
     return http.get(`/all`, finished);
   },
 
-  getUserReadingList(username, finished){
-    return http.get(`/user/${username}`, finished);
-  }
+  getUserReadingList(username) {
+    return http.get(`/user/${username}`);
+  },
 
+  markBookAsFinished(username, isbn) {
+    return http.put(`/user/${username}`, isbn);
+  },
+
+  getNumBooksFinishedPerUser(username) {
+    return http.get(`/user/${username}/completed`);
+  }
 }

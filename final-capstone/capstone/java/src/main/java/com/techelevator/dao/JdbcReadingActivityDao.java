@@ -136,6 +136,22 @@ public class JdbcReadingActivityDao implements ReadingActivityDao {
         }
     }
 
+    @Override
+    public int getTotalMinutesPerUser(String username) {
+        int numMinutes = 0;
+        String sql = "SELECT COUNT(*) AS minutes_read FROM reading_activity WHERE username = ?";
+        try {
+            SqlRowSet result = jdbcTemplate.queryForRowSet(sql, username);
+            if (result.next()) {
+                numMinutes = result.getInt("minutes_read");
+            }
+            return numMinutes;
+        } catch (DataAccessException e) {
+            System.out.println("Error retrieving read books total for user " + username);
+        }
+        return -1;
+    }
+
     private ReadingActivity mapRowToReadingActivity(SqlRowSet rs) {
         ReadingActivity readingActivity = new ReadingActivity();
         readingActivity.setId(rs.getInt("activity_id"));
