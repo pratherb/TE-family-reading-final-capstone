@@ -64,7 +64,7 @@ export default {
 .members {
 
   color: rgb(88, 85, 99);
-  font-family: "Libre Baskerville";
+  font-family: "Montserrat", sans-serif;
   text-align: center;
 }
 
