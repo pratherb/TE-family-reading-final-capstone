@@ -4,7 +4,6 @@
       <h3 id="member-heading">Your Family Members</h3>
       <img src="../images/sharpened-transparent-logo.png" />
     </div>
-    <div class="mover">
     <table class="members-table">
       <tr
         class="members-row"
@@ -23,9 +22,10 @@
         </td>
       </tr>
     </table>
-    <family-reading-totals />
+      <div class="grid-container">
+    <family-reading-totals class="grid-item1" />
     <br />
-    <the-leaderboard />
+    <the-leaderboard class="grid-item2"/>
     </div>
     <div class="loading" v-if="isLoading">
       <img src="../assets/book_pages_opening.gif" />
@@ -86,14 +86,11 @@ export default {
   color: rgb(88, 85, 91);
 }
 
-.addButton {
-  margin-top: 12px;
-}
 .selections {
   transition-duration: 0.4s;
   padding: 12px 28px;
   border: 1px solid rgb(0, 0, 0);
-  margin: 10px;
+  margin: 10px 15px 20px 10px;
   background-color: rgb(231, 247, 217);
 }
 
@@ -158,40 +155,48 @@ export default {
 }
 #books-read {
   color: rgb(88, 85, 91);
-  font-family: "Montserrat", sans-serif;
+  font-family: "Socake", sans-serif;
+   font-size: 25px;
 }
 #all-books {
   color: rgb(88, 85, 91);
-  font-family: "Montserrat", sans-serif;
+   font-family: "Montserrat", sans-serif;
+   font-size:20px
 }
 #all-minutes-read {
   color: rgb(88, 85, 91);
-  font-family: "Montserrat", sans-serif;
+   font-family: "Socake", sans-serif;
+   font-size:25px;
 }
 #total-minutes {
   color: rgb(88, 85, 91);
   font-family: "Montserrat", sans-serif;
+   font-size:20px;
 }
 .leaderboard-head {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  padding-right: 60px;
-  margin: 0 auto;
   color: rgb(88, 85, 91);
   font-family: "Socake", sans-serif;
+  font-size: 30px;
+  margin-bottom: 0;
 }
 .score {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  padding-right: 60px;
-  margin: 0 auto;
+  list-style-type: none;
   color: rgb(88, 85, 91);
   font-family: "Montserrat", sans-serif;
+  font-size: 25px;
+  margin-bottom: 15px;
 }
-.mover{
-  display: flex;
-  flex-direction:row;
+.grid-container {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-gap: 10px;
+}
+.grid-item1 {
+  grid-column: 1;
+  grid-row:1;
+}
+.grid-item2 {
+  grid-column: 2;
+  grid-row: 1;
 }
 </style>
