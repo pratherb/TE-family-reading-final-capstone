@@ -2,14 +2,15 @@
   <div class="members">
     <div class="logo_header">
       <h3 id="member-heading">Your Family Members</h3>
+      <router-link to="/">
       <img src="../images/sharpened-transparent-logo.png" />
+      </router-link>
     </div>
-    <table class="members-table">
-      <tr
-        class="members-row"
-        v-for="member in memberResults"
-        v-bind:key="member.id"
-      >
+    <div class="loading" v-if="isLoading">
+      <img src="../assets/book_pages_opening.gif" />
+    </div>
+    <table v-else class="members-table">
+      <tr class="members-row" v-for="member in memberResults" v-bind:key="member.id">
         <td class="members-table-data">
           <router-link
             class="username"
@@ -67,6 +68,7 @@ export default {
   },
   created() {
     docsService.list(this.$store.state.user.familyId).then((response) => {
+      console.log(response.data);
       this.memberResults = response.data;
       this.isLoading = false;
     });
@@ -84,7 +86,7 @@ export default {
   height:60px;
   padding: 12px 28px;
   border: 1px solid rgb(0, 0, 0);
-  margin: 50px 3gi0px 40px 30px;
+  margin: 50px 30px 40px 30px;
   background-color: rgb(231, 247, 217);
   font-family: "Montserrat", sans-serif;
   color: rgb(48, 46, 49);

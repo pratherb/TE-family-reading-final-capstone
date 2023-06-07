@@ -1,9 +1,12 @@
 <template>
   <div class="prizes">
     <h2>Prize Details</h2>
+      <router-link v-bind:to="{name: 'home'}">
+      <img src="../images/sharpened-transparent-logo.png" />
+      </router-link>
     <div class="addPrize">
       <router-link to="/addprize">
-        <button>Add Prize</button>
+        <button v-show="isParent">Add Prize</button>
       </router-link>
     </div>
       <prize-detail  v-for="prize in prizeList"
@@ -28,6 +31,11 @@ export default {
       prizeList: [],
       userGroup: 'both'
     }
+  },
+  computed: {
+    isParent: function() {
+      return this.$store.state.user.authorities[0].name != "ROLE_CHILD";
+    } 
   },
   created() {
     PrizeService

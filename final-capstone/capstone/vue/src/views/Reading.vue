@@ -1,44 +1,53 @@
 <template>
-  <div class="reading">
-    <h2 name='image'>BookBound Image Here</h2>
-    <h3>Reading</h3>
-    <add-book></add-book>
+<div>
+    <header>
+      <div class="logo_header">
+        <h3 id="member-heading">Book Search</h3>
+        <router-link to="/">
+        <img src="../images/sharpened-transparent-logo.png" />
+        </router-link>
+      </div>
+      </header>
+    <add-book/>
   </div>
 </template>
 
 <script>
-import AddBook from "../components/AddBook.vue"
+import AddBook from "../components/AddBook.vue";
 
 export default {
-  name: 'reading',
+  name: "reading",
   components: {
-    AddBook
+    AddBook,
   },
-  methods: {
-
-  }
-
-}
+  methods: {},
+};
 </script>
 
-<style>
-
+<style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap%27");
 
-.reading {
-    background: rgb(254, 209, 113);
-    color: rgb(88, 85, 99);
-    font-family: 'Libre Baskerville';
-    text-align: center;
+.results {
+  background: rgb(254, 209, 113);
+  color: rgb(88, 85, 99);
+  font-family: "Libre Baskerville";
+  text-align: center;
+  margin-left: 15%;
+  margin-right: 15%;
+  padding: 15px;
 }
 
 h2 {
-    text-align: center;
-    font-size: 48px;
+  text-align: center;
+  font-size: 48px;
 }
 
-h3 {    
-    font-size: 36px;
+h3 {
+  font-size: 36px;
 }
 
+body {
+  padding: 25px;
+  background: rgba(254, 209, 113, 0.5);
+}
 </style>

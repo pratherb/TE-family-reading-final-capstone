@@ -3,7 +3,9 @@
     <h2 class="usersname">{{ $route.params.username }}</h2>
     <!-- Changes with each user -->
     <h1 class="logo">
-      <img src="../images/sharpened-transparent-logo.png" alt="logo">
+      <router-link v-bind:to="{name: 'home'}">
+        <img src="../images/sharpened-transparent-logo.png" alt="logo">
+      </router-link>
     </h1>
     <reading-totals />
     <h3 id="reading-list">Currently Reading</h3>
