@@ -25,4 +25,16 @@ public class EmailServiceImpl implements EmailService {
 
         this.mailSender.send(simpleMailMessage);
     }
+
+    @Override
+    public void sendReadingListEmail(String to, String name, String isbn) {
+        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+        simpleMailMessage.setFrom("bookbound.noreply@gmail.com");
+        simpleMailMessage.setTo(to);
+        simpleMailMessage.setSubject("Book added to reading list for" + name);
+        simpleMailMessage.setText("Hello! Your child, " + name + ", just added the book with ISBN " + isbn + " to" +
+                " their reading list. Happy reading!");
+
+        this.mailSender.send(simpleMailMessage);
+    }
 }
