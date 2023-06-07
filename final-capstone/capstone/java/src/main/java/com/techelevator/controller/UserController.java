@@ -71,9 +71,9 @@ public class UserController {
 //        return bookDao.addBookToReadingList(bookDao.searchBookByIsbn(isbn), username);
 //    }
 
-    @RequestMapping(value = "/book" + "/isbn={isbn}", method = RequestMethod.POST)
-    public Book addBookToReadingListByPrincipal(@PathVariable String isbn, Principal principal){
-        return bookDao.addBookToReadingListByPrincipal(bookDao.searchBookByIsbn(isbn), principal);
+        @RequestMapping(value = "/book" + "/isbn={isbn}", method = RequestMethod.POST)
+        public Book addBookToReadingListByPrincipal(@PathVariable String isbn, @RequestParam String username){
+            return bookDao.addBookToReadingListByPrincipal(bookDao.searchBookByIsbn(isbn), username);
     }
 
     @RequestMapping(value = ENDPOINT + "/{username}/completed", method = RequestMethod.GET)

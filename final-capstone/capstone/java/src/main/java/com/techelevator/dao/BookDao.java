@@ -11,7 +11,7 @@ public interface BookDao {
     List<Book> searchBooksByTitle(String title);
     Book searchBookByIsbn(String isbn);
 
-    Book addBookToReadingListByPrincipal(Book book, Principal principal);
+    Book addBookToReadingListByPrincipal(Book book, String username);
 
     //Handle books
     Book createBook(Book book);

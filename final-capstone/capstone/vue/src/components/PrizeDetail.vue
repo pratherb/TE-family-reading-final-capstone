@@ -2,7 +2,7 @@
   <div>
     <!-- <img :src="prize.itemUrl"> -->
     <h4>Prizes & Requirements</h4>
-    <p>Prize: {{ prize.prizeName }}</p>
+    <p>Prize: {{ prize.name }}</p>
     <p>Description: {{ prize.description }}</p>
     <p>Milestone: {{ prize.milestone }}</p>
     <p>User Group: {{ prize.userGroup }}</p>
@@ -16,9 +16,9 @@
 import prizeService from "../services/PrizeService";
 export default {
   name: "prize-detail",
-  props: {
-    prize: Object,
-  },
+  props: [
+    'prize'
+  ],
   methods: {
     addToPrizes(prize) {
       prizeService.addToPrizeList(prize).then((response) => {
