@@ -4,14 +4,12 @@
       <h3 id="member-heading">Your Family Members</h3>
       <img src="../images/sharpened-transparent-logo.png" />
     </div>
-    <family-reading-totals/>
-    <br>
-    <the-leaderboard/>
-    <div class="loading" v-if="isLoading">
-      <img src="../assets/book_pages_opening.gif" />
-    </div>
     <table class="members-table">
-      <tr class="members-row" v-for="member in memberResults" v-bind:key="member.id">
+      <tr
+        class="members-row"
+        v-for="member in memberResults"
+        v-bind:key="member.id"
+      >
         <td class="members-table-data">
           <router-link
             class="username"
@@ -24,6 +22,14 @@
         </td>
       </tr>
     </table>
+      <div class="grid-container">
+    <family-reading-totals class="grid-item1" />
+    <br />
+    <the-leaderboard class="grid-item2"/>
+    </div>
+    <div class="loading" v-if="isLoading">
+      <img src="../assets/book_pages_opening.gif" />
+    </div>
     <div id="nav">
       <button class="selections">
         <router-link v-bind:to="{ name: 'reading' }"> Reading</router-link>
@@ -34,18 +40,18 @@
       <button class="selections" v-show="isParent">
         <router-link v-bind:to="{ name: 'addmember' }">Add User</router-link>
       </button>
-      </div>
     </div>
+  </div>
 </template>
 
-<script scoped>
-import FamilyReadingTotals from '../components/FamilyReadingTotals.vue';
-import TheLeaderboard from '../components/TheLeaderboard.vue';
+<script >
+import FamilyReadingTotals from "../components/FamilyReadingTotals.vue";
+import TheLeaderboard from "../components/TheLeaderboard.vue";
 import docsService from "../services/DocsService";
 
 export default {
   name: "members",
-  components: {FamilyReadingTotals, TheLeaderboard},
+  components: { FamilyReadingTotals, TheLeaderboard },
   data() {
     return {
       isLoading: true,
@@ -68,7 +74,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 @import url("https://fonts.cdnfonts.com/css/socake");
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap");
 
@@ -80,14 +86,11 @@ export default {
   color: rgb(88, 85, 91);
 }
 
-.addButton {
-  margin-top: 12px;
-}
 .selections {
   transition-duration: 0.4s;
   padding: 12px 28px;
   border: 1px solid rgb(0, 0, 0);
-  margin: 10px;
+  margin: 10px 15px 20px 10px;
   background-color: rgb(231, 247, 217);
 }
 
@@ -96,11 +99,6 @@ export default {
 }
 .members {
   text-align: center;
-}
-
-h2 {
-  text-align: center;
-  font-size: 48px;
 }
 
 #member-heading {
@@ -113,18 +111,22 @@ h2 {
   text-decoration: none;
 }
 .members-table {
-  background: none;
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+  align-items: center;
+  background: white;
   border: 1px solid;
   margin: 20px auto 20px auto;
   /* top, right, bottom, left */
-  background: white;
 }
-.members-row{
+.members-row {
   background: white;
 }
 .members-data {
-  border-bottom: solid;
-  width: 200px;
+  border-bottom: solid 3px;
+  border-color: black;
+  width: 250px;
 }
 .username {
   font-family: "Montserrat", sans-serif;
@@ -133,7 +135,10 @@ h2 {
   text-decoration: none;
 }
 .logo_header {
-  border: solid 5px;
+  border: solid 3px;
+  border-color: rgb(115, 147, 126);
+  background: rgba(115, 147, 126, 0.7);
+  border-radius: 4px;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -147,5 +152,51 @@ h2 {
 .loading {
   flex-direction: column;
   width: 200px;
+}
+#books-read {
+  color: rgb(88, 85, 91);
+  font-family: "Socake", sans-serif;
+   font-size: 25px;
+}
+#all-books {
+  color: rgb(88, 85, 91);
+   font-family: "Montserrat", sans-serif;
+   font-size:20px
+}
+#all-minutes-read {
+  color: rgb(88, 85, 91);
+   font-family: "Socake", sans-serif;
+   font-size:25px;
+}
+#total-minutes {
+  color: rgb(88, 85, 91);
+  font-family: "Montserrat", sans-serif;
+   font-size:20px;
+}
+.leaderboard-head {
+  color: rgb(88, 85, 91);
+  font-family: "Socake", sans-serif;
+  font-size: 30px;
+  margin-bottom: 0;
+}
+.score {
+  list-style-type: none;
+  color: rgb(88, 85, 91);
+  font-family: "Montserrat", sans-serif;
+  font-size: 25px;
+  margin-bottom: 15px;
+}
+.grid-container {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-gap: 10px;
+}
+.grid-item1 {
+  grid-column: 1;
+  grid-row:1;
+}
+.grid-item2 {
+  grid-column: 2;
+  grid-row: 1;
 }
 </style>
