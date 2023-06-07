@@ -1,8 +1,10 @@
 <template>
   <div id="register" class="text-center">
     <div class="headlogo">
-       <h1 class="head">Create Account</h1>
-      <img class="regheadLogo" src="../images/sharpened-transparent-logo.png" />
+      <h1 class="head">Create Account</h1>
+      <router-link v-bind:to="{name: 'home'}">
+        <img class="regheadLogo" src="../images/sharpened-transparent-logo.png" />
+      </router-link>
     </div>
     <form @submit.prevent="register">
       <div class="behind">

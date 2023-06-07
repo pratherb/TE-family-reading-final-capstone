@@ -2,7 +2,9 @@
   <div class="members">
     <div class="logo_header">
       <h3 id="member-heading">Your Family Members</h3>
+      <router-link v-bind:to="{name: 'home'}">
       <img src="../images/sharpened-transparent-logo.png" />
+      </router-link>
     </div>
     <div class="loading" v-if="isLoading">
       <img src="../assets/book_pages_opening.gif" />

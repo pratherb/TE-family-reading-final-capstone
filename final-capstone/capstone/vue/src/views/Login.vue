@@ -3,7 +3,9 @@
     <h1 class="welcome">
       Welcome! Please Log In!
       <div class="logo">
-        <img src="../images/sharpened-transparent-logo.png" />
+        <router-link v-bind:to="{name: 'home'}">
+          <img src="../images/sharpened-transparent-logo.png" />
+        </router-link>
       </div>
     </h1>
     <form @submit.prevent="login">

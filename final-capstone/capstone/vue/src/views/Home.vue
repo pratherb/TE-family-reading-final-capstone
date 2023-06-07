@@ -16,7 +16,7 @@
     </logo-slider>
     <div class="title">
       <h1 class="title">BookBound: Discover the Power of Stories Together!</h1>
-      <img class="title-logo" src="../images/sharpened-transparent-logo.png" />
+        <img class="title-logo" src="../images/sharpened-transparent-logo.png" />
     </div>
     <div class="product_details">
       <h1 >
