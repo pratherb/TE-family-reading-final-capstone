@@ -32,7 +32,7 @@ public class JdbcBookDao implements BookDao {
     private final String API_SEARCH = "https://openlibrary.org/search.json?";
     private final String COVER_URL_BASE = "https://covers.openlibrary.org/b/isbn/";
     private final String COVER_URL_SIZE = "L";
-    private final int LIMIT_RESULTS = 10; //How many results to get at a time
+    private final int LIMIT_RESULTS = 16; //How many results to get at a time
     private UserDao userDao;
 
     //API communication

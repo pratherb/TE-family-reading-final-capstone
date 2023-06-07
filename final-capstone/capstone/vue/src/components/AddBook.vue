@@ -31,13 +31,13 @@
       <button type="submit" v-on:click="makeVisible">Find Book</button>
     </form>
     <div v-show="showResults" class="results-grid">
-          <book-detail
-            v-for="book in this.$store.state.bookResults"
-            v-bind:showButton="true"
-            v-bind:key="book.isbn"
-            v-bind:book="book"
-            class="book-card"
-          />
+      <book-detail
+        v-for="book in this.$store.state.bookResults"
+        v-bind:showButton="true"
+        v-bind:key="book.isbn"
+        v-bind:book="book"
+        class="book-card"
+      />
     </div>
   </div>
 </template>
@@ -62,6 +62,7 @@ export default {
   },
   methods: {
     getBook() {
+      this.resetBookResults();
       const searchTerm = this.bookToSearch.searchTerm;
       if (this.selectedOption == "isbn") {
         bookService.get(searchTerm).then((response) => {
@@ -107,16 +108,18 @@ export default {
 }
 
 .results-grid {
-  margin-left:15%;
-  margin-right: 15%;
+  margin-left: 12%;
+  margin-right: 12%;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  background-color: rgb(254 209 113 / 56%);
+  gap: 30px;
+  padding: 30px;
 }
 
-.book-card {
-  padding: 15px;
+/* .book-card {
+  padding: 1px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
+} */
 </style>
