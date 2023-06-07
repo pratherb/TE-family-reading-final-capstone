@@ -1,5 +1,5 @@
 <template>
-  <div class="book-card">
+  <div>
     <div class="book-image">
       <img :src="book.coverUrl" />
     </div>
@@ -61,12 +61,11 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: rgba(254, 209, 113, 0.623);
-  padding: 15px;
-  border-radius: 3px;
+  background: rgb(255, 224, 157);
+  border-radius: 1px;
   border-style: solid;
-  border-color: rgb(187, 12, 12);
-  border-radius: 2%;
+  border-color: rgb(0, 0, 0);
+  border-radius: 1%;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
