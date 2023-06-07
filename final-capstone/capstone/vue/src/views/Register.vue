@@ -139,7 +139,7 @@ export default {
    background: rgba(232, 123, 31, 0.8);
   display: flex;
   flex-direction: column;
-  padding-top: 30px;
+  padding-top: 25px;
   align-items: flex-start;
   width: 1100px;
   height: 550px;
@@ -154,9 +154,8 @@ export default {
   flex-direction: row;
     align-items: center;
     background:rgba(254, 209, 113, 0.5);
-    border-left: 20px solid rgb(115, 147, 126);
-    border-right:20px solid rgb(115, 147, 126);
-    border-bottom: 4px solid rgb(115, 147, 126);
+    border-left: 60px solid rgb(115, 147, 126);
+    border-right:60px solid rgb(115, 147, 126);
     border-top: 5px solid rgb(115, 147, 126);
     height: 250px;
     border-radius:3px;
