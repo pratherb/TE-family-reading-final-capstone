@@ -1,6 +1,9 @@
 <template>
   <div class="prizes">
     <h2>Prize Details</h2>
+      <router-link v-bind:to="{name: 'home'}">
+      <img src="../images/sharpened-transparent-logo.png" />
+      </router-link>
     <div class="addPrize">
       <router-link to="/addprize">
         <button v-show="isParent">Add Prize</button>

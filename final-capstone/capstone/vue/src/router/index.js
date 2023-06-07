@@ -6,10 +6,8 @@ import Logout from '../views/Logout.vue'
 import Register from '../views/Register.vue'
 import store from '../store/index'
 import Members from '../views/Members.vue'
-import Settings from '../views/FamilySettings.vue'
 import Prizes from '../views/Prizes.vue'
 import Reading from '../views/Reading.vue'
-import Log from '../views/Log.vue'
 import UserProfile from '../views/UserProfile.vue'
 import AddMember from '../views/AddMember.vue'
 import AddPrize from '../views/AddPrizePage.vue'
@@ -70,11 +68,6 @@ const router = new Router({
       // }
     },
     {
-      path: "/settings",
-      name: "settings",
-      component: Settings
-    },
-    {
       path: "/prize",
       name: "prize",
       component: Prizes
@@ -83,11 +76,6 @@ const router = new Router({
       path: "/book",
       name: "reading",
       component: Reading
-    },
-    {
-      path: "/log",
-      name: "log",
-      component: Log
     },
     {
       path: "/user-profile/:username",
