@@ -1,14 +1,14 @@
 <template>
-  <div class="book-card">
+  <div>
     <div class="book-image">
       <img :src="book.coverUrl" />
     </div>
     <div class="book-details">
-    <h4>{{ book.title }}</h4>
-    <p>Author: {{ book.author }}</p>
-    <p>ISBN: {{ book.isbn }}</p>
-    <p>Pages: {{ book.numPages }}</p>
-    <p>Publisher: {{ book.publisher }}</p>
+      <h4>{{ book.title }}</h4>
+      <p>Author: {{ book.author }}</p>
+      <p>ISBN: {{ book.isbn }}</p>
+      <p>Pages: {{ book.numPages }}</p>
+      <p>Publisher: {{ book.publisher }}</p>
     </div>
     <button
       v-if="$route.name == 'reading'"
@@ -60,24 +60,30 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  background: rgba(254, 209, 113, 0.623);
-  padding: 15px;
-  border-radius: 3px;
-  border-style: solid;
-  border-color: rgb(187, 12, 12);
-  border-radius: 2%;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
+  justify-content: flex-end;
+  background: rgb(255 233 187);
+  border-radius: 1px;
+  /* border-style: solid;
+  border-color: rgb(0, 0, 0);
+  border-radius: 10%; */
+  min-height: 550px;
+  max-height: 550px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.658);
+  }
 
 .book-image {
   text-align: center;
+  margin-top: 10px;
   margin-bottom: 10px;
+  overflow: hidden;
 }
 
 .book-image img {
-  max-width: 100%;
-  height: auto;
+  padding-top:5%;
+  max-height: 99%;
+  max-width: 90%;
+  border-radius: 8%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .book-details {

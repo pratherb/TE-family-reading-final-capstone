@@ -30,9 +30,14 @@ public class JdbcBookDao implements BookDao {
     private final RestTemplate restTemplate;
     private final JdbcTemplate jdbcTemplate;
     private final String API_SEARCH = "https://openlibrary.org/search.json?";
-    private final String COVER_URL_BASE = "https://covers.openlibrary.org/b/isbn/";
+    private final String COVER_URL_BASE = "https://covers.openlibrary.org/b/olid/";
     private final String COVER_URL_SIZE = "L";
-    private final int LIMIT_RESULTS = 10; //How many results to get at a time
+    private final int LIMIT_RESULTS = 24; //How many results to get at a time
+    private final String[] filterList = {
+            "title", "author_name", "isbn", "publisher", "number_of_pages_median", "cover_edition_key"
+    };
+
+
     private UserDao userDao;
 
     //API communication
@@ -68,24 +73,6 @@ public class JdbcBookDao implements BookDao {
 //        );
     }
 
-    public JsonObject getJsonFromApi(String query, SearchType searchType) {
-        query = query.replace(" ", "+"); //Replace spaces with plus sign because web apis don't like spaces
-        switch (searchType) { //Adjust the API call URL depending on the search type
-            case Title:
-                query = "title=" + query;
-                break;
-            case Isbn:
-                query = "isbn=" + query;
-                break;
-        }
-        query = API_SEARCH + query + "&sort=rating" + "&limit=" + LIMIT_RESULTS; //Sorting by rating seems to give the best results
-        HttpEntity<String> request = new HttpEntity<>(query, httpHeaders); //Setup request object
-        String response = restTemplate.exchange(query, HttpMethod.GET, request, String.class).getBody(); //Call to API, get response
-        String results = "";
-        Gson gson = new Gson();
-        return gson.fromJson(response, JsonObject.class); //Convert the raw JSON response to a JsonObject and return it
-
-    }
 
     @Override
     public Book addBookToReadingList(Book book, String username) {
@@ -339,15 +326,30 @@ public class JdbcBookDao implements BookDao {
         return null;
     }
 
-    /**
-     * Return a list of Book objects created from a JsonObject
-     *
-     * @param jsonObject JsonObject to parse
-     * @return
-     */
+    //Filter out junk data that's probably not relevant for the end user
+
+    //Enum to define the type of search we want to do
+    //Define the search type by using SearchType.Title..etc as a parameter
+    public enum SearchType {
+        Title,
+        Isbn
+    }
+
+    private Book mapRowToBook(SqlRowSet rs) {
+        Book book = new Book();
+        book.setIsbn(rs.getString("book_isbn"));
+        book.setAuthor(rs.getString("author"));
+        book.setTitle(rs.getString("title"));
+        book.setNumPages(rs.getInt("num_pages"));
+        book.setPublisher(rs.getString("publisher"));
+        book.setCoverUrl(rs.getString("cover_url"));
+        return book;
+    }
+
     public List<Book> mapJsonToBooks(JsonObject jsonObject) {
         List<Book> bookList = new ArrayList<>();
         JsonArray docsArray = jsonObject.getAsJsonArray("docs"); //Access the 'docs' array from the JSON Object, which contains the book's key:value
+        docsArray = filterJsonArray(docsArray); //Run the results through a filter and get a filtered junk-free list out
         for (JsonElement i : docsArray) { //For each element in "docs"..
             //Set default values. Sometimes the API may not have this information, so we need defaults in case.
             String title = "Not found";
@@ -359,6 +361,7 @@ public class JdbcBookDao implements BookDao {
             Book book = new Book();
             JsonObject doc = i.getAsJsonObject(); //Get each element as an individual JsonObject
             //We're going to try to get these values, but they may not exist.
+            //Update: they should always exist now thanks to filtering method
             try {
                 title = doc.get("title").getAsString();
                 JsonArray isbnArray = doc.getAsJsonArray("isbn"); //Array of ISBNs - there are often multiples, so let's just get the first one
@@ -368,11 +371,13 @@ public class JdbcBookDao implements BookDao {
                 numPages = doc.get("number_of_pages_median").getAsInt();
                 JsonArray publisherArray = doc.getAsJsonArray("publisher");
                 publisher = publisherArray.get(0).getAsString();
-                coverUrl = COVER_URL_BASE + isbn + "-" + COVER_URL_SIZE + ".jpg";
+                //System.out.println("Cover key: " + doc.get("cover_edition_key").getAsString() + " for " + title);
+                coverUrl = COVER_URL_BASE + doc.get("cover_edition_key").getAsString() + "-" + COVER_URL_SIZE + ".jpg";
             } catch (RuntimeException e) {
                 //If a value isn't found, we end up here. let's set the Book object's values to the default values then continue the loop
                 //If this isn't caught here, we might crash.
-                System.out.println("Some expected data was not found.");
+                //NOTEL: none of this should be required anymore, since the filtering method guarantees this data
+                //System.out.println("Some expected data was not found.");
                 book.setTitle(title);
                 book.setIsbn(isbn);
                 book.setAuthor(author);
@@ -394,21 +399,52 @@ public class JdbcBookDao implements BookDao {
         return bookList;
     }
 
-    //Enum to define the type of search we want to do
-    //Define the search type by using SearchType.Title..etc as a parameter
-    public enum SearchType {
-        Title,
-        Isbn
+    private JsonArray filterJsonArray(JsonArray jsonArray) {
+        JsonArray filteredArray = new JsonArray();
+        for (JsonElement i : jsonArray) {
+            // Get the book to look at
+            JsonObject book = i.getAsJsonObject();
+            boolean add = true;
+            // For every element in filterList, check if it exists in the JsonObject.
+            // If anything expected isn't there, we don't add it to the final filtered list.
+            for (String s : filterList) {
+                if (!book.has(s)) {
+                    add = false;
+                    break;
+                }
+                else if(s.equalsIgnoreCase("number_of_pages_median") && book.get("number_of_pages_median").getAsInt() < 1){
+                    add = false;
+                    break;
+                }
+            }
+            if (add) {
+                filteredArray.add(book);
+            }
+        }
+        return filteredArray;
     }
 
-    private Book mapRowToBook(SqlRowSet rs) {
-        Book book = new Book();
-        book.setIsbn(rs.getString("book_isbn"));
-        book.setAuthor(rs.getString("author"));
-        book.setTitle(rs.getString("title"));
-        book.setNumPages(rs.getInt("num_pages"));
-        book.setPublisher(rs.getString("publisher"));
-        book.setCoverUrl(rs.getString("cover_url"));
-        return book;
+    public JsonObject getJsonFromApi(String query, SearchType searchType) {
+        query = query.replace(" ", "+"); //Replace spaces with plus sign because web apis don't like spaces
+        switch (searchType) { //Adjust the API call URL depending on the search type
+            case Title:
+                query = "title=" + query;
+                break;
+            case Isbn:
+                query = "isbn=" + query;
+                break;
+        }
+        //String sort ="&sort=rating";
+        String sort="";
+        query = API_SEARCH + query + sort + "&limit=" + LIMIT_RESULTS; //Sorting by rating seems to give the best results
+        HttpEntity<String> request = new HttpEntity<>(query, httpHeaders); //Setup request object
+        String response = restTemplate.exchange(query, HttpMethod.GET, request, String.class).getBody(); //Call to API, get response
+        String results = "";
+        Gson gson = new Gson();
+        return gson.fromJson(response, JsonObject.class); //Convert the raw JSON response to a JsonObject and return it
+
     }
+
+
+
 }
