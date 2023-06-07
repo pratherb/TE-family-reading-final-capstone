@@ -13,6 +13,7 @@ import Log from '../views/Log.vue'
 import UserProfile from '../views/UserProfile.vue'
 import AddMember from '../views/AddMember.vue'
 import AddPrize from '../views/AddPrizePage.vue'
+import AboutUs from '../views/AboutUs.vue'
 
 Vue.use(Router)
 
@@ -103,6 +104,11 @@ const router = new Router({
       path: "/addprize",
       name: "addprize",
       component: AddPrize
+    },
+    {
+      path: "/aboutus",
+      name: "aboutus",
+      component: AboutUs
     }
   ]
 })

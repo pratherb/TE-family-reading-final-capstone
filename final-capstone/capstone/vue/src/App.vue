@@ -23,7 +23,7 @@
           >
             Logout</router-link
           ><br />
-          <router-link v-bind:to="{ name: 'about'}">About Us</router-link>
+          <router-link v-bind:to="{ name: 'aboutus'}">About Us</router-link>
         </ul>
       </div>
     </nav>
