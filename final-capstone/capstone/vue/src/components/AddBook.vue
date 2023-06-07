@@ -62,6 +62,7 @@ export default {
   },
   methods: {
     getBook() {
+      this.resetBookResults();
       const searchTerm = this.bookToSearch.searchTerm;
       if (this.selectedOption == "isbn") {
         bookService.get(searchTerm).then((response) => {
@@ -116,9 +117,9 @@ export default {
   padding: 30px;
 }
 
-.book-card {
+/* .book-card {
   padding: 1px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
+} */
 </style>
