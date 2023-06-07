@@ -22,10 +22,10 @@
         </td>
       </tr>
     </table>
-      <div class="grid-container">
-    <family-reading-totals class="grid-item1" />
-    <br />
-    <the-leaderboard class="grid-item2"/>
+    <div class="grid-container">
+      <family-reading-totals class="grid-item1" />
+      <br />
+      <the-leaderboard class="grid-item2" />
     </div>
     <div class="loading" v-if="isLoading">
       <img src="../assets/book_pages_opening.gif" />
@@ -61,9 +61,9 @@ export default {
     };
   },
   computed: {
-    isParent: function() {
+    isParent: function () {
       return this.$store.state.user.authorities[0].name != "ROLE_CHILD";
-    } 
+    },
   },
   created() {
     docsService.list(this.$store.state.user.familyId).then((response) => {
@@ -78,30 +78,31 @@ export default {
 @import url("https://fonts.cdnfonts.com/css/socake");
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap");
 
-.members {
-  background: rgba(254, 209, 113, 0.5);
-}
-#member-heading {
-  font-family: "Socake", sans-serif;
-  color: rgb(88, 85, 91);
-}
-
 .selections {
   transition-duration: 0.4s;
+  width:200px;
+  height:60px;
   padding: 12px 28px;
   border: 1px solid rgb(0, 0, 0);
-  margin: 10px 15px 20px 10px;
+  margin: 50px 3gi0px 40px 30px;
   background-color: rgb(231, 247, 217);
+  font-family: "Montserrat", sans-serif;
+  color: rgb(48, 46, 49);
+  font-weight: bold;
+  font-size:15px ;
 }
 
 .selections:hover {
   background-color: rgb(115, 147, 126);
 }
 .members {
+  background: rgba(254, 209, 113, 0.5);
   text-align: center;
+  height:950px;
 }
 
 #member-heading {
+  font-family: "Socake", sans-serif;
   color: rgb(88, 85, 91);
   font-size: 50px;
 }
@@ -116,7 +117,8 @@ export default {
   width: 30%;
   align-items: center;
   background: white;
-  border: 1px solid;
+  border: 2px solid;
+  border-radius: 4px;
   margin: 20px auto 20px auto;
   /* top, right, bottom, left */
 }
@@ -145,6 +147,7 @@ export default {
   align-items: center;
   height: 250px;
 }
+
 .logo_header img {
   width: 250px;
   height: 350px;
@@ -156,22 +159,22 @@ export default {
 #books-read {
   color: rgb(88, 85, 91);
   font-family: "Socake", sans-serif;
-   font-size: 25px;
+  font-size: 25px;
 }
 #all-books {
   color: rgb(88, 85, 91);
-   font-family: "Montserrat", sans-serif;
-   font-size:20px
+  font-family: "Montserrat", sans-serif;
+  font-size: 20px;
 }
 #all-minutes-read {
   color: rgb(88, 85, 91);
-   font-family: "Socake", sans-serif;
-   font-size:25px;
+  font-family: "Socake", sans-serif;
+  font-size: 25px;
 }
 #total-minutes {
   color: rgb(88, 85, 91);
   font-family: "Montserrat", sans-serif;
-   font-size:20px;
+  font-size: 20px;
 }
 .leaderboard-head {
   color: rgb(88, 85, 91);
@@ -193,7 +196,7 @@ export default {
 }
 .grid-item1 {
   grid-column: 1;
-  grid-row:1;
+  grid-row: 1;
 }
 .grid-item2 {
   grid-column: 2;

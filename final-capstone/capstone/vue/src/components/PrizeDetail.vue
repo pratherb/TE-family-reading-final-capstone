@@ -1,14 +1,16 @@
 <template>
   <div>
     <!-- <img :src="prize.itemUrl"> -->
-    <h4>Prizes & Requirements</h4>
-    <p>Prize: {{ prize.name }}</p>
-    <p>Description: {{ prize.description }}</p>
-    <p>Milestone: {{ prize.milestone }}</p>
-    <p>User Group: {{ prize.userGroup }}</p>
-    <p>Max Prizes: {{ prize.maxPrizes }}</p>
+    <h3>{{ prize.name }}</h3>
+    <h4>{{ prize.description }}</h4>
+    <p>To win: read for {{ prize.milestone }} minutes</p>
+    <p>Can be won by: {{ userGroupText }}</p>
+    <p>Prizes remaining: {{ prize.maxPrizes }}</p>
     <p>Start Date: {{ prize.startDate }}</p>
     <p>End Date: {{ prize.endDate }}</p>
+    <form v-on:submit.prevent="deletePrize(prize.name)">
+      <button>Delete prize</button>
+    </form>
   </div>
 </template>
 
@@ -19,6 +21,20 @@ export default {
   props: [
     'prize'
   ],
+  computed: {
+    userGroupText(){
+      if(this.prize.userGroup === "both"){
+        return "Parents and children";
+      }
+      else if(this.prize.userGroup === "parent"){
+        return "Parents";
+      }
+      else if(this.prize.userGroup === "child"){
+        return "Children";
+      }
+      return "";
+    }
+  },
   methods: {
     addToPrizes(prize) {
       prizeService.addToPrizeList(prize).then((response) => {
@@ -28,8 +44,12 @@ export default {
         }
       });
     },
+    deletePrize(prizeName) {
+        prizeService.deletePrize(prizeName);
+        window.location.reload();
+    },
   },
-};
+}
 </script>
 
 <style scoped>

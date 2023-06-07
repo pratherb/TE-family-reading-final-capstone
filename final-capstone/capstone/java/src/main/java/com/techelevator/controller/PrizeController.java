@@ -56,6 +56,7 @@ public class PrizeController {
 
     @RequestMapping(value = ENDPOINT + "/name/{prizeName}", method = RequestMethod.DELETE)
     public void deleteByName(@PathVariable String prizeName){
+        prizeDao.deleteByName(prizeName);
     }
 
     //Add a prize to the user's list of won prizes
