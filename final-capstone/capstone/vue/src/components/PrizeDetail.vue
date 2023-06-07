@@ -8,7 +8,7 @@
     <p>Prizes remaining: {{ prize.maxPrizes }}</p>
     <p>Start Date: {{ prize.startDate }}</p>
     <p>End Date: {{ prize.endDate }}</p>
-    <form v-on:submit.prevent="deletePrize(prize.name)">
+    <form v-on:submit.prevent="deletePrize(prize.name)" v-show="isParent">
       <button>Delete prize</button>
     </form>
   </div>
@@ -33,6 +33,9 @@ export default {
         return "Children";
       }
       return "";
+    },
+    isParent: function() {
+      return this.$store.state.user.authorities[0].name != "ROLE_CHILD";
     }
   },
   methods: {
