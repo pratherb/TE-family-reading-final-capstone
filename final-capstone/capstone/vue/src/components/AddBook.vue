@@ -1,56 +1,43 @@
 <template>
-  <div>
-    <div id="add" class="text-center">
-      <form v-on:submit.prevent="getBook">
-        <h1>Add Book</h1>
-        <div>
-          <label for="title">Title</label>
-          <input
-            type="radio"
-            name="titleOrIsbn"
-            id="title-button"
-            v-model="selectedOption"
-            value="title"
-          />
-          <label for="isbn">ISBN</label>
-          <input
-            type="radio"
-            name="titleOrIsbn"
-            id="isbn-button"
-            v-model="selectedOption"
-            value="isbn"
-          />
-        </div>
-        <div class="form-input-group" v-if="selectedOption === 'title'">
-          <label for="title-input">Title</label>
-          <input
-            type="text"
-            id="title-input"
-            v-model="bookToSearch.searchTerm"
-          />
-        </div>
-        <div class="form-input-group" v-if="selectedOption === 'isbn'">
-          <label for="isbn-input">ISBN</label>
-          <input
-            type="text"
-            id="isbn-input"
-            v-model="bookToSearch.searchTerm"
-          />
-        </div>
-        <button type="submit" v-on:click="makeVisible">Find Book</button>
-      </form>
-    </div>
-    <div v-show="showResults">
-      <ul>
-        <li>
+  <div class="add-book">
+    <form v-on:submit.prevent="getBook">
+      <h1>Add Book</h1>
+      <div>
+        <label for="title">Title</label>
+        <input
+          type="radio"
+          name="titleOrIsbn"
+          id="title-button"
+          v-model="selectedOption"
+          value="title"
+        />
+        <label for="isbn">ISBN</label>
+        <input
+          type="radio"
+          name="titleOrIsbn"
+          id="isbn-button"
+          v-model="selectedOption"
+          value="isbn"
+        />
+      </div>
+      <div v-if="selectedOption === 'title'">
+        <label for="title-input">Title</label>
+        <input type="text" id="title-input" v-model="bookToSearch.searchTerm" />
+      </div>
+      <div v-if="selectedOption === 'isbn'">
+        <label for="isbn-input">ISBN</label>
+        <input type="text" id="isbn-input" v-model="bookToSearch.searchTerm" />
+      </div>
+      <button type="submit" v-on:click="makeVisible">Find Book</button>
+    </form>
+    <div v-show="showResults" class="results-grid">
           <book-detail
             v-for="book in this.$store.state.bookResults"
             v-bind:showButton="true"
             v-bind:key="book.isbn"
             v-bind:book="book"
+            class="book-card"
           />
-        </li>
-      </ul>
     </div>
   </div>
 </template>
@@ -58,7 +45,6 @@
 <script>
 import bookService from "../services/BookService";
 import BookDetail from "./BookDetail.vue";
-
 
 export default {
   components: { BookDetail },
@@ -112,3 +98,25 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.add-book {
+  padding: 15px;
+  text-align: center;
+  background: rgba(254, 209, 113, 0.5);
+}
+
+.results-grid {
+  margin-left:15%;
+  margin-right: 15%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.book-card {
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+</style>
