@@ -2,7 +2,9 @@
   <div class="members">
     <div class="logo_header">
       <h3 id="member-heading">Your Family Members</h3>
+      <router-link to="/">
       <img src="../images/sharpened-transparent-logo.png" />
+      </router-link>
     </div>
     <table class="members-table">
       <tr
