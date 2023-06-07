@@ -22,8 +22,8 @@ export default {
     return http.get(`/prize/${username}`, finished);
   },
 
-  delete(prizes){
-    return http.delete(prizes);
+  deletePrize(prizeName){
+    return http.delete(`/name/${prizeName}`);
   }
 
 }

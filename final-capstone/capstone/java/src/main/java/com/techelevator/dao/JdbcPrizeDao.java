@@ -29,17 +29,17 @@ public class JdbcPrizeDao implements PrizeDao {
 
     //For quick testing
     @Override
-    public List<Prize> findAll(){
+    public List<Prize> findAll() {
         List<Prize> prizeList = new ArrayList<>();
         String sql = "SELECT * FROM prize";
-        try{
+        try {
             SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
-            while(results.next()){
+            while (results.next()) {
                 Prize prize = mapRowToPrize(results);
                 prizeList.add(prize);
             }
             return prizeList;
-        } catch (DataAccessException e){
+        } catch (DataAccessException e) {
             System.out.println("Error fetching all prizes.");
         }
         return null;
@@ -160,19 +160,19 @@ public class JdbcPrizeDao implements PrizeDao {
 
     //Get all prizes associated with a family
     @Override
-    public List<Prize> getPrizesByEmailAddress(String emailAddress){
+    public List<Prize> getPrizesByEmailAddress(String emailAddress) {
         List<Prize> prizeList = new ArrayList<>();
-        String sql = "SELECT * FROM prize p\n"+
+        String sql = "SELECT * FROM prize p\n" +
                 "JOIN family f ON f.family_id = p.family_id\n" +
                 "WHERE f.email_address = ?";
-        try{
+        try {
             SqlRowSet results = jdbcTemplate.queryForRowSet(sql, emailAddress);
-            while(results.next()){
+            while (results.next()) {
                 Prize prize = mapRowToPrize(results);
                 prizeList.add(prize);
             }
             return prizeList;
-        } catch (DataAccessException e){
+        } catch (DataAccessException e) {
             System.out.println("Error getting prizes by email " + emailAddress);
         }
         return null;
@@ -189,8 +189,8 @@ public class JdbcPrizeDao implements PrizeDao {
         Prize newPrize;
         //Inserts NULL into user_id initially - this gets filled when a user is "tracking" it
         String sql = "INSERT INTO prize\n" +
-                "(family_id, name, description, milestone, user_group, start_date, end_date)\n" +
-                "VALUES(?,?,?,?,?,?,?)\n" +
+                "(family_id, name, description, milestone, max_prizes, user_group, start_date, end_date)\n" +
+                "VALUES(?,?,?,?,?,?,?,?)\n" +
                 "RETURNING prize_id";
         try {
             int familyId;
@@ -199,7 +199,7 @@ public class JdbcPrizeDao implements PrizeDao {
             familyId = familyDao.getFamilyIdByUsername(principal.getName());
             int id = jdbcTemplate.queryForObject(sql, Integer.class,
                     familyId, prize.getName(), prize.getDescription(), prize.getMilestone(),
-                    prize.getUserGroup(), startDate, endDate);
+                    prize.getMaxPrizes(), prize.getUserGroup(), startDate, endDate);
             return getById(id);
 
         } catch (DataAccessException e) {
@@ -214,13 +214,13 @@ public class JdbcPrizeDao implements PrizeDao {
         int prizeId = -1;
         String sql = "UPDATE prize\n" +
                 "SET user_id = ?, family_id = ?, name = ?, description = ?, milestone = ? " +
-                "user_group = ?, start_date = ?, end_date = ?\n" +
-                "WHERE prize_id = ?\n"+
+                "max_prizes = ? user_group = ?, start_date = ?, end_date = ?\n" +
+                "WHERE prize_id = ?\n" +
                 "RETURNING prize_id";
         try {
             prizeId = getIdByName(prize.getName());
             int updatedPrizeId = jdbcTemplate.update(sql,
-                    prize.getUserId(), prize.getFamilyId(), prize.getName(), prize.getDescription(),
+                    prize.getUserId(), prize.getFamilyId(), prize.getName(), prize.getDescription(), prize.getMaxPrizes(),
                     prize.getMilestone(), prize.getUserGroup(), prize.getStartDate(), prize.getEndDate(),
                     prizeId
             );
@@ -233,11 +233,11 @@ public class JdbcPrizeDao implements PrizeDao {
 
     @Override
     public void deleteByName(String prizeName) {
-        String sql = "DELETE FROM prize\n"+
+        String sql = "DELETE FROM prize\n" +
                 "WHERE name = ?";
-        try{
+        try {
             jdbcTemplate.update(sql, prizeName);
-        } catch (DataAccessException e){
+        } catch (DataAccessException e) {
             System.out.println("Error deleting prize " + prizeName);
         }
     }
@@ -251,6 +251,7 @@ public class JdbcPrizeDao implements PrizeDao {
             prize.setName(rs.getString("name"));
             prize.setDescription(rs.getString("description"));
             prize.setMilestone(rs.getInt("milestone"));
+            prize.setMaxPrizes(rs.getInt("max_prizes"));
             prize.setUserGroup(rs.getString("user_group").toLowerCase());
             prize.setStartDate(rs.getDate("start_date").toLocalDate());
             prize.setEndDate(rs.getDate("end_date").toLocalDate());
@@ -262,15 +263,15 @@ public class JdbcPrizeDao implements PrizeDao {
 
     //Returns a user_prize in JSON data, for testing - doesn't need to actually return anything otherwise
     public void awardPrizeByUser(String prizeName, String username) {
-        String sql = "INSERT INTO user_prize\n"+
-                "(user_id, prize_id, won_date)\n"+
+        String sql = "INSERT INTO user_prize\n" +
+                "(user_id, prize_id, won_date)\n" +
                 "VALUES(?,?,?)\n";
-        try{
+        try {
             int prizeId = getIdByName(prizeName);
             int userId = userDao.findByUsername(username).getId();
             int result = jdbcTemplate.update(sql,
                     userId, prizeId, LocalDate.now());
-        } catch (DataAccessException e){
+        } catch (DataAccessException e) {
             System.out.println("Error awarding a prize to " + username);
             System.out.println(e.getMessage());
         }
@@ -282,15 +283,15 @@ public class JdbcPrizeDao implements PrizeDao {
         String sql = "SELECT * from prize p\n" +
                 "JOIN user_prize up ON up.prize_id = p.prize_id\n" +
                 "WHERE up.user_id = ?";
-        try{
+        try {
             int userId = userDao.findByUsername(username).getId();
             SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
-            while(results.next()){
+            while (results.next()) {
                 Prize prize = mapRowToPrize(results);
                 prizeList.add(prize);
             }
             return prizeList;
-        } catch (DataAccessException e){
+        } catch (DataAccessException e) {
             System.out.println("Error getting prizes awarded to user " + username);
         }
         return null;
