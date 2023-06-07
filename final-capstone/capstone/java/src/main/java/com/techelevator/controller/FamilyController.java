@@ -26,7 +26,7 @@ public class FamilyController {
         this.activityDao = activityDao;
     }
 
-    @RequestMapping(value = "/members/id/books", method = RequestMethod.GET)
+    @RequestMapping(value = "/members/{id}/books", method = RequestMethod.GET)
     public int getFamilyBooksFinished(@PathVariable int id) {
         return bookDao.getFamilyBooksFinished(id);
     }
@@ -42,7 +42,7 @@ public class FamilyController {
         return null;
     }
 
-    @RequestMapping(value = "/members/id/activity", method = RequestMethod.GET)
+    @RequestMapping(value = "user/members/{id}/activity", method = RequestMethod.GET)
     public int getFamilyReadingActivityTotal(@PathVariable int id) {
         return activityDao.getTotalMinutesPerFamily(id);
     }

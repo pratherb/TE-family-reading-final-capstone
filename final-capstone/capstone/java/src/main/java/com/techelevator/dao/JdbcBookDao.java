@@ -208,10 +208,10 @@ public class JdbcBookDao implements BookDao {
     @Override
     public int getFamilyBooksFinished(int familyId) {
         int booksFinished = 0;
-        String sql = "SELECT COUNT(*) as num_finished from book b\n" +
-                "JOIN user_book ub ON b.book_isbn = ub.book_isbn\n" +
-                "JOIN users u ON u.user_id = ub.user_id\n" +
-                "JOIN family f ON f.family_id = u.family_id\n" +
+        String sql = "SELECT COUNT(*) as num_finished from book b " +
+                "JOIN user_book ub ON b.book_isbn = ub.book_isbn " +
+                "JOIN users u ON u.user_id = ub.user_id " +
+                "JOIN family f ON f.family_id = u.family_id " +
                 "WHERE f.family_id = ? AND ub.finished = true";
         try {
             SqlRowSet result = jdbcTemplate.queryForRowSet(sql, familyId);
