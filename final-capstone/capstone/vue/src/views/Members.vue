@@ -5,6 +5,8 @@
       <img src="../images/sharpened-transparent-logo.png" />
     </div>
     <family-reading-totals/>
+    <br>
+    <the-leaderboard/>
     <div class="loading" v-if="isLoading">
       <img src="../assets/book_pages_opening.gif" />
     </div>
@@ -38,11 +40,12 @@
 
 <script scoped>
 import FamilyReadingTotals from '../components/FamilyReadingTotals.vue';
+import TheLeaderboard from '../components/TheLeaderboard.vue';
 import docsService from "../services/DocsService";
 
 export default {
   name: "members",
-  components: {FamilyReadingTotals},
+  components: {FamilyReadingTotals, TheLeaderboard},
   data() {
     return {
       isLoading: true,

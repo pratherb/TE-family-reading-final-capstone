@@ -18,6 +18,10 @@ export default {
     },
 
     getTotalMinutesReadPerFamily(id) {
-        return http.get(`/members/${id}/activity`)
-    }  
+        return http.get(`/members/${id}/activity`);
+    },
+    
+    getLeaderboard(id) {
+        return http.get(`/leaderboard/${id}`);
+    }
   }

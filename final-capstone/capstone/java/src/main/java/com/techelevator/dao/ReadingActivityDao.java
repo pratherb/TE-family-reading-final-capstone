@@ -16,4 +16,5 @@ public interface ReadingActivityDao {
     void deleteAllByUsername(String username);
     int getTotalMinutesPerUser(String username);
     int getTotalMinutesPerFamily(int id);
+    List<Integer>getLeaderboard(int id);
 }

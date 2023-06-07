@@ -46,4 +46,9 @@ public class FamilyController {
     public int getFamilyReadingActivityTotal(@PathVariable int id) {
         return activityDao.getTotalMinutesPerFamily(id);
     }
+
+    @RequestMapping(value = "user/leaderboard/{id}", method = RequestMethod.GET)
+    public List<Integer> getLeaderboard(@PathVariable int id) {
+        return activityDao.getLeaderboard(id);
+    }
 }
