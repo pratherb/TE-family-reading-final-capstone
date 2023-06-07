@@ -4,9 +4,6 @@
       <h3 id="member-heading">Your Family Members</h3>
       <img src="../images/sharpened-transparent-logo.png" />
     </div>
-    <family-reading-totals/>
-    <br>
-    <the-leaderboard/>
     <div class="loading" v-if="isLoading">
       <img src="../assets/book_pages_opening.gif" />
     </div>
