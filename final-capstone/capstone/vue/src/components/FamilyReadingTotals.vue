@@ -4,10 +4,10 @@
       <img src="../assets/book_pages_opening.gif" />
     </div>
     <div v-else>
-      <h4 class="total-books-read">Total Books Read:</h4>
-      <h4 class="book-total">{{familyBookTotal}}</h4>
-      <h4 class="total-minutes-read">Total Minutes of Reading:</h4>
-      <h4 class="minute-total">{{familyMinuteTotal}}</h4>
+      <h4 class="total-books-read" id="books-read">Total Books Read:</h4>
+      <h4 class="book-total" id="all-books">{{familyBookTotal}}</h4>
+      <h4 class="total-minutes-read" id="all-minutes-read">Total Minutes of Reading:</h4>
+      <h4 class="minute-total" id="total-minutes">{{familyMinuteTotal}}</h4>
     </div>
   </div>
 </template>
