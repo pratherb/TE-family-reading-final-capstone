@@ -120,9 +120,8 @@ public class JdbcBookDao implements BookDao {
     }
 
     @Override
-    public Book addBookToReadingListByPrincipal(Book book, Principal principal) {
+    public Book addBookToReadingListByPrincipal(Book book, String username) {
         //If this book is not yet found in the reading list
-        String username = principal.getName();
         if (getBookFromReadingListByIsbn(book.getIsbn(), username) == null) {
             Book newBook;
             //Is this book not in the database? If not create it

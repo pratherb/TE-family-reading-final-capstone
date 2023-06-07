@@ -34,12 +34,12 @@ export default {
       window.location.reload();
     },
       addToReading(isbn){
+        const username = this.$store.state.user.username;
         bookService
-          .addToReadingList(isbn)
+          .addToReadingList(isbn, username)
           .then((response)=> {
             if (response.status === 200) {
-                const username = this.$store.state.user.username;
-            this.$router.push({ name: 'user-profile', params: { username } });
+                this.$router.push({ name: 'user-profile', params: { username } });
                           
             }
           })
