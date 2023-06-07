@@ -11,7 +11,7 @@ public interface BookDao {
     List<Book> searchBooksByTitle(String title);
     Book searchBookByIsbn(String isbn);
 
-    Book addBookToReadingListByPrincipal(Book book, Principal principal);
+    Book addBookToReadingListByPrincipal(Book book, String username);
 
     //Handle books
     Book createBook(Book book);
@@ -19,7 +19,7 @@ public interface BookDao {
 
     //Handle reading list
     Book addBookToReadingList(Book book, String username);
-    List<Book> getFamilyReadingList(int familyId);
+    int getFamilyBooksFinished(int familyId);
     List<Book> getUserCurrentlyReading(String username);
     List<Book> getFamilyReadingListByCompletion(int familyId, Boolean completed);
     Book updateReadingListEntryByIsbn(Book book, String isbn);

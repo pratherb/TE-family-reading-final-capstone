@@ -19,8 +19,9 @@ export default {
     return http.get(`/isbn=${isbn}`);
   },
 
-  addToReadingList(isbn){
-    return http.post(`/isbn=${isbn}`);
+  addToReadingList(isbn, username){
+    console.log(isbn, username);
+    return http.post(`/isbn=${isbn}?username=${username}`);
   },
 
   delete(isbn){
