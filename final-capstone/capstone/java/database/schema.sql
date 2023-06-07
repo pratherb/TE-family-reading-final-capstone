@@ -27,7 +27,7 @@ CREATE TABLE users (
 
 CREATE TABLE book (
     book_isbn VARCHAR(50) PRIMARY KEY,
-    title VARCHAR(150),
+    title VARCHAR(10000),
     author VARCHAR(50),
     num_pages INT,
     publisher VARCHAR(150),
