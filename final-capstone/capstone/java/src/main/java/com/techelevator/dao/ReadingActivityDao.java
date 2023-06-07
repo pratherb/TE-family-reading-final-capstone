@@ -15,4 +15,5 @@ public interface ReadingActivityDao {
     void deleteById(int readingActivityId);
     void deleteAllByUsername(String username);
     int getTotalMinutesPerUser(String username);
+    int getTotalMinutesPerFamily(int id);
 }

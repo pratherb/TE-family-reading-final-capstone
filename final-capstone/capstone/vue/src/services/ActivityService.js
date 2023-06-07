@@ -15,6 +15,9 @@ export default {
 
     getTotalMinutesReadPerUser(username) {
         return http.get(`/${username}/activity/total`);
-    }
-  
+    },
+
+    getTotalMinutesReadPerFamily(id) {
+        return http.get(`/members/${id}/activity`)
+    }  
   }

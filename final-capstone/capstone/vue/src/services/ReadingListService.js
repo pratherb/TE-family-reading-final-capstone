@@ -20,5 +20,9 @@ export default {
 
   getNumBooksFinishedPerUser(username) {
     return http.get(`/user/${username}/completed`);
+  },
+
+  getNumBooksFinishedPerFamily(id) {
+    return http.get(`/members/${id}/books`)
   }
 }

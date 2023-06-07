@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 
+import java.awt.datatransfer.SystemFlavorMap;
 import java.security.Principal;
 import java.sql.SQLDataException;
 import java.sql.SQLException;
@@ -147,7 +148,27 @@ public class JdbcReadingActivityDao implements ReadingActivityDao {
             }
             return numMinutes;
         } catch (DataAccessException e) {
-            System.out.println("Error retrieving read books total for user " + username);
+            System.out.println("Error retrieving reading total for user " + username);
+        }
+        return -1;
+    }
+
+    @Override
+    public int getTotalMinutesPerFamily(int id) {
+        int numMinutes = 0;
+        String sql = "SELECT SUM(minutes_read) AS total_minutes from reading_activity b\n" +
+                "JOIN user_book ub ON b.book_isbn = ub.book_isbn\n" +
+                "JOIN users u ON u.user_id = ub.user_id\n" +
+                "JOIN family f ON f.family_id = u.family_id\n" +
+                "WHERE f.family_id = ?";
+        try {
+            SqlRowSet result = jdbcTemplate.queryForRowSet(sql, id);
+            if (result.next()) {
+                numMinutes = result.getInt("total_minutes");
+            }
+            return numMinutes;
+        } catch (DataAccessException e) {
+            System.out.println("Error retrieving reading total for family");
         }
         return -1;
     }

@@ -4,6 +4,7 @@
       <h3 id="member-heading">Your Family Members</h3>
       <img src="../images/sharpened-transparent-logo.png" />
     </div>
+    <family-reading-totals/>
     <div class="loading" v-if="isLoading">
       <img src="../assets/book_pages_opening.gif" />
     </div>
@@ -36,11 +37,12 @@
 </template>
 
 <script scoped>
+import FamilyReadingTotals from '../components/FamilyReadingTotals.vue';
 import docsService from "../services/DocsService";
 
 export default {
   name: "members",
-  components: {},
+  components: {FamilyReadingTotals},
   data() {
     return {
       isLoading: true,
@@ -52,6 +54,7 @@ export default {
   created() {
     docsService.list(this.$store.state.user.familyId).then((response) => {
       this.memberResults = response.data;
+      this.isLoading = false;
     });
   },
 };

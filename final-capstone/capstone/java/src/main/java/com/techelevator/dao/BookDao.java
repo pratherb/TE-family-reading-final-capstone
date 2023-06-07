@@ -19,7 +19,7 @@ public interface BookDao {
 
     //Handle reading list
     Book addBookToReadingList(Book book, String username);
-    List<Book> getFamilyReadingList(int familyId);
+    int getFamilyBooksFinished(int familyId);
     List<Book> getUserCurrentlyReading(String username);
     List<Book> getFamilyReadingListByCompletion(int familyId, Boolean completed);
     Book updateReadingListEntryByIsbn(Book book, String isbn);
