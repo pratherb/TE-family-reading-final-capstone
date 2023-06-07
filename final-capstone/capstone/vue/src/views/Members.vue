@@ -80,10 +80,16 @@ export default {
 
 .selections {
   transition-duration: 0.4s;
+  width:200px;
+  height:60px;
   padding: 12px 28px;
   border: 1px solid rgb(0, 0, 0);
-  margin: 10px 15px 20px 10px;
+  margin: 50px 40px 40px 40px;
   background-color: rgb(231, 247, 217);
+  font-family: "Montserrat", sans-serif;
+  color: rgb(48, 46, 49);
+  font-weight: bold;
+  font-size:15px ;
 }
 
 .selections:hover {
@@ -92,6 +98,7 @@ export default {
 .members {
   background: rgba(254, 209, 113, 0.5);
   text-align: center;
+  height:950px;
 }
 
 #member-heading {
