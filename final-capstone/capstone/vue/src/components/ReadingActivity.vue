@@ -20,13 +20,12 @@
     <div>
       <form class="addReadingActivity" v-on:submit.prevent="addActivity">
         <h1 class="headerForActivity">Add Reading Activity</h1>
-        <div class="form-input-group-reading">
+        <div class="form-input-group-reading" v-show="isParent">
           <label for="username">Username</label>
           <input
             type="text"
             id="username"
             v-model="newActivity.username"
-            required
           />
         </div>
         <div class="form-input-group-reading">
@@ -75,13 +74,18 @@ export default {
       isLoading: true,
       activityList: [],
       newActivity: {
-        username: "",
+        username: this.$store.state.user.username,
         bookIsbn: "",
         minutesRead: 0,
         format: "",
         notes: "",
       },
     };
+  },
+  computed: {
+    isParent: function() {
+      return this.$store.state.user.authorities[0].name != "ROLE_CHILD";
+    } 
   },
   created() {
     activityService
