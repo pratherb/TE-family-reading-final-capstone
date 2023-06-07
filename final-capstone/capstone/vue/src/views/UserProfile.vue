@@ -94,9 +94,6 @@ export default {
 .reading-activity {
   background: rgb(115, 147, 126);
 }
-.activity-list {
-  background: rgb(149, 151, 149);
-}
 #reading-list {
   background: rgb(149, 151, 149);
 }
@@ -106,4 +103,7 @@ export default {
 .usersname {
   background: rgb(115, 147, 126);
 } */
+.activity-list {
+  list-style: none;
+}
 </style>
