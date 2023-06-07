@@ -194,12 +194,10 @@ public class JdbcPrizeDao implements PrizeDao {
                 "RETURNING prize_id";
         try {
             int familyId;
-            LocalDate startDate = LocalDate.now();
-            LocalDate endDate = startDate.plusYears(1);
             familyId = familyDao.getFamilyIdByUsername(principal.getName());
             int id = jdbcTemplate.queryForObject(sql, Integer.class,
                     familyId, prize.getName(), prize.getDescription(), prize.getMilestone(),
-                    prize.getMaxPrizes(), prize.getUserGroup(), startDate, endDate);
+                    prize.getMaxPrizes(), prize.getUserGroup(), prize.getStartDate(), prize.getEndDate());
             return getById(id);
 
         } catch (DataAccessException e) {
