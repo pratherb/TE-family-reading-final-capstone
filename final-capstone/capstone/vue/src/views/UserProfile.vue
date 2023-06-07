@@ -2,7 +2,9 @@
   <div class="users">
     <h2 class="usersname">{{ $route.params.username }}</h2>
     <!-- Changes with each user -->
-    <h1 class="logo">BookBound Dragon Here</h1>
+    <h1 class="logo">
+      <img src="../images/sharpened-transparent-logo.png" alt="logo">
+    </h1>
     <reading-totals />
     <h3 id="reading-list">Currently Reading</h3>
 
@@ -66,8 +68,8 @@ export default {
 <style>
 @import url("https://fonts.cdnfonts.com/css/socake");
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap");
-.addReadingActivity {
-  background: rgb(115, 147, 126);
+/* .addReadingActivity {
+  display: flex;
 }
 .form-input-group-reading {
   background: rgb(149, 151, 149);
@@ -101,5 +103,5 @@ export default {
 }
 .usersname {
   background: rgb(115, 147, 126);
-}
+} */
 </style>

@@ -62,6 +62,7 @@ CREATE TABLE prize (
     name VARCHAR(50) NOT NULL UNIQUE,
     description VARCHAR(250),
     milestone INT,
+    max_prizes INT DEFAULT 1,
     user_group VARCHAR(50),
     start_date DATE DEFAULT CURRENT_DATE,
     end_date DATE DEFAULT '9999-12-31',
