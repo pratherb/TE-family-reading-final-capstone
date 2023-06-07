@@ -46,8 +46,8 @@ public class UserController {
         return userDao.getUserById(newUserId);
     }
 
+    //This method MUST be exempted from pre-authorize notation
     @RequestMapping(value = "family/{id}", method = RequestMethod.GET)
-    @PreAuthorize("isAuthenticated()")
     public List<User> getUsersByFamilyId(@PathVariable int id){
         return userDao.getUsersByFamilyId(id);
     }
@@ -66,14 +66,14 @@ public class UserController {
         return bookDao.getUserCurrentlyReading(username);
     }
 
-//    @RequestMapping(value = ENDPOINT + "/reading/isbn={isbn}", method = RequestMethod.POST)
-//    public Book addBookToReadingList(@PathVariable String isbn, @RequestParam String username) {
-//        return bookDao.addBookToReadingList(bookDao.searchBookByIsbn(isbn), username);
-//    }
-
-        @RequestMapping(value = "/book" + "/isbn={isbn}", method = RequestMethod.POST)
-        public Book addBookToReadingListByPrincipal(@PathVariable String isbn, @RequestParam String username){
-            return bookDao.addBookToReadingListByPrincipal(bookDao.searchBookByIsbn(isbn), username);
+    @RequestMapping(value = "/book" + "/isbn={isbn}", method = RequestMethod.POST)
+    public Book addBookToReadingList(@PathVariable String isbn, @RequestParam String username){
+        int familyId= familyDao.getFamilyIdByUsername(username);
+        Family family = familyDao.getFamilyById(familyId);
+        String email = family.getEmail();
+        User user = userDao.findByUsername(username);
+        this.emailService.sendReadingListEmail(email, user.getFirstName(), isbn);
+        return bookDao.addBookToReadingListByPrincipal(bookDao.searchBookByIsbn(isbn), username);
     }
 
     @RequestMapping(value = ENDPOINT + "/{username}/completed", method = RequestMethod.GET)
