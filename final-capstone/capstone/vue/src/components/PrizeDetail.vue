@@ -2,7 +2,7 @@
   <div>
     <!-- <img :src="prize.itemUrl"> -->
     <h4>Prizes & Requirements</h4>
-    <p>Prize: {{ prize.prizeName }}</p>
+    <p>Prize: {{ prize.name }}</p>
     <p>Description: {{ prize.description }}</p>
     <p>Milestone: {{ prize.milestone }}</p>
     <p>User Group: {{ prize.userGroup }}</p>
