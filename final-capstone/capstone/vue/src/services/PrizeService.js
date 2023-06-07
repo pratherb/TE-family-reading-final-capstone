@@ -12,7 +12,7 @@ export default {
   },
 
   addToPrizeList(prize){
-    return http.post(`/`, prize);
+    return http.post('/', prize);
   },
 
   getPrizesEarned(username, finished){
