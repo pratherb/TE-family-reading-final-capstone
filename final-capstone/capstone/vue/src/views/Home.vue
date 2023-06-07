@@ -1,5 +1,9 @@
 <template>
   <div class="home">
+    <div class="title">
+      <h1 class="title">BookBound: Discover the Power of Stories Together!</h1>
+      <img class="title-logo" src="../images/sharpened-transparent-logo.png" />
+    </div>
     <logo-slider>
       <div class="slideshow">
         <img id="slides" src="../images/mock-annonceevent/picnic2.png" />
@@ -14,12 +18,8 @@
         <img id="slides" src="../images/mock-annonceevent/bedtime2.png" />
       </div>
     </logo-slider>
-    <div class="title">
-      <h1 class="title">BookBound: Discover the Power of Stories Together!</h1>
-      <img class="title-logo" src="../images/sharpened-transparent-logo.png" />
-    </div>
     <div class="product_details">
-      <h1 >
+      <h1>
         Get ready for an incredible family reading program that's all about fun
         and togetherness! It's specially designed for both kids and parents, so
         the whole family can dive into the magic of reading. Imagine being
@@ -156,7 +156,6 @@ export default {
 </script>
 
 <style scoped>
-/* @import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@200&display=swap'); */
 @import url("https://fonts.cdnfonts.com/css/socake");
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap");
 
@@ -171,6 +170,9 @@ export default {
   font-size: 65px;
   align-items: center;
   color: rgb(88, 85, 91);
+  margin-bottom: 44px;
+  margin-top: 30px;
+  height: 180px;
 }
 #bookcover {
   width: 200px;
@@ -194,11 +196,10 @@ logo-slider {
   padding: 20px;
   height: 400px;
   overflow: hidden;
-  max-width: 1300px;
   width: 90%;
-  margin: 0 auto ;
   position: relative;
   display: flex;
+  margin: 0 auto 50px;
 }
 logo-slider:hover .slideshow {
   animation-play-state: paused;
@@ -245,7 +246,7 @@ after {
     transform: translateX(-100%);
   }
 }
-.product_details{
+.product_details {
   width: 80%;
   background: rgb(115, 147, 126);
   border: 2px;
@@ -261,7 +262,7 @@ after {
   font-size: 20px;
 }
 .home {
-  padding:25px;
+  padding: 25px;
   background: rgba(254, 209, 113, 0.5);
 }
 </style>
