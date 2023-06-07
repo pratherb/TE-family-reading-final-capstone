@@ -84,7 +84,7 @@ export default {
   height:60px;
   padding: 12px 28px;
   border: 1px solid rgb(0, 0, 0);
-  margin: 50px 3gi0px 40px 30px;
+  margin: 50px 30px 40px 30px;
   background-color: rgb(231, 247, 217);
   font-family: "Montserrat", sans-serif;
   color: rgb(48, 46, 49);

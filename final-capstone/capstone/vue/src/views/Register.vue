@@ -1,10 +1,11 @@
 <template>
   <div id="register" class="text-center">
-    <div class="regLogo">
-      <img src="../images/sharpened-transparent-logo.png" />
+    <div class="headlogo">
+       <h1 class="head">Create Account</h1>
+      <img class="regheadLogo" src="../images/sharpened-transparent-logo.png" />
     </div>
     <form @submit.prevent="register">
-      <h1>Create Account</h1>
+      <div class="behind">
       <div role="alert" v-if="registrationErrors">
         {{ registrationErrorMsg }}
       </div>
@@ -61,14 +62,19 @@
           required
         />
       </div>
-      <button type="submit">Create Account</button>
+      <button class="submit" type="submit">Create Account</button>
       <p>
         <router-link class="toLogin" :to="{ name: 'login' }"
           >Already have an account? Log in.</router-link
         >
       </p>
+      </div>
     </form>
-    <div class="belowformarea"></div>
+     <p class="running">
+      📕 📙 📒 📗 📘 📓 📕 📙 📒 📗 📘 📓 📕 📙 📒 📗 📘 📓 📕 📙 📒 📗 📘 📓 📕
+       📒 📗 📘 📓 📕 📙 📒 📗 📘 📓 📕 📙 📒 📗 📘 📓 📕 📙 📒 📗 📘 📓📕 📙
+      📒 📗 📘 📓 📕 📙 📒 📗 📘 📓 📕 📙 📒 📗 📘 📓 📕 📙 📒 📗 📘 📓 📕
+    </p>
   </div>
 </template>
 
@@ -127,37 +133,89 @@ export default {
 
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap");
+@import url("https://fonts.cdnfonts.com/css/socake");
 
+.behind{
+   background: rgba(232, 123, 31, 0.8);
+  display: flex;
+  flex-direction: column;
+  padding-top: 30px;
+  align-items: flex-start;
+  width: 1100px;
+  height: 550px;
+  justify-content: space-between;
+  border-radius: 8px;
+  border: solid 3px rgb(182, 90, 10);
+  margin-top:30px;
+}
+.headlogo{
+  justify-content: center;
+  display: flex;
+  flex-direction: row;
+    align-items: center;
+    background:rgba(254, 209, 113, 0.5);
+    border-left: 20px solid rgb(115, 147, 126);
+    border-right:20px solid rgb(115, 147, 126);
+    border-bottom: 4px solid rgb(115, 147, 126);
+    border-top: 5px solid rgb(115, 147, 126);
+    height: 250px;
+    border-radius:3px;
+}
+.head{
+   font-family: "Socake", sans-serif;
+   font-size: 60px;
+  color: rgb(88, 85, 99);
+}
 form {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  align-content: flex-start;
+  align-content: center;
   align-items: baseline;
+  background: rgb(115, 147, 126);
 }
+
 .form-input-group {
+  
   display: flex;
- font-family: "Montserrat", sans-serif;
   border: solid, 1px, black;
   margin-bottom: 1rem;
-  color: rgb(88, 85, 99);
+  color: rgb(59, 57, 66);
+  font-weight: bold;
+  font-size: 20px;
 }
 label {
   margin-right: 0.5rem;
 }
-.regLogo {
-  display: flex;
-  background-image: none;
-  justify-content: flex-end;
-  padding: none;
-  margin: none;
-}
 img {
-  width: 150px;
-  padding: none;
+  width: 300px;
+  height:350px;
 }
 .toLogin{
   text-decoration: underline;
   color:black;
+  font-family: "Montserrat", sans-serif;
 }
+.running {
+  display: flex;
+  background: rgb(115, 147, 126);
+  height: 95px;
+  margin-top: 0;
+  padding-top:20px;
+}
+  .submit{
+transition-duration: 0.4s;
+  padding: 12px 28px;
+  margin-left:30px;
+  border: 2.5px solid rgb(182, 90, 10);
+  background-color: rgba(255, 200, 154, 0.8);
+  font-family: "Montserrat", sans-serif;
+  color: rgb(48, 46, 49);
+  font-weight: bold;
+  font-size:15px ;
+}
+.submit:hover{
+  background-color: rgb(182, 90, 10);
+}
+
 </style>
