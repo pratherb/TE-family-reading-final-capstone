@@ -1,5 +1,11 @@
 <template>
   <div class="prizes">
+    <h2>Prize Details</h2>
+    <div class="addPrize">
+      <router-link to="/addprize">
+        <button>Add Prize</button>
+      </router-link>
+    </div>
       <prize-detail  v-for="prize in prizeList"
         :key="prize.name"
         :prize="prize"
@@ -20,12 +26,12 @@ export default {
     return {
       isLoading: true,
       prizeList: [],
-      groupType: 'both'
+      userGroup: 'both'
     }
   },
   created() {
     PrizeService
-      .listPrizes(this.groupType)
+      .listAllPrizes()
       .then((response) => {
         console.log(response.data)
         this.prizeList = response.data;

@@ -35,9 +35,9 @@
         <router-link v-bind:to="{ name: 'reading' }"> Reading</router-link>
       </button>
       <button class="selections">
-        <router-link v-bind:to="{ name: 'prizes' }"> Prizes </router-link>
+        <router-link v-bind:to="{ name: 'prize' }"> Prizes </router-link>
       </button>
-      <button class="selections">
+      <button class="selections" v-show="isParent">
         <router-link v-bind:to="{ name: 'addmember' }">Add User</router-link>
       </button>
     </div>
@@ -59,6 +59,11 @@ export default {
       filterText: "",
       memberResults: [],
     };
+  },
+  computed: {
+    isParent: function() {
+      return this.$store.state.user.authorities[0].name != "ROLE_CHILD";
+    } 
   },
   created() {
     docsService.list(this.$store.state.user.familyId).then((response) => {
