@@ -1,14 +1,15 @@
 <template>
   <div>
-    <div id="add" class="text-center">
-      <form v-on:submit.prevent="addPrize">
-        <h1>Add Prize</h1>
-        <div class="form-input-group">
-          <label for="prize-name">Prize Name</label>
+    <div id="addPrize" class="text-center">
+       <h1 class="prize-header">🌟 Add Prize 🌟</h1>
+        <div class="behind-prize-form-text">
+      <form class="prize-form" v-on:submit.prevent="addPrize">
+        <div class="form-input-group-prize">
+          <label  for="prize-name">Prize Name</label>
           <input type="text" id="prize-name" v-model="prize.name" required />
         </div>
-        <div class="form-input-group">
-          <label for="prize-description">Prize Description</label>
+        <div class="form-input-group-prize">
+          <label class="prize-label" for="prize-description">Prize Description</label>
           <input
             type="text"
             id="prize-description"
@@ -16,8 +17,8 @@
             required
           />
         </div>
-        <div class="form-input-group">
-          <label for="milestone">Milestone</label>
+        <div class="form-input-group-prize">
+          <label class="prize-label" for="milestone">Milestone</label>
           <input
             type="text"
             id="milestone"
@@ -25,9 +26,9 @@
             required
           />
         </div>
-        <div class="form-input-group">
-          <label for="user-group">User Group</label>
-          <label for="user-group">Parent</label>
+        <div class="form-input-group-prize">
+          <label class="prize-label" for="user-group">User Group</label>
+          <label class="prize-label" for="user-group">Parent</label>
           <input
             type="radio"
             name="family-group"
@@ -35,7 +36,7 @@
             v-model="prize.userGroup"
             required
           />
-          <label for="user-group">Child</label>
+          <label class="prize-label" for="user-group">Child</label>
           <input
             type="radio"
             name="family-group"
@@ -43,7 +44,7 @@
             v-model="prize.userGroup"
             required
           />
-          <label for="user-group">Both</label>
+          <label class="prize-label" for="user-group">Both</label>
           <input
             type="radio"
             name="family-group"
@@ -52,8 +53,8 @@
             required
           />
         </div>
-        <div class="form-input-group">
-          <label for="max-prizes">Max Prizes</label>
+        <div class="form-input-group-prize">
+          <label class="prize-label" for="max-prizes">Max Prizes</label>
           <input
             type="text"
             id="max-prizes"
@@ -61,8 +62,8 @@
             required
           />
         </div>
-        <div class="form-input-group">
-          <label for="start-date">Start Date</label>
+        <div class="form-input-group-prize">
+          <label class="prize-label" for="start-date">Start Date</label>
           <input
             type="date"
             id="start-date"
@@ -70,12 +71,13 @@
             required
           />
         </div>
-        <div class="form-input-group">
-          <label for="end-date">End Date</label>
+        <div class="form-input-group-prize">
+          <label class="prize-label" for="end-date">End Date</label>
           <input type="date" id="end-date" v-model="prize.endDate" required />
         </div>
         <button>Add to Prize List</button>
       </form>
+      </div>
     </div>
   </div>
 </template>
@@ -129,6 +131,3 @@ export default {
   },
 };
 </script>
-
-<style>
-</style>
