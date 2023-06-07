@@ -2,6 +2,7 @@ package com.techelevator.dao;
 
 import com.techelevator.model.Book;
 import com.techelevator.model.ReadingActivity;
+import com.techelevator.model.Score;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -157,10 +158,9 @@ public class JdbcReadingActivityDao implements ReadingActivityDao {
     public int getTotalMinutesPerFamily(int id) {
         int numMinutes = 0;
         String sql = "SELECT SUM(minutes_read) AS total_minutes FROM reading_activity a\n" +
-                "JOIN user_book ub ON a.book_isbn = ub.book_isbn\n" +
-                "JOIN users u ON u.user_id = ub.user_id\n" +
+                "JOIN users u ON u.username = a.username\n" +
                 "JOIN family f ON f.family_id = u.family_id\n" +
-                "WHERE f.family_id = ?";
+                "WHERE f.family_id = ?;";
         try {
             SqlRowSet result = jdbcTemplate.queryForRowSet(sql, id);
             if (result.next()) {
@@ -174,18 +174,20 @@ public class JdbcReadingActivityDao implements ReadingActivityDao {
     }
 
     @Override
-    public List<Integer> getLeaderboard(int id) {
-        List<Integer> scores = new ArrayList<>();
-        String sql = "SELECT SUM(minutes_read) AS score FROM reading_activity a " +
-                "JOIN user_book ub ON a.book_isbn = ub.book_isbn " +
-                "JOIN users u ON u.user_id = ub.user_id " +
-                "JOIN family f ON f.family_id = u.family_id " +
-                "WHERE f.family_id = ? GROUP BY u.user_id ORDER BY score DESC";
+    public List<String> getLeaderboard(int id) {
+        List<String> scores = new ArrayList<>();
+        String sql = "SELECT a.username, SUM(minutes_read) AS score FROM reading_activity a\n" +
+                "JOIN users u ON u.username = a.username\n" +
+                "JOIN family f ON f.family_id = u.family_id\n" +
+                "WHERE f.family_id = ? GROUP BY a.username ORDER BY score DESC";
         try {
             SqlRowSet results = jdbcTemplate.queryForRowSet(sql, id);
             while (results.next()) {
-                int score = results.getInt("score");
-                scores.add(score);
+                Score score = new Score();
+                score.setMinutes(results.getInt("score"));
+                score.setUsername(results.getString("username"));
+                String scoreString = score.toString();
+                scores.add(scoreString);
             }
             return scores;
         } catch (DataAccessException e) {

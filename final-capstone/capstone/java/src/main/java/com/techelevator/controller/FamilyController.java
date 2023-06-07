@@ -4,6 +4,7 @@ import com.techelevator.dao.BookDao;
 import com.techelevator.dao.FamilyDao;
 import com.techelevator.dao.ReadingActivityDao;
 import com.techelevator.model.Book;
+import com.techelevator.model.Score;
 import com.techelevator.model.User;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,7 +49,7 @@ public class FamilyController {
     }
 
     @RequestMapping(value = "user/leaderboard/{id}", method = RequestMethod.GET)
-    public List<Integer> getLeaderboard(@PathVariable int id) {
+    public List<String> getLeaderboard(@PathVariable int id) {
         return activityDao.getLeaderboard(id);
     }
 }

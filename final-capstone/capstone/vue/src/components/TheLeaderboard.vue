@@ -4,6 +4,8 @@
       <img src="../assets/book_pages_opening.gif" />
     </div>
       <ul v-else>
+          <h3>Leaderboard</h3>
+          <br>
           <li v-for="score in scores" v-bind:key="score.id">
               <p>{{score}}</p>
           </li>
