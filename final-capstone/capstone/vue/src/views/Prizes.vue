@@ -26,12 +26,12 @@ export default {
     return {
       isLoading: true,
       prizeList: [],
-      groupType: 'both'
+      userGroup: 'both'
     }
   },
   created() {
     PrizeService
-      .listPrizes(this.groupType)
+      .listAllPrizes()
       .then((response) => {
         console.log(response.data)
         this.prizeList = response.data;

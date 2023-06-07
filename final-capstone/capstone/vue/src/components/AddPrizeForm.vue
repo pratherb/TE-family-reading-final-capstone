@@ -9,28 +9,66 @@
         </div>
         <div class="form-input-group">
           <label for="prize-description">Prize Description</label>
-          <input type="text" id="prize-description" v-model="prize.description" required/>
+          <input
+            type="text"
+            id="prize-description"
+            v-model="prize.description"
+            required
+          />
         </div>
         <div class="form-input-group">
           <label for="milestone">Milestone</label>
-          <input type="text" id="milestone" v-model="prize.milestone" required />
+          <input
+            type="text"
+            id="milestone"
+            v-model="prize.milestone"
+            required
+          />
         </div>
         <div class="form-input-group">
           <label for="user-group">User Group</label>
-          <label for="user-group" >Parent</label>
-          <input type="radio" name="family-group" id="user-group" v-model="prize.userGroup" required>
-          <label for="user-group" >Child</label>
-          <input type="radio" name="family-group" id="user-group" v-model="prize.userGroup" required>
-          <label for="user-group" >Both</label>
-          <input type="radio" name="family-group" id="user-group" v-model="prize.userGroup" required>
+          <label for="user-group">Parent</label>
+          <input
+            type="radio"
+            name="family-group"
+            value="parent"
+            v-model="prize.userGroup"
+            required
+          />
+          <label for="user-group">Child</label>
+          <input
+            type="radio"
+            name="family-group"
+            value="child"
+            v-model="prize.userGroup"
+            required
+          />
+          <label for="user-group">Both</label>
+          <input
+            type="radio"
+            name="family-group"
+            value="both"
+            v-model="prize.userGroup"
+            required
+          />
         </div>
         <div class="form-input-group">
           <label for="max-prizes">Max Prizes</label>
-          <input type="text" id="max-prizes" v-model="prize.maxPrizes" required />
+          <input
+            type="text"
+            id="max-prizes"
+            v-model="prize.maxPrizes"
+            required
+          />
         </div>
         <div class="form-input-group">
           <label for="start-date">Start Date</label>
-          <input type="date" id="start-date" v-model="prize.startDate" required />
+          <input
+            type="date"
+            id="start-date"
+            v-model="prize.startDate"
+            required
+          />
         </div>
         <div class="form-input-group">
           <label for="end-date">End Date</label>
@@ -56,7 +94,7 @@ export default {
         userGroup: "",
         maxPrizes: "",
         startDate: "",
-        endDate: ""
+        endDate: "",
       },
     };
   },
@@ -69,7 +107,7 @@ export default {
         userGroup: this.prize.userGroup,
         maxPrizes: this.prize.maxPrizes,
         startDate: this.prize.startDate,
-        endDate: this.prize.endDate
+        endDate: this.prize.endDate,
       };
       if (this.username != "") {
         prizeService.addToPrizeList(newPrize).then((response) => {
@@ -81,9 +119,9 @@ export default {
               userGroup: "",
               maxPrizes: "",
               startDate: "",
-              endDate: ""
+              endDate: "",
             };
-            this.$router.push({path: "/prize"});
+            this.$router.push({ path: "/prize" });
           }
         });
       }
@@ -93,5 +131,4 @@ export default {
 </script>
 
 <style>
-
 </style>

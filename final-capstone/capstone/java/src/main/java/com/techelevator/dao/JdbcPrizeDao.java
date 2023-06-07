@@ -143,6 +143,7 @@ public class JdbcPrizeDao implements PrizeDao {
                 Prize prize = mapRowToPrize(results);
                 prizeList.add(prize);
             }
+            System.out.println("Accessed a prize list of length " + prizeList.size());
             return prizeList;
         } catch (DataAccessException e) {
             System.out.println("Error getting prizes for group " + userGroup);

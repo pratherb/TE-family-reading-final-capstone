@@ -7,8 +7,11 @@ const http = axios.create({
 export default {
 
   //List prizes for group type - both/child/parent
-  listPrizes(groupType) {
-    return http.get(`/${groupType}`);
+  listPrizesByUserGroup(userGroup) {
+    return http.get(`/${userGroup}`);
+  },
+  listAllPrizes() {
+    return http.get();
   },
 
   addToPrizeList(prize){
