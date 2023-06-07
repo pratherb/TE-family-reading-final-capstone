@@ -10,7 +10,7 @@
     <div class="loading" v-if="isLoading">
       <img src="../assets/book_pages_opening.gif" />
     </div>
-    <table class="members-table">
+    <table v-else class="members-table">
       <tr class="members-row" v-for="member in memberResults" v-bind:key="member.id">
         <td class="members-table-data">
           <router-link
@@ -61,6 +61,7 @@ export default {
   },
   created() {
     docsService.list(this.$store.state.user.familyId).then((response) => {
+      console.log(response.data);
       this.memberResults = response.data;
       this.isLoading = false;
     });
