@@ -2,11 +2,13 @@ package com.techelevator.dao;
 
 import com.techelevator.model.Book;
 import com.techelevator.model.ReadingActivity;
+import com.techelevator.model.Score;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 
+import java.awt.datatransfer.SystemFlavorMap;
 import java.security.Principal;
 import java.sql.SQLDataException;
 import java.sql.SQLException;
@@ -147,9 +149,51 @@ public class JdbcReadingActivityDao implements ReadingActivityDao {
             }
             return numMinutes;
         } catch (DataAccessException e) {
-            System.out.println("Error retrieving read books total for user " + username);
+            System.out.println("Error retrieving reading total for user " + username);
         }
         return -1;
+    }
+
+    @Override
+    public int getTotalMinutesPerFamily(int id) {
+        int numMinutes = 0;
+        String sql = "SELECT SUM(minutes_read) AS total_minutes FROM reading_activity a\n" +
+                "JOIN users u ON u.username = a.username\n" +
+                "JOIN family f ON f.family_id = u.family_id\n" +
+                "WHERE f.family_id = ?;";
+        try {
+            SqlRowSet result = jdbcTemplate.queryForRowSet(sql, id);
+            if (result.next()) {
+                numMinutes = result.getInt("total_minutes");
+            }
+            return numMinutes;
+        } catch (DataAccessException e) {
+            System.out.println("Error retrieving reading total for family");
+        }
+        return -1;
+    }
+
+    @Override
+    public List<String> getLeaderboard(int id) {
+        List<String> scores = new ArrayList<>();
+        String sql = "SELECT a.username, SUM(minutes_read) AS score FROM reading_activity a\n" +
+                "JOIN users u ON u.username = a.username\n" +
+                "JOIN family f ON f.family_id = u.family_id\n" +
+                "WHERE f.family_id = ? GROUP BY a.username ORDER BY score DESC";
+        try {
+            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, id);
+            while (results.next()) {
+                Score score = new Score();
+                score.setMinutes(results.getInt("score"));
+                score.setUsername(results.getString("username"));
+                String scoreString = score.toString();
+                scores.add(scoreString);
+            }
+            return scores;
+        } catch (DataAccessException e) {
+            System.out.println("Error retrieving leaderboard");
+        }
+        return null;
     }
 
     private ReadingActivity mapRowToReadingActivity(SqlRowSet rs) {

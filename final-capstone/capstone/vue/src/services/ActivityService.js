@@ -15,6 +15,13 @@ export default {
 
     getTotalMinutesReadPerUser(username) {
         return http.get(`/${username}/activity/total`);
+    },
+
+    getTotalMinutesReadPerFamily(id) {
+        return http.get(`/members/${id}/activity`);
+    },
+    
+    getLeaderboard(id) {
+        return http.get(`/leaderboard/${id}`);
     }
-  
   }

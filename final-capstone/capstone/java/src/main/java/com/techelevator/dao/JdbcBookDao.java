@@ -206,24 +206,23 @@ public class JdbcBookDao implements BookDao {
     }
 
     @Override
-    public List<Book> getFamilyReadingList(int familyId) {
-        List<Book> bookList = new ArrayList<>();
-        String sql = "SELECT * from book b\n" +
-                "JOIN user_book ub ON b.book_isbn = ub.book_isbn\n" +
-                "JOIN users u ON u.user_id = ub.user_id\n" +
-                "JOIN family f ON f.family_id = u.family_id\n" +
-                "WHERE f.family_id = ?";
+    public int getFamilyBooksFinished(int familyId) {
+        int booksFinished = 0;
+        String sql = "SELECT COUNT(*) as num_finished from book b " +
+                "JOIN user_book ub ON b.book_isbn = ub.book_isbn " +
+                "JOIN users u ON u.user_id = ub.user_id " +
+                "JOIN family f ON f.family_id = u.family_id " +
+                "WHERE f.family_id = ? AND ub.finished = true";
         try {
-            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, familyId);
-            while (results.next()) {
-                Book book = mapRowToBook(results);
-                bookList.add(book);
+            SqlRowSet result = jdbcTemplate.queryForRowSet(sql, familyId);
+            if (result.next()) {
+                booksFinished = result.getInt("num_finished");
             }
-            return bookList;
+            return booksFinished;
         } catch (DataAccessException e) {
             System.out.println("Error retrieving reading list of family with id " + familyId);
         }
-        return null;
+        return- 1;
     }
 
     @Override

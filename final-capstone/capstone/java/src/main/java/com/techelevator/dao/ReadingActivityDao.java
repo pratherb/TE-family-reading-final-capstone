@@ -1,6 +1,7 @@
 package com.techelevator.dao;
 
 import com.techelevator.model.ReadingActivity;
+import com.techelevator.model.Score;
 
 import java.security.Principal;
 import java.util.List;
@@ -15,4 +16,6 @@ public interface ReadingActivityDao {
     void deleteById(int readingActivityId);
     void deleteAllByUsername(String username);
     int getTotalMinutesPerUser(String username);
+    int getTotalMinutesPerFamily(int id);
+    List<String>getLeaderboard(int id);
 }
