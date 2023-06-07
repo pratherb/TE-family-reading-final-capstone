@@ -29,7 +29,7 @@
         <router-link v-bind:to="{ name: 'reading' }"> Reading</router-link>
       </button>
       <button class="selections">
-        <router-link v-bind:to="{ name: 'prizes' }"> Prizes </router-link>
+        <router-link v-bind:to="{ name: 'prize' }"> Prizes </router-link>
       </button>
       <button class="selections">
         <router-link v-bind:to="{ name: 'addmember' }">Add User</router-link>
