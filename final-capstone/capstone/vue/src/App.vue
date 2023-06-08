@@ -10,20 +10,17 @@
         <span></span>
 
         <ul id="menu">
-          <router-link v-bind:to="{ name: 'home' }">Home</router-link
+          <router-link v-bind:to="{ name: 'home' }" @click="closeMenu">Home</router-link
           ><br />
-          <router-link v-bind:to="{ name: 'members' }">Members</router-link
+          <router-link v-bind:to="{ name: 'members' }" @click="closeMenu">Members</router-link
           ><br />
-          <router-link v-bind:to="{ name: 'login' }" v-if="!$store.state.token"
-            >Login</router-link
-          >
+          <router-link v-bind:to="{ name: 'login' }" v-if="!$store.state.token">Login</router-link>
           <router-link
             v-bind:to="{ name: 'logout' }"
             v-if="$store.state.token != ''"
-          >
-            Logout</router-link
+            @click="closeMenu">Logout</router-link
           ><br />
-          <router-link v-bind:to="{ name: 'aboutus'}">About Us</router-link>
+          <router-link v-bind:to="{ name: 'aboutus' }" @click="closeMenu">About Us</router-link>
         </ul>
       </div>
     </nav>
@@ -31,15 +28,32 @@
   </div>
   <!-- Nav bar from VitorLuizC -->
 </template>
+
+<script>
+export default {
+  methods: {
+    closeMenu() {
+      const checkbox = document.querySelector("#menuToggle input");
+      checkbox.checked = false;
+    },
+  },
+  watch: {
+    $route() {
+      this.closeMenu();
+    },
+  },
+};
+</script>
+
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap");
 body {
   margin: 0;
   padding: 0;
 
   background: #232323;
   color: #cdcdcd;
- font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 
 #menuToggle {
