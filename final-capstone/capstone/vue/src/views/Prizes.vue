@@ -104,21 +104,4 @@ body {
   padding: 25px;
 }
 
-.prize-button {
-  transition-duration: 0.4s;
-  width:200px;
-  height:60px;
-  padding: 12px 28px;
-  border: 1px solid rgb(0, 0, 0);
-  margin: 50px 30px 40px 30px;
-  background-color: rgb(231, 247, 217);
-  font-family: "Montserrat", sans-serif;
-  color: rgb(48, 46, 49);
-  font-weight: bold;
-  font-size:15px ;
-}
-
-.prize-button:hover {
-  background-color: rgb(115, 147, 126);
-}
 </style>
