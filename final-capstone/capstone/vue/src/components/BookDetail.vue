@@ -100,7 +100,7 @@ export default {
   margin-bottom: 5px;
 }
 
-.book-details button {
-  margin-top: 10px;
+button {
+  margin-top: 25px;
 }
 </style>

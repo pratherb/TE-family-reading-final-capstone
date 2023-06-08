@@ -26,6 +26,8 @@ export default {
 
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap%27");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap");
+
 
 .results {
   background: rgb(254, 209, 113);
@@ -35,6 +37,8 @@ export default {
   /* margin-left: 15%;
   margin-right: 15%; */
   padding: 15px;
+  font-family: "Montserrat", sans-serif;
+
 }
 
 h2 {

@@ -3,13 +3,14 @@
     <form v-on:submit.prevent="getBook">
       <h1>Add Book</h1>
       <div>
-        <label for="title" checked>Title</label>
+        <label for="title">Title</label>
         <input
           type="radio"
           name="titleOrIsbn"
           id="title-button"
           v-model="selectedOption"
           value="title"
+          checked
         />
         <label for="isbn">ISBN</label>
         <input
@@ -53,7 +54,7 @@ export default {
     return {
       showResults: false,
       isbn: 0,
-      selectedOption: "isbn",
+      selectedOption: "title",
       bookToSearch: {
         searchTerm: "",
       },
@@ -102,10 +103,15 @@ export default {
 </script>
 
 <style scoped>
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap");
+
+
 .add-book {
   padding: 15px;
   text-align: center;
   background: rgba(254, 209, 113, 0.5);
+  font-family: "Montserrat", sans-serif;
+
 }
 
 .results-grid {
@@ -123,4 +129,12 @@ export default {
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 } */
+
+button {
+  font-family: sans-serif;
+}
+
+input {
+  margin: 10px;
+}
 </style>
