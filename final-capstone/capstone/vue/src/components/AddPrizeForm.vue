@@ -131,3 +131,21 @@ export default {
   },
 };
 </script>
+<style scoped>
+.prize-button {
+  transition-duration: 0.4s;
+  width:200px;
+  height:40px;
+  border: 1px solid rgb(0, 0, 0);
+  margin-bottom:60px;
+  background-color: rgb(231, 247, 217);
+  font-family: "Montserrat", sans-serif;
+  color: rgb(48, 46, 49);
+  font-weight: bold;
+  font-size:15px ;
+}
+
+.prize-button:hover {
+  background-color: rgb(115, 147, 126);
+}
+</style>

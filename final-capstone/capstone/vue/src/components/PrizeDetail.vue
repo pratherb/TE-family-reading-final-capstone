@@ -9,7 +9,7 @@
     <p>Start Date: {{ prize.startDate }}</p>
     <p>End Date: {{ prize.endDate }}</p>
     <form v-on:submit.prevent="deletePrize(prize.name)" v-show="isParent">
-      <button>Delete prize</button>
+      <button class="delete-button">Delete prize</button>
     </form>
   </div>
 </template>
@@ -86,5 +86,22 @@ h4 {
 button {
   margin-top: 25px;
   font-family: sans-serif;
+}
+
+.delete-button {
+  transition-duration: 0.4s;
+  width:200px;
+  height:40px;
+  border: 1px solid rgb(0, 0, 0);
+  margin-bottom:60px;
+  background-color: rgb(231, 247, 217);
+  font-family: "Montserrat", sans-serif;
+  color: rgb(48, 46, 49);
+  font-weight: bold;
+  font-size:15px ;
+}
+
+.delete-button:hover {
+  background-color: rgb(115, 147, 126);
 }
 </style>
