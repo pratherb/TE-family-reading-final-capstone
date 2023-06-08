@@ -185,4 +185,5 @@ export default {
 .form-input-group-reading {
   margin-left: 295px;
 }
+
 </style>

@@ -64,9 +64,9 @@ const router = new Router({
       path: "/members",
       name: "members",
       component: Members,
-      // meta:{
-      //   requiresAuth: true
-      // }
+      meta:{
+        requiresAuth: true
+      }
     },
     {
       path: "/prize",
