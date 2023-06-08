@@ -10,7 +10,8 @@
       <p>Pages: {{ book.numPages }}</p>
       <p>Publisher: {{ book.publisher }}</p>
     </div>
-    <button
+    <div id="add-mark-buttons">
+    <button class="add-button"
       v-if="$route.name == 'reading'"
       v-on:click="addToReading(book.isbn)"
     >
@@ -22,6 +23,7 @@
     >
       Mark as finished
     </button>
+  </div>
   </div>
 </template>
 
@@ -104,5 +106,46 @@ export default {
 
 button {
   margin-top: 25px;
+}
+
+#add-mark-buttons {
+  display: flex;
+  justify-content:center;
+}
+
+.finished-button {
+  transition-duration: 0.4s;
+  width:200px;
+  height:60px;
+  padding: 12px 28px;
+  border: 1px solid rgb(0, 0, 0);
+  margin: 50px 30px 40px 30px;
+  background-color: rgb(231, 247, 217);
+  font-family: "Montserrat", sans-serif;
+  color: rgb(48, 46, 49);
+  font-weight: bold;
+  font-size:15px ;
+}
+
+.finished-button:hover {
+  background-color: rgb(115, 147, 126);
+}
+
+.add-button {
+  transition-duration: 0.4s;
+  width:200px;
+  height:60px;
+  padding: 12px 28px;
+  border: 1px solid rgb(0, 0, 0);
+  margin: 50px 30px 40px 30px;
+  background-color: rgb(231, 247, 217);
+  font-family: "Montserrat", sans-serif;
+  color: rgb(48, 46, 49);
+  font-weight: bold;
+  font-size:15px ;
+}
+
+.add-button:hover {
+  background-color: rgb(115, 147, 126);
 }
 </style>
