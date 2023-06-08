@@ -242,4 +242,9 @@ ul {
 .activity-button:hover {
   background-color: rgb(255, 191, 16);
 }
+.add-activity{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
 </style>
