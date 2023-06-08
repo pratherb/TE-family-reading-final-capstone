@@ -94,7 +94,7 @@ export default {
   color: rgb(88, 85, 91);
   font-size: 20px;
 }
-*/ .reading-totals {
+ .reading-totals {
   background-color: rgba(254, 209, 113, 0.5);
   padding: 5px;
   margin-left: 20%;
