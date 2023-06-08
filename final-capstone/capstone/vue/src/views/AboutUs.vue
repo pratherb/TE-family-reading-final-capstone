@@ -13,7 +13,8 @@
           >LinkedIn</a
         >
         <br />
-        <p class="about">Ava's text here</p>
+        <p class="about">Coding enthusiast, crossword puzzler, and comic book fanatic. 
+          Vegetarian bruncher, omnivorous reader. Likely on a train right now.</p>
         <br />
         <p class="location">Location: Chicago, IL</p>
       </div>
