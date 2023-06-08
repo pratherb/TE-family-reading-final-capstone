@@ -13,28 +13,25 @@
         </router-link>
       </h1>
     </div>
-    <reading-totals />
-    <h3 id="reading-list">Currently Reading</h3>
 
-    <div class="loading" v-if="isLoading">
-      <img src="../assets/book_pages_opening.gif" />
-    </div>
-
-    <div v-else>
+    <div class="reading-list">
       <div>
-        <ul>
-          <li>
-            <book-detail
-              v-for="book in readingList"
-              :key="book.isbn"
-              :book="book"
-            />
-            <!-- <h4>{{book.title}}</h4>
-          <p>Author: {{book.author}}</p>
-          <p>ISBN: {{book.isbn}}</p>
-          <p>Pages: {{book.numPages}}</p> -->
-          </li>
-        </ul>
+        <reading-totals class="reading-totals" />
+      </div>
+
+      <h3>Currently Reading</h3>
+
+      <div class="loading" v-if="isLoading">
+        <img src="../assets/book_pages_opening.gif" />
+      </div>
+
+      <div v-else class="reading-list-grid">
+        <book-detail
+          v-for="book in readingList"
+          :key="book.isbn"
+          :book="book"
+          class="book-card"
+        />
       </div>
     </div>
     <div>
@@ -77,7 +74,7 @@ export default {
 @import url("https://fonts.cdnfonts.com/css/socake");
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap");
 
-.addReadingActivity {
+/* .addReadingActivity {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -91,33 +88,37 @@ export default {
   font-family: "Socake", sans-serif;
   color: rgb(88, 85, 91);
   font-size: 20px;
-}
-.form-input-group-reading {
-}
-.headerForActivity {
-}
-.total-books-read {
+} */
 
-}
-.total-minutes-read {
-
-}
-.minute-total {
-
-}
-.book-total {
-
-}
-.reading-activity {
- 
-}
-#reading-list {
- 
+.reading-totals {
+  background-color: rgba(254, 209, 113, 0.5);
+  padding: 5px;
+  margin-left: 20%;
+  margin-right: 20%;
 }
 
-.activity-list {
-  list-style: none;
+.reading-list {
+  background-color: rgba(254, 209, 113, 0.5);
+  color: rgb(88, 85, 99);
+  text-align: center;
+  /* margin-left: 15%;
+  margin-right: 15%; */
+  padding: 15px;
+  font-family: "Montserrat", sans-serif;
 }
+
+.reading-list-grid {
+  margin-left: 12%;
+  margin-right: 12%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  background-color: rgb(254 209 113 / 56%);
+  gap: 30px;
+  padding: 30px;
+}
+
+
+
 .usersname {
   font-family: "Socake", sans-serif;
   color: rgb(88, 85, 91);
@@ -143,21 +144,21 @@ ul {
   padding-top: 20px;
   padding-left: 15px;
 }
-.activity-button{
+.activity-button {
   transition-duration: 0.4s;
-  width:200px;
-  height:60px;
+  width: 200px;
+  height: 60px;
   padding: 12px 28px;
   border: 1px solid rgb(0, 0, 0);
   margin: 50px 30px 40px 30px;
- background-color: rgb(244, 252, 172);
+  background-color: rgb(244, 252, 172);
   font-family: "Montserrat", sans-serif;
   color: rgb(48, 46, 49);
   font-weight: bold;
-  font-size:15px ;
+  font-size: 15px;
 }
-.activity-button:hover{
-   background-color: rgb(255, 191, 16);
+.activity-button:hover {
+  background-color: rgb(255, 191, 16);
 }
 /* .finished-button{
   transition-duration: 0.4s;

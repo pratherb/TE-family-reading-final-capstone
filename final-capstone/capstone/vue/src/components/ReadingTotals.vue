@@ -3,7 +3,7 @@
     <div class="loading" v-if="isLoading">
       <img src="../assets/book_pages_opening.gif" />
     </div>
-    <div v-else>
+    <div v-else class="totals">
       <h4 class="total-books-read">Total Books Read:</h4>
       <h4 class="book-total">{{bookTotal}}</h4>
       <h4 class="total-minutes-read">Total Minutes of Reading:</h4>
@@ -40,3 +40,10 @@ export default {
 
 }
 </script>
+<style scoped>
+.totals h4{
+  margin-top: 5px;
+  margin-bottom: 5px;
+
+}
+</style>
