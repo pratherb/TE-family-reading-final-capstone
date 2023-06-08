@@ -138,7 +138,7 @@ export default {
   height:40px;
   border: 1px solid rgb(0, 0, 0);
   margin-bottom:60px;
-  background-color: rgb(231, 247, 217);
+  background-color: rgb(244, 252, 172);
   font-family: "Montserrat", sans-serif;
   color: rgb(48, 46, 49);
   font-weight: bold;
@@ -146,6 +146,6 @@ export default {
 }
 
 .prize-button:hover {
-  background-color: rgb(115, 147, 126);
+  background-color:  rgb(255, 191, 16);;
 }
 </style>
