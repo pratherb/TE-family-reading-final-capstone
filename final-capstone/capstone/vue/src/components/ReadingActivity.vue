@@ -169,4 +169,5 @@ export default {
   flex-direction: row;
   justify-content: space-evenly;
 }
+
 </style>
