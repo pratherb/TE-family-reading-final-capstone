@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="prize-card">
     <!-- <img :src="prize.itemUrl"> -->
     <h3>{{ prize.name }}</h3>
     <h4>{{ prize.description }}</h4>
@@ -18,25 +18,21 @@
 import prizeService from "../services/PrizeService";
 export default {
   name: "prize-detail",
-  props: [
-    'prize'
-  ],
+  props: ["prize"],
   computed: {
-    userGroupText(){
-      if(this.prize.userGroup === "both"){
+    userGroupText() {
+      if (this.prize.userGroup === "both") {
         return "Parents and children";
-      }
-      else if(this.prize.userGroup === "parent"){
+      } else if (this.prize.userGroup === "parent") {
         return "Parents";
-      }
-      else if(this.prize.userGroup === "child"){
+      } else if (this.prize.userGroup === "child") {
         return "Children";
       }
       return "";
     },
-    isParent: function() {
+    isParent: function () {
       return this.$store.state.user.authorities[0].name != "ROLE_CHILD";
-    }
+    },
   },
   methods: {
     addToPrizes(prize) {
@@ -48,33 +44,47 @@ export default {
       });
     },
     deletePrize(prizeName) {
-        prizeService.deletePrize(prizeName);
-        window.location.reload();
+      prizeService.deletePrize(prizeName);
+      window.location.reload();
     },
   },
-}
+};
 </script>
 
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap%27");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap");
 
-.members {
-  color: rgb(88, 85, 99);
-  font-family: "Libre Baskerville";
-  text-align: center;
+
+.prize-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgb(255 233 187);
+  border-radius: 1px;
+  min-height: 350px;
+  max-height: 350px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.658);
+  font-family: "Montserrat", sans-serif;
 }
 
-h2 {
-  text-align: center;
-  font-size: 48px;
+p {
+  margin-bottom: 10px;
+  margin-top: 5px;
 }
 
 h3 {
-  font-size: 36px;
+  font-size: 32px;
+  margin-bottom: 5px;
 }
 
-li {
-  list-style-type: none;
-  text-align: center;
+h4 {
+  margin-top: 5px;
+}
+
+button {
+  margin-top: 25px;
+  font-family: sans-serif;
 }
 </style>

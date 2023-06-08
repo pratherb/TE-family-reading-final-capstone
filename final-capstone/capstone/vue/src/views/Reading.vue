@@ -32,8 +32,8 @@ export default {
   color: rgb(88, 85, 99);
   font-family: "Libre Baskerville";
   text-align: center;
-  margin-left: 15%;
-  margin-right: 15%;
+  /* margin-left: 15%;
+  margin-right: 15%; */
   padding: 15px;
 }
 

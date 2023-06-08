@@ -3,7 +3,7 @@
     <form v-on:submit.prevent="getBook">
       <h1>Add Book</h1>
       <div>
-        <label for="title">Title</label>
+        <label for="title" checked>Title</label>
         <input
           type="radio"
           name="titleOrIsbn"
@@ -69,7 +69,7 @@ export default {
           if (response.status === 200) {
             this.bookResults = [response.data];
             this.$store.commit("ADD_BOOK_RESULTS", this.bookResults);
-            this.resetBookResults();
+            this.makeVisible();
           }
         });
       } else {
@@ -77,13 +77,14 @@ export default {
           if (response.status === 200) {
             this.bookResults = response.data;
             this.$store.commit("ADD_BOOK_RESULTS", this.bookResults);
-            this.resetBookResults();
+            this.makeVisible();
           }
         });
       }
     },
     resetBookResults() {
       this.bookResults = [];
+      this.showResults = false;
     },
     makeVisible() {
       this.showResults = true;
