@@ -1,7 +1,7 @@
 <template>
   <div class="users">
     <div class="user-head">
-      <h2 class="usersname">{{ $route.params.username }}</h2>
+      <h2 class="usersname">{{ $route.params.username }}</h2><p class="page"> 's Page</p>
       <!-- Changes with each user -->
       <h1>
         <router-link v-bind:to="{ name: 'home' }">
@@ -13,7 +13,9 @@
         </router-link>
       </h1>
     </div>
+   
     <reading-totals />
+   
     <h3 id="reading-list">Currently Reading</h3>
 
     <div class="loading" v-if="isLoading">
@@ -76,7 +78,14 @@ export default {
 <style>
 @import url("https://fonts.cdnfonts.com/css/socake");
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap");
-
+.page{
+ font-family: "Socake", sans-serif;
+  color: rgb(88, 85, 91);
+  font-size: 50px;
+}
+.users {
+  background: rgba(254, 209, 113, 0.5);
+}
 .addReadingActivity {
   display: flex;
   flex-direction: column;
@@ -92,27 +101,68 @@ export default {
   color: rgb(88, 85, 91);
   font-size: 20px;
 }
-.form-input-group-reading {
+.totals {
+  margin-bottom: 0;
+  display: grid;
 }
-.headerForActivity {
+#title-books-read {
+  background: rgb(115, 147, 126);
+  grid-row: 1;
+  grid-column: 3;
+  color: rgb(88, 85, 91);
+  font-family: "Socake", sans-serif;
+  font-size: 30px;
+  border-radius: 30px;
+  height: 80px;
+  text-align: center;
+  padding-top: 50px;
+  width: 350px;
+  margin: 40px auto;
+  border: 3px solid rgb(77, 97, 84);
 }
-.total-books-read {
-
+#title-mins {
+  background: rgb(115, 147, 126);
+  grid-row: 1;
+  grid-column: 1;
+  color: rgb(88, 85, 91);
+  font-family: "Socake", sans-serif;
+  font-size: 30px;
+  border-radius: 30px;
+  height: 80px;
+  text-align: center;
+  padding-top: 50px;
+  width: 350px;
+  margin: 40px auto;
+   border: 3px solid rgb(77, 97, 84);
 }
-.total-minutes-read {
-
+#number-mins {
+  height: 60px;
+  background: rgb(115, 147, 126);
+  grid-row: 2;
+  grid-column: 1;
+  color: rgb(88, 85, 91);
+  font-family: "Montserrat", sans-serif;
+  font-size: 40px;
+  border-radius: 25px;
+  text-align: center;
+  padding-top: 25px;
+  width: 200px;
+  margin: 0 auto 20px auto;
+   border: 3px solid rgb(77, 97, 84);
 }
-.minute-total {
-
-}
-.book-total {
-
-}
-.reading-activity {
- 
-}
-#reading-list {
- 
+#number-books-read {
+  background: rgb(115, 147, 126);
+  grid-row: 2;
+  grid-column: 3;
+  color: rgb(88, 85, 91);
+  font-family: "Montserrat", sans-serif;
+  font-size: 40px;
+  border-radius: 30px;
+  text-align: center;
+  padding-top: 25px;
+  width: 200px;
+  margin: 0 auto 20px auto;
+   border: 3px solid rgb(77, 97, 84);
 }
 
 .activity-list {
@@ -139,25 +189,25 @@ ul {
 }
 .logo-user {
   width: 300px;
-  height: 370px;
-  padding-top: 20px;
-  padding-left: 15px;
+  height: 350px;
+  padding-top: 30px;
+  margin-left: 15px;
 }
-.activity-button{
+.activity-button {
   transition-duration: 0.4s;
-  width:200px;
-  height:60px;
+  width: 200px;
+  height: 60px;
   padding: 12px 28px;
   border: 1px solid rgb(0, 0, 0);
   margin: 50px 30px 40px 30px;
- background-color: rgb(244, 252, 172);
+  background-color: rgb(244, 252, 172);
   font-family: "Montserrat", sans-serif;
   color: rgb(48, 46, 49);
   font-weight: bold;
-  font-size:15px ;
+  font-size: 15px;
 }
-.activity-button:hover{
-   background-color: rgb(255, 191, 16);
+.activity-button:hover {
+  background-color: rgb(255, 191, 16);
 }
 /* .finished-button{
   transition-duration: 0.4s;

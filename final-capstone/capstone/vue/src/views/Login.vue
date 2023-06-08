@@ -36,7 +36,7 @@
               required
             />
           </div>
-          <button type="submit">Sign in</button>
+          <button class="signin-button" type="submit">Sign in</button>
           <p>
             <router-link class="signup" :to="{ name: 'register' }"
               >Need an account? Sign up.</router-link
@@ -172,5 +172,20 @@ img {
 .signup{
   text-decoration: underline;
   color:black;
+}
+.signin-button{
+ transition-duration: 0.4s;
+ border: 1px solid rgb(0, 0, 0);
+ background-color: rgb(231, 247, 217);
+  font-family: "Montserrat", sans-serif;
+  color: rgb(48, 46, 49);
+  font-weight: bold;
+  font-size:15px ;
+  margin-bottom: 3px;
+  margin-top: 10px;
+  width: 80px;
+}
+.signin-button:hover{
+  background-color: rgb(115, 147, 126);
 }
 </style>

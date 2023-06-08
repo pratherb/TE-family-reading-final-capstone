@@ -3,11 +3,11 @@
     <div class="loading" v-if="isLoading">
       <img src="../assets/book_pages_opening.gif" />
     </div>
-    <div v-else>
-      <h4 class="total-books-read">Total Books Read:</h4>
-      <h4 class="book-total">{{bookTotal}}</h4>
-      <h4 class="total-minutes-read">Total Minutes of Reading:</h4>
-      <h4 class="minute-total">{{minuteTotal}}</h4>
+    <div class="totals"  v-else>
+      <h4 class="total-books-read" id="title-books-read">Total Books Read:</h4>
+      <h4 class="book-total" id="number-books-read">{{bookTotal}}</h4>
+      <h4 class="total-minutes-read" id="title-mins">Total Minutes of Reading:</h4>
+      <h4 class="minute-total" id="number-mins">{{minuteTotal}}</h4>
     </div>
   </div>
 </template>
