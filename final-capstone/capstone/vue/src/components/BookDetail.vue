@@ -17,11 +17,13 @@
     >
       Add to reading list
     </button>
-    <button class="finished-button" v-else v-on:click="markBookAsRead(book.isbn)">
+    <button
+      v-else
+      v-on:click="markBookAsRead(book.isbn)"
+    >
       Mark as finished
     </button>
-    </div>
-    <br />
+  </div>
   </div>
 </template>
 
@@ -71,7 +73,7 @@ export default {
   min-height: 550px;
   max-height: 550px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.658);
-  }
+}
 
 .book-image {
   text-align: center;
@@ -81,7 +83,7 @@ export default {
 }
 
 .book-image img {
-  padding-top:5%;
+  padding-top: 5%;
   max-height: 99%;
   max-width: 90%;
   border-radius: 8%;

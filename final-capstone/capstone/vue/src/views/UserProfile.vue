@@ -1,7 +1,8 @@
 <template>
   <div class="users">
     <div class="user-head">
-      <h2 class="usersname">{{ $route.params.username }}</h2><p class="page"> 's Page</p>
+      <h2 class="usersname">{{ $route.params.username }}</h2>
+      <p class="page">'s Page</p>
       <!-- Changes with each user -->
       <h1>
         <router-link v-bind:to="{ name: 'home' }">
@@ -13,30 +14,23 @@
         </router-link>
       </h1>
     </div>
-   
-    <reading-totals />
-   
-    <h3 id="reading-list">Currently Reading</h3>
 
-    <div class="loading" v-if="isLoading">
-      <img src="../assets/book_pages_opening.gif" />
+    <div>
+      <reading-totals class="reading-totals" />
+          <h3 id="currently-reading-header">Currently Reading</h3>
     </div>
+    <div class="reading-list">
+      <div class="loading" v-if="isLoading">
+        <img src="../assets/book_pages_opening.gif" />
+      </div>
 
-    <div v-else>
-      <div>
-        <ul>
-          <li>
-            <book-detail
-              v-for="book in readingList"
-              :key="book.isbn"
-              :book="book"
-            />
-            <!-- <h4>{{book.title}}</h4>
-          <p>Author: {{book.author}}</p>
-          <p>ISBN: {{book.isbn}}</p>
-          <p>Pages: {{book.numPages}}</p> -->
-          </li>
-        </ul>
+      <div v-else class="reading-list-grid">
+        <book-detail
+          v-for="book in readingList"
+          :key="book.isbn"
+          :book="book"
+          class="book-card"
+        />
       </div>
     </div>
     <div>
@@ -78,8 +72,8 @@ export default {
 <style>
 @import url("https://fonts.cdnfonts.com/css/socake");
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap");
-.page{
- font-family: "Socake", sans-serif;
+.page {
+  font-family: "Socake", sans-serif;
   color: rgb(88, 85, 91);
   font-size: 50px;
 }
@@ -101,9 +95,53 @@ export default {
   color: rgb(88, 85, 91);
   font-size: 20px;
 }
+*/ .reading-totals {
+  background-color: rgba(254, 209, 113, 0.5);
+  padding: 5px;
+  margin-left: 20%;
+  margin-right: 20%;
+}
+
+.reading-list {
+  /* background-color: rgba(254, 209, 113, 0.5); */
+  color: rgb(88, 85, 99);
+  text-align: center;
+  /* margin-left: 15%;
+  margin-right: 15%; */
+  padding: 15px;
+  font-family: "Montserrat", sans-serif;
+}
+
+.reading-list-grid {
+  margin-left: 12%;
+  margin-right: 12%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  background-color: rgb(254 209 113 / 56%);
+  gap: 30px;
+  padding: 30px;
+}
+
 .totals {
   margin-bottom: 0;
   display: grid;
+}
+
+#currently-reading-header{
+    background: rgb(115, 147, 126);
+  grid-row: 1;
+  grid-column: 1;
+  color: rgb(88, 85, 91);
+  font-family: "Socake", sans-serif;
+  font-size: 30px;
+  border-radius: 30px;
+  height: 80px;
+  text-align: center;
+  padding-top: 50px;
+  width: 350px;
+  margin: 40px auto;
+  border: 3px solid rgb(77, 97, 84);
+
 }
 #title-books-read {
   background: rgb(115, 147, 126);
@@ -133,7 +171,7 @@ export default {
   padding-top: 50px;
   width: 350px;
   margin: 40px auto;
-   border: 3px solid rgb(77, 97, 84);
+  border: 3px solid rgb(77, 97, 84);
 }
 #number-mins {
   height: 60px;
@@ -148,7 +186,7 @@ export default {
   padding-top: 25px;
   width: 200px;
   margin: 0 auto 20px auto;
-   border: 3px solid rgb(77, 97, 84);
+  border: 3px solid rgb(77, 97, 84);
 }
 #number-books-read {
   background: rgb(115, 147, 126);
@@ -162,12 +200,9 @@ export default {
   padding-top: 25px;
   width: 200px;
   margin: 0 auto 20px auto;
-   border: 3px solid rgb(77, 97, 84);
+  border: 3px solid rgb(77, 97, 84);
 }
 
-.activity-list {
-  list-style: none;
-}
 .usersname {
   font-family: "Socake", sans-serif;
   color: rgb(88, 85, 91);
