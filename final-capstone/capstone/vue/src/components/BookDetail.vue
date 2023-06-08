@@ -18,6 +18,7 @@
       Add to reading list
     </button>
     <button
+    class="finished-button"
       v-else
       v-on:click="markBookAsRead(book.isbn)"
     >
@@ -138,7 +139,7 @@ button {
   padding: 12px 28px;
   border: 1px solid rgb(0, 0, 0);
   margin: 50px 30px 40px 30px;
-  background-color: rgb(244, 252, 172);
+  background-color: rgb(165,3,3);
   font-family: "Montserrat", sans-serif;
   color: rgb(48, 46, 49);
   font-weight: bold;
@@ -146,6 +147,6 @@ button {
 }
 
 .add-button:hover {
-  background-color: rgb(255, 191, 16);;
+  background-color: rgb(165,3,3);;
 }
 </style>
