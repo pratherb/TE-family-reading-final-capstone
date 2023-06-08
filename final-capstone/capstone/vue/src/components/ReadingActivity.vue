@@ -23,7 +23,7 @@
     </div>
     <br />
     <br />
-    <div>
+    <div class="add-activity">
       <form class="addReadingActivity" v-on:submit.prevent="addActivity">
         <h1 class="headerForActivity">Add Reading Activity</h1>
         <div class="form-input-group-reading" v-show="isParent">
@@ -144,6 +144,9 @@ export default {
   border-color: rgb(115, 147, 126);
   border-radius: 4px;
   height: 45px;
+  width: 300px;
+  margin: 0 auto;
+  margin-bottom: 45px;
 }
 
 .activity-list {
@@ -168,6 +171,7 @@ export default {
   flex-wrap: wrap;
   flex-direction: row;
   justify-content: space-evenly;
+  margin-bottom: 100px;
 }
 
 </style>
