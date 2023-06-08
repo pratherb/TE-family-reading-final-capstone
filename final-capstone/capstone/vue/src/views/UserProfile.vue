@@ -15,9 +15,8 @@
       </h1>
     </div>
 
-    <div>
+    <div class="totals">
       <reading-totals class="reading-totals" />
-          <h3 id="currently-reading-header">Currently Reading</h3>
     </div>
     <div class="reading-list">
       <div class="loading" v-if="isLoading">
@@ -127,21 +126,20 @@ export default {
   display: grid;
 }
 
-#currently-reading-header{
-    background: rgb(115, 147, 126);
+#currently-reading-header {
+  background: rgb(115, 147, 126);
   grid-row: 1;
-  grid-column: 1;
+  grid-column: 2;
   color: rgb(88, 85, 91);
   font-family: "Socake", sans-serif;
   font-size: 30px;
   border-radius: 30px;
-  height: 80px;
+  /* height: 80px; */
   text-align: center;
   padding-top: 50px;
   width: 350px;
   margin: 40px auto;
   border: 3px solid rgb(77, 97, 84);
-
 }
 #title-books-read {
   background: rgb(115, 147, 126);
@@ -244,5 +242,4 @@ ul {
 .activity-button:hover {
   background-color: rgb(255, 191, 16);
 }
-
 </style>
