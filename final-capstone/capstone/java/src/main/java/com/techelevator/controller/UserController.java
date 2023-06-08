@@ -3,6 +3,7 @@ package com.techelevator.controller;
 import com.techelevator.dao.BookDao;
 import com.techelevator.dao.FamilyDao;
 import com.techelevator.dao.UserDao;
+import com.techelevator.model.Authority;
 import com.techelevator.model.Book;
 import com.techelevator.model.Family;
 import com.techelevator.model.User;
@@ -68,11 +69,16 @@ public class UserController {
 
     @RequestMapping(value = "/book" + "/isbn={isbn}", method = RequestMethod.POST)
     public Book addBookToReadingList(@PathVariable String isbn, @RequestParam String username){
-        int familyId= familyDao.getFamilyIdByUsername(username);
-        Family family = familyDao.getFamilyById(familyId);
-        String email = family.getEmail();
         User user = userDao.findByUsername(username);
-        this.emailService.sendReadingListEmail(email, user.getFirstName(), isbn);
+        String role = "";
+        for (Authority a : user.getAuthorities()) {
+            if (a.getName().equalsIgnoreCase("ROLE_CHILD")){
+                int familyId = familyDao.getFamilyIdByUsername(username);
+                Family family = familyDao.getFamilyById(familyId);
+                String email = family.getEmail();
+                this.emailService.sendReadingListEmail(email, user.getFirstName(), isbn);
+            }
+        }
         return bookDao.addBookToReadingListByPrincipal(bookDao.searchBookByIsbn(isbn), username);
     }
 
