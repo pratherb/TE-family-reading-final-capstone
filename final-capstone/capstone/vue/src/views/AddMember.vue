@@ -73,4 +73,20 @@ export default {
   height: 95px;
   margin: 300px 0 0 0;
 }
+.add-member-button{
+transition-duration: 0.4s;
+  border: 1px solid rgb(182, 90, 10);
+  margin: 50px 30px 40px 30px;
+  background-color: rgb(248, 150, 64);
+  font-family: "Montserrat", sans-serif;
+  color: rgb(88,85,99);
+  font-weight: bold;
+  font-size:15px ;
+  margin-top:20px;
+  width: 100px;
+  height:40px;
+}
+.add-member-button:hover{
+ background-color: rgb(182, 90, 10);
+}
 </style>

@@ -40,7 +40,7 @@
           <br />
         </div>
         <br />
-        <button type="submit">Create Family Member</button>
+        <button class="add-member-button" type="submit">Add Family Member</button>
       </form>
     </div>
   </div>

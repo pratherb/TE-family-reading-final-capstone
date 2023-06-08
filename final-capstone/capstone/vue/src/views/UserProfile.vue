@@ -1,12 +1,18 @@
 <template>
   <div class="users">
-    <h2 class="usersname">{{ $route.params.username }}</h2>
-    <!-- Changes with each user -->
-    <h1 class="logo">
-      <router-link v-bind:to="{name: 'home'}">
-        <img src="../images/sharpened-transparent-logo.png" alt="logo">
-      </router-link>
-    </h1>
+    <div class="user-head">
+      <h2 class="usersname">{{ $route.params.username }}</h2>
+      <!-- Changes with each user -->
+      <h1>
+        <router-link v-bind:to="{ name: 'home' }">
+          <img
+            class="logo-user"
+            src="../images/sharpened-transparent-logo.png"
+            alt="logo"
+          />
+        </router-link>
+      </h1>
+    </div>
     <reading-totals />
     <h3 id="reading-list">Currently Reading</h3>
 
@@ -70,40 +76,103 @@ export default {
 <style>
 @import url("https://fonts.cdnfonts.com/css/socake");
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap");
-/* .addReadingActivity {
+
+.addReadingActivity {
   display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background: rgba(232, 123, 31, 0.8);
+  padding-top: 30px;
+  width: 900px;
+  height: 350px;
+  justify-content: space-between;
+  border-radius: 8px;
+  border: solid 3px rgb(182, 90, 10);
+  font-family: "Socake", sans-serif;
+  color: rgb(88, 85, 91);
+  font-size: 20px;
 }
 .form-input-group-reading {
-  background: rgb(149, 151, 149);
 }
 .headerForActivity {
-  background: rgb(115, 147, 126);
 }
 .total-books-read {
-  background: rgb(115, 147, 126);
+
 }
 .total-minutes-read {
-  background: rgb(115, 147, 126);
+
 }
 .minute-total {
-  background: rgb(149, 151, 149);
+
 }
 .book-total {
-  background: rgb(149, 151, 149);
+
 }
 .reading-activity {
-  background: rgb(115, 147, 126);
+ 
 }
 #reading-list {
-  background: rgb(149, 151, 149);
+ 
 }
-.logo {
-  background: rgb(115, 147, 126);
-}
-.usersname {
-  background: rgb(115, 147, 126);
-} */
+
 .activity-list {
   list-style: none;
 }
+.usersname {
+  font-family: "Socake", sans-serif;
+  color: rgb(88, 85, 91);
+  font-size: 50px;
+}
+.user-head {
+  border: solid 3px;
+  border-color: rgb(115, 147, 126);
+  background: rgba(115, 147, 126, 0.7);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 250px;
+}
+ul {
+  list-style: none;
+}
+.logo-user {
+  width: 300px;
+  height: 370px;
+  padding-top: 20px;
+  padding-left: 15px;
+}
+.activity-button{
+  transition-duration: 0.4s;
+  width:200px;
+  height:60px;
+  padding: 12px 28px;
+  border: 1px solid rgb(0, 0, 0);
+  margin: 50px 30px 40px 30px;
+ background-color: rgb(244, 252, 172);
+  font-family: "Montserrat", sans-serif;
+  color: rgb(48, 46, 49);
+  font-weight: bold;
+  font-size:15px ;
+}
+.activity-button:hover{
+   background-color: rgb(255, 191, 16);
+}
+/* .finished-button{
+  transition-duration: 0.4s;
+  width:200px;
+  height:60px;
+  padding: 12px 28px;
+  border: 1px solid rgb(0, 0, 0);
+  margin: 50px 30px 40px 30px;
+  background-color: rgb(231, 247, 217);
+  font-family: "Montserrat", sans-serif;
+  color: rgb(48, 46, 49);
+  font-weight: bold;
+  font-size:15px ;
+}
+.finished-button:hover{
+   background-color:
+} */
 </style>

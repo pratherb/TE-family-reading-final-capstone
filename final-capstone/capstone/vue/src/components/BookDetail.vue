@@ -16,7 +16,7 @@
     >
       Add to reading list
     </button>
-    <button v-else v-on:click="markBookAsRead(book.isbn)">
+    <button class="finished-button" v-else v-on:click="markBookAsRead(book.isbn)">
       Mark as finished
     </button>
     <br />

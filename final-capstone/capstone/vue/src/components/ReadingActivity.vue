@@ -59,7 +59,7 @@
           <label for="notes">Notes</label>
           <input type="text" id="notes" v-model="newActivity.notes" />
         </div>
-        <button type="submit">Add Activity</button>
+        <button class="activity-button" type="submit">Add Activity</button>
       </form>
     </div>
   </div>

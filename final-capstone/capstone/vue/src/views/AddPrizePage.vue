@@ -82,4 +82,20 @@ export default {
 label {
     font-family: "Montserrat", sans-serif;
 }
+.prize-button{
+ transition-duration: 0.4s;
+  border: 1px solid rgb(255, 191, 16);
+  margin: 50px 30px 40px 30px;
+  background-color: rgb(244, 252, 172);
+  font-family: "Montserrat", sans-serif;
+  color: rgb(88,85,99);
+  font-weight: bold;
+  font-size:15px ;
+  margin-top:20px;
+  width: 100px;
+  height:40px;
+}
+.prize-button:hover{
+  background-color: rgb(255, 191, 16);
+}
 </style>

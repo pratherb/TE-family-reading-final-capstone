@@ -75,7 +75,7 @@
           <label class="prize-label" for="end-date">End Date</label>
           <input type="date" id="end-date" v-model="prize.endDate" required />
         </div>
-        <button>Add to Prize List</button>
+        <button class="prize-button">Add Prize</button>
       </form>
       </div>
     </div>
