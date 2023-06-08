@@ -2,6 +2,7 @@
   <div class="users">
     <div class="user-head">
       <h2 class="usersname">{{ $route.params.username }}</h2>
+      <p class="page">'s Page</p>
       <!-- Changes with each user -->
       <h1>
         <router-link v-bind:to="{ name: 'home' }">
@@ -14,13 +15,11 @@
       </h1>
     </div>
 
+    <div>
+      <reading-totals class="reading-totals" />
+          <h3 id="currently-reading-header">Currently Reading</h3>
+    </div>
     <div class="reading-list">
-      <div>
-        <reading-totals class="reading-totals" />
-      </div>
-
-      <h3>Currently Reading</h3>
-
       <div class="loading" v-if="isLoading">
         <img src="../assets/book_pages_opening.gif" />
       </div>
@@ -73,8 +72,15 @@ export default {
 <style>
 @import url("https://fonts.cdnfonts.com/css/socake");
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap");
-
-/* .addReadingActivity {
+.page {
+  font-family: "Socake", sans-serif;
+  color: rgb(88, 85, 91);
+  font-size: 50px;
+}
+.users {
+  background: rgba(254, 209, 113, 0.5);
+}
+.addReadingActivity {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -88,9 +94,8 @@ export default {
   font-family: "Socake", sans-serif;
   color: rgb(88, 85, 91);
   font-size: 20px;
-} */
-
-.reading-totals {
+}
+*/ .reading-totals {
   background-color: rgba(254, 209, 113, 0.5);
   padding: 5px;
   margin-left: 20%;
@@ -98,7 +103,7 @@ export default {
 }
 
 .reading-list {
-  background-color: rgba(254, 209, 113, 0.5);
+  /* background-color: rgba(254, 209, 113, 0.5); */
   color: rgb(88, 85, 99);
   text-align: center;
   /* margin-left: 15%;
@@ -117,7 +122,86 @@ export default {
   padding: 30px;
 }
 
+.totals {
+  margin-bottom: 0;
+  display: grid;
+}
 
+#currently-reading-header{
+    background: rgb(115, 147, 126);
+  grid-row: 1;
+  grid-column: 1;
+  color: rgb(88, 85, 91);
+  font-family: "Socake", sans-serif;
+  font-size: 30px;
+  border-radius: 30px;
+  height: 80px;
+  text-align: center;
+  padding-top: 50px;
+  width: 350px;
+  margin: 40px auto;
+  border: 3px solid rgb(77, 97, 84);
+
+}
+#title-books-read {
+  background: rgb(115, 147, 126);
+  grid-row: 1;
+  grid-column: 3;
+  color: rgb(88, 85, 91);
+  font-family: "Socake", sans-serif;
+  font-size: 30px;
+  border-radius: 30px;
+  height: 80px;
+  text-align: center;
+  padding-top: 50px;
+  width: 350px;
+  margin: 40px auto;
+  border: 3px solid rgb(77, 97, 84);
+}
+#title-mins {
+  background: rgb(115, 147, 126);
+  grid-row: 1;
+  grid-column: 1;
+  color: rgb(88, 85, 91);
+  font-family: "Socake", sans-serif;
+  font-size: 30px;
+  border-radius: 30px;
+  height: 80px;
+  text-align: center;
+  padding-top: 50px;
+  width: 350px;
+  margin: 40px auto;
+  border: 3px solid rgb(77, 97, 84);
+}
+#number-mins {
+  height: 60px;
+  background: rgb(115, 147, 126);
+  grid-row: 2;
+  grid-column: 1;
+  color: rgb(88, 85, 91);
+  font-family: "Montserrat", sans-serif;
+  font-size: 40px;
+  border-radius: 25px;
+  text-align: center;
+  padding-top: 25px;
+  width: 200px;
+  margin: 0 auto 20px auto;
+  border: 3px solid rgb(77, 97, 84);
+}
+#number-books-read {
+  background: rgb(115, 147, 126);
+  grid-row: 2;
+  grid-column: 3;
+  color: rgb(88, 85, 91);
+  font-family: "Montserrat", sans-serif;
+  font-size: 40px;
+  border-radius: 30px;
+  text-align: center;
+  padding-top: 25px;
+  width: 200px;
+  margin: 0 auto 20px auto;
+  border: 3px solid rgb(77, 97, 84);
+}
 
 .usersname {
   font-family: "Socake", sans-serif;
@@ -140,9 +224,9 @@ ul {
 }
 .logo-user {
   width: 300px;
-  height: 370px;
-  padding-top: 20px;
-  padding-left: 15px;
+  height: 350px;
+  padding-top: 30px;
+  margin-left: 15px;
 }
 .activity-button {
   transition-duration: 0.4s;
