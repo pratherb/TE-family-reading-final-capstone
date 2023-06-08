@@ -26,7 +26,7 @@
           >LinkedIn</a
         >
         <br />
-        <p class="about">Lover of animals, art enthusiast, and co-parent of Noodle the pampered poodle. Cheanged careers from graphic design/Kenel Technician to become an avid CSS enjoyer. </p>
+        <p class="about">Lover of animals, art enthusiast, and co-parent of Noodle the pampered poodle. Changed careers to become an avid CSS enjoyer. </p>
         <br />
         <p class="location">Location: Aurora, CO</p>
       </div>
