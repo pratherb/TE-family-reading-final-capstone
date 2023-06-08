@@ -171,6 +171,18 @@ export default {
   flex-wrap: wrap;
   flex-direction: row;
   justify-content: space-evenly;
-  margin-bottom: 100px;
+  margin-bottom: 50px;
+}
+
+.headerForActivity {
+  padding-left: 275px;
+}
+
+.activity-button {
+  margin-left: 350px;
+}
+
+.form-input-group-reading {
+  margin-left: 295px;
 }
 </style>
